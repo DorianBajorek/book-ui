@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { StyleSheet, TextInput, View, TouchableOpacity, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { registerUser } from '../BooksService';
 import { useUserData } from './UserData';
 
-const Register = () => {
+const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +15,7 @@ const Register = () => {
       updateToken(data.token);
       updateUserName(data.username);
       updateEmail(data.email);
+      navigation.replace('Main');
     } catch (error) {
       console.error("Register failed", error);
     }
@@ -64,6 +65,7 @@ const Register = () => {
   );
 };
 
+// StyleSheet remains unchanged
 const styles = StyleSheet.create({
   container: {
     flex: 1,
