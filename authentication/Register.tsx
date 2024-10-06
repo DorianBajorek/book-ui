@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, View, Button, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { registerUser } from '../BooksService';
+import { useUserData } from './UserData';
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { updateToken, updateUserName, updateEmail } = useUserData();
 
-  const handleRegister = () => {
-    console.log('Email:', email);
-    console.log('Username:', username);
-    console.log('Password:', password);
-    registerUser(email, username, password);
+  const handleRegister = async () => {
+    try {
+      const data = await registerUser(email, username, password);
+      updateToken(data.token);
+      updateUserName(data.username);
+      updateEmail(data.email);
+    } catch (error) {
+      console.error("Register failed", error);
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView 
+      style={styles.container} 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0} // Dostosuj w zależności od potrzeb
+    >
       <View style={styles.formContainer}>
         <Text style={styles.label}>Email:</Text>
         <TextInput
@@ -50,7 +60,7 @@ const Register = () => {
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

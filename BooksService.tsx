@@ -7,7 +7,7 @@ export const registerUser = async (email: string, username: string, password: st
         username: username,
         password: password
       };
-      const response = await axios.post("http://127.0.0.1:8000/rest_api/signup/", payload);
+      const response = await axios.post("http://192.168.100.9:8000/rest_api/signup/", payload);
       return response.data;
     } catch (error) {
       console.error('Registration failed', error);
@@ -15,3 +15,17 @@ export const registerUser = async (email: string, username: string, password: st
     }
   };
   
+export const loginUser = async (username: string, password: string) => {
+  try {
+    const payload = {
+      username: username,
+      password: password
+    };
+    const response = await axios.post("http://192.168.100.9:8000/rest_api/login/", payload);
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Invalid login to the service', error);
+    return null;
+  }
+};

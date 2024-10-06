@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { loginUser } from '../BooksService';
+import { useUserData } from './UserData';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { updateToken, updateUserName, updateEmail } = useUserData();
 
-  const handleRegister = () => {
-    console.log('Email:', email);
-    console.log('Username:', username);
-    console.log('Password:', password);
+  const handleLogin = async () => {
+    try {
+      const data = await loginUser(username, password);
+      updateToken(data.token);
+      updateUserName(data.username);
+      updateEmail(data.email);
+    } catch (error) {
+      console.error("Login failed", error);
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView 
+      style={styles.container} 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
+    >
       <View style={styles.formContainer}>
         <Text style={styles.label}>Username:</Text>
         <TextInput
@@ -34,11 +45,11 @@ const Login = () => {
           secureTextEntry
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Register</Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

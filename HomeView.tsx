@@ -10,12 +10,12 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
   return (
     <View style={styles.container}>
       <Button
-        title="Go to Screen 1"
-        onPress={() => navigation.navigate('Screen1')}
+        title="Go to Register"
+        onPress={() => navigation.navigate('Register')}
       />
       <Button
-        title="Go to Screen 2"
-        onPress={() => navigation.navigate('Screen2')}
+        title="Go to Login"
+        onPress={() => navigation.navigate('Login')}
       />
     </View>
   );
