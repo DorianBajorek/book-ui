@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View, Text, TouchableOpacity, KeyboardAvoidingVi
 import { loginUser } from '../BooksService';
 import { useUserData } from './UserData';
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { updateToken, updateUserName, updateEmail } = useUserData();
@@ -14,6 +14,7 @@ const Login = () => {
       updateToken(data.token);
       updateUserName(data.username);
       updateEmail(data.email);
+      navigation.replace('Main');
     } catch (error) {
       console.error("Login failed", error);
     }
