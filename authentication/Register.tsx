@@ -24,7 +24,7 @@ const Register = () => {
     <KeyboardAvoidingView 
       style={styles.container} 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0} // Dostosuj w zależności od potrzeb
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
     >
       <View style={styles.formContainer}>
         <Text style={styles.label}>Email:</Text>
