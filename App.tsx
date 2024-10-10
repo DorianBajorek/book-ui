@@ -8,7 +8,6 @@ import HomeView from './HomeView';
 import Register from './authentication/Register';
 import Login from './authentication/Login';
 import { UserData } from './authentication/UserData';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import TabNavigator from './components/TabNavigator';
 
 const Stack = createNativeStackNavigator();
@@ -19,7 +18,7 @@ export default function App() {
   return (
     <UserData>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Main">
           <Stack.Screen name="HomeView" component={HomeView} />
           <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={Register} />

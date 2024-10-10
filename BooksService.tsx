@@ -29,3 +29,38 @@ export const loginUser = async (username: string, password: string) => {
     return null;
   }
 };
+
+export const addBookToProfle = async (title: string, token: string) => {
+  try {
+    const payload = {
+      title: title
+    };
+    const authentication = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    const response = await axios.post("http://192.168.100.9:8000/rest_api/add_book/", payload, authentication);
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Invalid login to the service', error);
+    return null;
+  }
+};
+
+export const loadBooksToProfile = async (token: string) =>{
+  try {
+    const authentication = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    const response = await axios.get("http://192.168.100.9:8000/rest_api/load_book/", authentication);
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error('Invalid login to the service', error);
+    return null;
+  }
+}
