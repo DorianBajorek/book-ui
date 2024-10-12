@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, ScrollView, Image } from 'react-native'
 import { useUserData } from '../authentication/UserData';
 import AddBookModal from './AddBookModal';
 import BooksList from './BooksList';
+import BookScanner from './BookScanner';
 
 const Profile = () => {
   const { email, userName } = useUserData();
@@ -25,7 +26,8 @@ const Profile = () => {
           <Button title="Add book to collection" onPress={toggleModal} />
         </View>
 
-        <AddBookModal isVisible={isModalVisible} onClose={toggleModal} />
+        {/* <AddBookModal isVisible={isModalVisible} onClose={toggleModal} /> */}
+        <BookScanner  isVisible={isModalVisible} onClose={toggleModal} />
         <BooksList />
     </ScrollView>
   );
