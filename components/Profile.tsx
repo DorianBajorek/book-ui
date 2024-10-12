@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, ScrollView, Image } from 'react-native';
 import { useUserData } from '../authentication/UserData';
-import AddBookModal from './AddBookModal';
 import BooksList from './BooksList';
 import BookScanner from './BookScanner';
 

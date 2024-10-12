@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, TouchableOpacity, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { registerUser } from '../BooksService';
 import { useUserData } from './UserData';
 
-const Register = ({ navigation }) => {
+type RootStackParamList = {
+  Main: undefined;
+  Register: undefined;
+};
+
+type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Register'>;
+
+type Props = {
+  navigation: RegisterScreenNavigationProp;
+};
+
+const Register: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
