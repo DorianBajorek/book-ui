@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { loginUser } from '../BooksService';
 import { useUserData } from './UserData';
 
-const Login = ({ navigation }) => {
+type RootStackParamList = {
+  Main: undefined;
+  Login: undefined;
+};
+
+type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
+
+type Props = {
+  navigation: LoginScreenNavigationProp;
+};
+
+const Login: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { updateToken, updateUserName, updateEmail } = useUserData();

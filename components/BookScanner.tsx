@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, Button, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-const BookScanner = ({ isVisible, onClose }) => {
+type BookScannerProps = {
+    isVisible: boolean;
+    onClose: () => void;
+  };
+  
+const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [isbnCode, setIsbnCode] = useState('');
@@ -16,7 +21,8 @@ const BookScanner = ({ isVisible, onClose }) => {
         getBarCodeScannerPermissions();
     }, []);
 
-    const handleBarCodeScanned = ({ type, data }) => {
+    // const handleBarCodeScanned = ({ type, data: string }) => {
+    const handleBarCodeScanned = (type: any, data: string) => {
         setScanned(true);
         setIsbnCode(data);
         console.log(`Scanned ISBN: ${data}`);

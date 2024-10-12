@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
-const AddBookModal = ({ isVisible, onClose }) => {
+type AddBookModalProps = {
+    isVisible: boolean;
+    onClose: () => void;
+};
+
+const AddBookModal: React.FC<AddBookModalProps> = ({ isVisible, onClose }) => {
     const [newTitle, setNewTitle] = useState("");
 
     const handleSaveButton = () => {

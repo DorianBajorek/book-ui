@@ -1,6 +1,5 @@
 import React from 'react'; 
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useUserData } from './authentication/UserData';
 import BookSlider from './components/BookSlider';
 
