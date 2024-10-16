@@ -1,32 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, ScrollView, StyleSheet, Text } from 'react-native';
-import atomoweNawyki from '../img/atomowe-nawyki.jpg';
-import jobs from '../img/jobs.png';
-import teoriaLiczb from '../img/teoria-liczb.png';
-import goggins from '../img/goggins.png';
-import korwin from '../img/korwin.jpg';
-import pulapka from '../img/pulapka.jpg';
-import wedrowka from '../img/wedrowka.png';
-
-const books = [
-  { id: '1', image: atomoweNawyki, title: 'Atomowe Nawyki', description: 'Drobne zmiany, niezwykłe efekty' },
-  { id: '2', image: jobs, title: 'Steve Jobs', description: 'Biografia współzałożyciela Apple' },
-  { id: '3', image: teoriaLiczb, title: 'Teoria Liczb', description: 'Podstawy matematyki i teorii liczb' },
-  { id: '4', image: goggins, title: 'David Goggins', description: 'Nie można mnie złamać' },
-  { id: '5', image: korwin, title: 'Korwin-Mikke', description: 'Moje poglądy polityczne' },
-  { id: '6', image: pulapka, title: 'Pułapka', description: 'Jak unikać życiowych pułapek' },
-  { id: '7', image: wedrowka, title: 'Wędrówka', description: 'Wędrówka przez rozwiązywanie nierówności' },
-];
+import { getUserBooks } from '../BooksService';
+import { useUserData } from '../authentication/UserData';
 
 const BooksList = () => {
+  const { token } = useUserData();
+  const [books, setBooks] = useState([]);
+  const prefixUrl = "http://192.168.100.9:8000";
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const data = await getUserBooks(token);
+        setBooks(data);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    };
+
+    fetchBooks();
+  }, [token]);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {books.map((book) => (
-        <View key={book.id} style={styles.bookContainer}>
-          <Image source={book.image} style={styles.bookImage} />
+      {books.map((item) => (
+        <View key={item.id} style={styles.bookContainer}>
+          <Image 
+            source={{ uri: prefixUrl + item.book.cover_image.replace("/media/", "/media/cover_images/") }} 
+            style={styles.bookImage} 
+          />
           <View style={styles.textContainer}>
-            <Text style={styles.bookTitle}>{book.title}</Text>
-            <Text style={styles.bookDescription}>{book.description}</Text>
+            <Text style={styles.bookTitle}>{item.book.title}</Text>
+            <Text style={styles.bookDescription}>Author: {item.book.author}</Text>
+            <Text style={styles.bookDescription}>Condition: {item.condition}</Text>
           </View>
         </View>
       ))}

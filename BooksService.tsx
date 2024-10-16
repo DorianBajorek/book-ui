@@ -7,7 +7,9 @@ export const registerUser = async (email: string, username: string, password: st
         username: username,
         password: password
       };
-      const response = await axios.post("http://192.168.100.9:8000/rest_api/signup/", payload);
+      const response = await axios.post("http://192.168.100.9:8000/auth/register/", payload);
+      console.log("BECZKA")
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error('Registration failed', error);
@@ -21,7 +23,7 @@ export const loginUser = async (username: string, password: string) => {
       username: username,
       password: password
     };
-    const response = await axios.post("http://192.168.100.9:8000/rest_api/login/", payload);
+    const response = await axios.post("http://192.168.100.9:8000/auth/login/", payload);
     console.log(response.data)
     return response.data;
   } catch (error) {
@@ -30,37 +32,63 @@ export const loginUser = async (username: string, password: string) => {
   }
 };
 
-export const addBookToProfle = async (title: string, token: string) => {
+export const addBookToProfile = async (isbn: string, token: string) => {
   try {
+    console.log("LOL");
     const payload = {
-      title: title
-    };
-    const authentication = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    const response = await axios.post("http://192.168.100.9:8000/rest_api/add_book/", payload, authentication);
-    console.log(response.data)
+      isbn: isbn
+    }
+    const response = await axios.post(
+      `http://192.168.100.9:8000/api/entries/get_book/`,  // Przekazywanie isbn w URL
+      payload,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error('Invalid login to the service', error);
+    console.error('Error occurred:', error.response ? error.response.data : error.message);
+  }
+};
+
+
+
+export const securedEndpoint = async (token: string) => {
+  try {
+    const response = await axios.post(
+      "http://192.168.100.9:8000/auth/secured/",
+      {
+        headers: {
+          'Authorization': `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    console.log('Response from secured endpoint:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error accessing secured endpoint', error);
     return null;
   }
 };
 
-export const loadBooksToProfile = async (token: string) =>{
+export const  getUserBooks = async (token: string) => {
   try {
-    const authentication = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    const response = await axios.get("http://192.168.100.9:8000/rest_api/load_book/", authentication);
+    console.log("KURWAs")
+    const response = await axios.get(
+      "http://192.168.100.9:8000/api/entries/get_user_books/",
+      {
+        headers: {
+          Authorization: `Token ${token}`
+      }
+      }
+    );
+    console.log("BOOsssKS:")
     console.log(response.data)
     return response.data;
   } catch (error) {
-    console.error('Invalid login to the service', error);
-    return null;
+    console.error('Error occurred:', error.response ? error.response.data : error.message);
   }
-}
+};
