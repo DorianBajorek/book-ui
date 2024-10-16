@@ -6,10 +6,10 @@ import BookScanner from './BookScanner';
 
 const Profile = () => {
   const { email, userName } = useUserData();
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalScanener, setIsModalScanener] = useState(false);
 
   const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+    setIsModalScanener(!isModalScanener);
   };
 
   return (
@@ -25,8 +25,7 @@ const Profile = () => {
           <Button title="Add book to collection" onPress={toggleModal} />
         </View>
 
-        {/* <AddBookModal isVisible={isModalVisible} onClose={toggleModal} /> */}
-        <BookScanner  isVisible={isModalVisible} onClose={toggleModal} />
+        <BookScanner  isVisible={isModalScanener} onClose={toggleModal} />
         <BooksList />
     </ScrollView>
   );

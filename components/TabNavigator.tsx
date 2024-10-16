@@ -31,6 +31,13 @@ const TabNavigator = () => {
         }} 
       />
       <Tab.Screen 
+        name="MarketPlace" 
+        component={SearchScreen} 
+        options={{ 
+          tabBarIcon: ({ color }) => <Ionicons name="storefront-outline" size={24} color={color} />
+        }} 
+      />
+      <Tab.Screen 
         name="Profile" 
         component={Profile} 
         options={{ 

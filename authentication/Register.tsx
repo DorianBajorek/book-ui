@@ -27,6 +27,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
       updateToken(data.token);
       updateUserName(data.username);
       updateEmail(data.email);
+      console.log("JOPEK")
       navigation.replace('Main');
     } catch (error) {
       console.error("Register failed", error);
