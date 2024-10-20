@@ -8,8 +8,6 @@ export const registerUser = async (email: string, username: string, password: st
         password: password
       };
       const response = await axios.post("http://192.168.100.9:8000/auth/register/", payload);
-      console.log("BECZKA")
-      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error('Registration failed', error);
@@ -24,7 +22,6 @@ export const loginUser = async (username: string, password: string) => {
       password: password
     };
     const response = await axios.post("http://192.168.100.9:8000/auth/login/", payload);
-    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Invalid login to the service', error);
@@ -34,12 +31,11 @@ export const loginUser = async (username: string, password: string) => {
 
 export const addBookToProfile = async (isbn: string, token: string) => {
   try {
-    console.log("LOL");
     const payload = {
       isbn: isbn
     }
     const response = await axios.post(
-      `http://192.168.100.9:8000/api/entries/get_book/`,  // Przekazywanie isbn w URL
+      `http://192.168.100.9:8000/api/entries/get_book/`,
       payload,
       {
         headers: {
@@ -66,17 +62,14 @@ export const securedEndpoint = async (token: string) => {
         },
       }
     );
-    console.log('Response from secured endpoint:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Error accessing secured endpoint', error);
     return null;
   }
 };
 
 export const  getUserBooks = async (token: string) => {
   try {
-    console.log("KURWAs")
     const response = await axios.get(
       "http://192.168.100.9:8000/api/entries/get_user_books/",
       {
@@ -85,10 +78,24 @@ export const  getUserBooks = async (token: string) => {
       }
       }
     );
-    console.log("BOOsssKS:")
-    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error occurred:', error.response ? error.response.data : error.message);
   }
 };
+
+export const findBooks = async (token: string, searchQuery: string) => {
+  try {
+    const url = `http://192.168.100.9:8000/api/entries/search_users_with_book/?searchQuery=${encodeURIComponent(searchQuery)}`;
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Search failed', error);
+    return null;
+  }
+}

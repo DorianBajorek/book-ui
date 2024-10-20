@@ -5,14 +5,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeView from '../HomeView';
 import Profile from './Profile';
+import SearchScreen from './SearchScreen';
 
 const Tab = createBottomTabNavigator(); 
-
-const SearchScreen = () => (
-  <View style={styles.container}>
-    <Text>Search Screen</Text>
-  </View>
-);
 
 const SettingsScreen = () => (
   <View style={styles.container}>
