@@ -9,7 +9,6 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ onClose }) => {
   const [newTitle, setNewTitle] = useState("");
 
   const handleSaveButton = () => {
-    console.log(newTitle);
     onClose();
   };
 
