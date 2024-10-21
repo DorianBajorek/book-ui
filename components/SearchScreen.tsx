@@ -12,7 +12,6 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
-  const prefixUrl = "http://192.168.100.9:8000";
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
@@ -33,7 +32,6 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
         console.error('Error fetching search results:', error);
       }
     }, 500);
-
     setDebounceTimeout(newTimeout);
 
     return () => {
@@ -42,6 +40,15 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
       }
     };
   }, [searchQuery, token]);
+
+  const handleBookPress = (book) => {
+    const owner = "DORIAN"
+    const updatedBook = {
+      ...book,
+      cover_image: book.cover_image.replace("http://192.168.100.9:8000", "")
+    };
+    navigation.navigate('BookDetails', { book: { book: updatedBook }, owner });
+  };
 
   return (
     <View style={styles.container}>
@@ -63,7 +70,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
       <ScrollView contentContainerStyle={styles.resultsContainer}>
         {results.length > 0 ? (
           results.map((item, index) => (
-            <View key={index} style={styles.resultContainer}>
+            <TouchableOpacity key={index} style={styles.resultContainer} onPress={() => handleBookPress(item)}>
               <Image
                 source={{ 
                   uri: item.cover_image.replace("/media/", "/media/cover_images/") 
@@ -71,11 +78,11 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
                 style={styles.bookImage}
               />
               <View style={styles.textContainer}>
-                <Text style={styles.bookTitle}>{item.book_title}</Text>
+                <Text style={styles.bookTitle}>{item.title}</Text>
                 <Text style={styles.bookDescription}>Condition: {item.condition}</Text>
                 <Text style={styles.bookDescription}>User: {item.user}</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           ))
         ) : (
           <Text style={styles.noResultsText}>No results found</Text>

@@ -29,12 +29,9 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
         setIsbnCode(data);
-        console.log(`Scanned ISBN: ${data}`);
     };
 
     const handleSaveButton = () => {
-        console.log(`Saved ISBN: ${isbnCode}, Title: ${bookTitle}`);
-        console.log("TOKEN: " + token)
         addBookToProfile(isbnCode, token)
         onClose();
     };
@@ -45,7 +42,6 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
     };
 
     const handleAddBook = () => {
-        console.log(`Book added with ISBN: ${isbnCode}, Title: ${bookTitle}`);
         setIsManualAdd(false);
         setScanned(false);
         setIsbnCode('');
