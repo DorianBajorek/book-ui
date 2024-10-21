@@ -8,6 +8,7 @@ import Register from './authentication/Register';
 import Login from './authentication/Login';
 import { UserData } from './authentication/UserData';
 import TabNavigator from './components/TabNavigator';
+import BookDetails from './components/BookDetails';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,7 @@ export default function App() {
           <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="BookDetails" component={BookDetails} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserData>

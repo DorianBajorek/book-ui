@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, ScrollView, StyleSheet, Text } from 'react-native';
+import { View, Image, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { getUserBooks } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
+import { useNavigation } from '@react-navigation/native';
 
 const BooksList = () => {
-  const { token } = useUserData();
+  const { token, userName } = useUserData();
   const [books, setBooks] = useState([]);
   const prefixUrl = "http://192.168.100.9:8000";
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -21,10 +23,14 @@ const BooksList = () => {
     fetchBooks();
   }, [token]);
 
+  const handleBookPress = (book: any) => {
+    navigation.navigate('BookDetails', { book, owner: userName });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {books.map((item) => (
-        <View key={item.id} style={styles.bookContainer}>
+        <TouchableOpacity key={item.id} onPress={() => handleBookPress(item)} style={styles.bookContainer}>
           <Image 
             source={{ uri: prefixUrl + item.book.cover_image.replace("/media/", "/media/cover_images/") }} 
             style={styles.bookImage} 
@@ -34,7 +40,7 @@ const BooksList = () => {
             <Text style={styles.bookDescription}>Author: {item.book.author}</Text>
             <Text style={styles.bookDescription}>Condition: {item.condition}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       ))}
     </ScrollView>
   );
