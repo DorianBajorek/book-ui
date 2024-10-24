@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, View, TouchableOpacity, Text, KeyboardAvoidingVi
 import { StackNavigationProp } from '@react-navigation/stack';
 import { registerUser } from '../BooksService';
 import { useUserData } from './UserData';
+import ErrorBanner from '../components/Banners/ErrorBanner';
 
 type RootStackParamList = {
   Main: undefined;
@@ -19,17 +20,31 @@ const Register: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [registerError, setRegisterError] = useState<string | null>(null); 
   const { updateToken, updateUserName, updateEmail } = useUserData();
+
+  const showError = (message: string) => {
+    setRegisterError(message);
+    setTimeout(() => {
+      setRegisterError(null);
+    }, 3000);
+  };
 
   const handleRegister = async () => {
     try {
       const data = await registerUser(email, username, password);
-      updateToken(data.token);
-      updateUserName(data.username);
-      updateEmail(data.email);
-      navigation.replace('Main');
+  
+      if (data) {
+        updateToken(data.token);
+        updateUserName(data.username);
+        updateEmail(data.email);
+        navigation.replace('Main');
+      } else {
+        showError("An error occurred. Please try again.");
+      }
     } catch (error) {
-      console.error("Register failed", error);
+      const errorMessage = error.response?.data?.error || 'An error occurred. Please try again.';
+      showError(errorMessage);
     }
   };
 
@@ -39,6 +54,9 @@ const Register: React.FC<Props> = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
     >
+
+      {registerError && <ErrorBanner message={registerError} />}
+      
       <View style={styles.formContainer}>
         <Text style={styles.label}>Email:</Text>
         <TextInput
