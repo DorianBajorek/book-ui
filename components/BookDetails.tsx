@@ -14,6 +14,14 @@ const BookDetails = ({ route }) => {
           source={{ uri: prefixUrl + book.book.cover_image.replace("/media/", "/media/cover_images/") }} 
           style={styles.bookImage} 
         />
+         <Image 
+          source={{ uri: prefixUrl + book.front_image}} 
+          style={styles.bookImage} 
+        />
+        <Image 
+          source={{ uri: prefixUrl + book.back_image}} 
+          style={styles.bookImage} 
+        />
 
         <Text style={styles.bookTitle}>{book.book.title}</Text>
 
@@ -28,6 +36,7 @@ const BookDetails = ({ route }) => {
           <Text style={styles.bookDetail}><Text style={styles.label}>ISBN: </Text>{book.book.isbn}</Text>
           <Text style={styles.bookDetail}><Text style={styles.label}>For Sale: </Text>{book.is_for_sale ? 'Yes' : 'No'}</Text>
           <Text style={styles.bookDetail}><Text style={styles.label}>Owner: </Text>{owner}</Text>
+          <Text style={styles.bookDetail}><Text style={styles.label}>LOL: </Text>{book.front_image}</Text>
         </View>
         {userName != owner && (
             <Button title="Send a message to the owner" onPress={() => {}} />
