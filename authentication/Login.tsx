@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, View, Text, TouchableOpacity, KeyboardAvoidingVi
 import { StackNavigationProp } from '@react-navigation/stack';
 import { loginUser } from '../BooksService';
 import { useUserData } from './UserData';
+import ErrorBanner from '../components/Banners/ErrorBanner';
 
 type RootStackParamList = {
   Main: undefined;
@@ -18,18 +19,31 @@ type Props = {
 const Login: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState<string | null>(null); 
   const { updateToken, updateUserName, updateEmail } = useUserData();
 
   const handleLogin = async () => {
     try {
       const data = await loginUser(username, password);
-      updateToken(data.token);
-      updateUserName(data.username);
-      updateEmail(data.email);
-      navigation.replace('Main');
+      if (data) {
+        updateToken(data.token);
+        updateUserName(data.username);
+        updateEmail(data.email);
+        navigation.replace('Main');
+        setLoginError(null);
+      } else {
+        showError('Invalid Username or Password');
+      }
     } catch (error) {
-      console.error("Login failed", error);
+      showError('Login failed. Please try again.');
     }
+  };
+
+  const showError = (message: string) => {
+    setLoginError(message);
+    setTimeout(() => {
+      setLoginError(null);
+    }, 3000);
   };
 
   return (
@@ -38,6 +52,8 @@ const Login: React.FC<Props> = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
       keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
     >
+      {loginError && <ErrorBanner message={loginError} />}
+      
       <View style={styles.formContainer}>
         <Text style={styles.label}>Username:</Text>
         <TextInput
