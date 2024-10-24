@@ -14,6 +14,7 @@ const BooksList = () => {
     const fetchBooks = async () => {
       try {
         const data = await getUserBooks(token);
+        console.log(data)
         setBooks(data);
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -39,6 +40,7 @@ const BooksList = () => {
             <Text style={styles.bookTitle}>{item.book.title}</Text>
             <Text style={styles.bookDescription}>Author: {item.book.author}</Text>
             <Text style={styles.bookDescription}>Condition: {item.condition}</Text>
+            {/* <Text style={styles.bookDescription}>LOL: {item.front_image}</Text> */}
           </View>
         </TouchableOpacity>
       ))}

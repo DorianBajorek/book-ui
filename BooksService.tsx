@@ -29,25 +29,47 @@ export const loginUser = async (username: string, password: string) => {
   }
 };
 
-export const addBookToProfile = async (isbn: string, token: string) => {
+export const addBookToProfile = async (isbn: string, token: string, firstPhoto: string, secondPhoto: string) => {
   try {
-    const payload = {
-      isbn: isbn
+    const formData = new FormData();
+
+    // Dodaj ISBN
+    formData.append('isbn', isbn);
+
+    // Dodaj zdjęcia
+    if (firstPhoto) {
+      formData.append('front_image', {
+        uri: firstPhoto,
+        name: 'front_image.jpg',
+        type: 'image/jpeg',
+      });
     }
+
+    if (secondPhoto) {
+      formData.append('back_image', {
+        uri: secondPhoto,
+        name: 'back_image.jpg',
+        type: 'image/jpeg',
+      });
+    }
+
     const response = await axios.post(
       `http://192.168.100.9:8000/api/entries/get_book/`,
-      payload,
+      formData,
       {
         headers: {
           Authorization: `Token ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       }
     );
+
     return response.data;
   } catch (error) {
     console.error('Error occurred:', error.response ? error.response.data : error.message);
   }
 };
+
 
 
 
