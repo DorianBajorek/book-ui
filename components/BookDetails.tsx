@@ -1,27 +1,22 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Button, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
 import { useUserData } from '../authentication/UserData';
+import BookSlider from './BookSlider';
 
 const BookDetails = ({ route }) => {
   const { book, owner } = route.params;
-  const { userName } = useUserData()
+  const { userName } = useUserData();
   const prefixUrl = "http://192.168.100.9:8000";
+  const images = [
+    { id: '1', image: { uri: prefixUrl + book.book.cover_image.replace("/media/", "/media/cover_images/") } },
+    { id: '2', image: { uri: prefixUrl + book.front_image } },
+    { id: '3', image: { uri: prefixUrl + book.back_image } },
+  ];
 
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        <Image 
-          source={{ uri: prefixUrl + book.book.cover_image.replace("/media/", "/media/cover_images/") }} 
-          style={styles.bookImage} 
-        />
-         <Image 
-          source={{ uri: prefixUrl + book.front_image}} 
-          style={styles.bookImage} 
-        />
-        <Image 
-          source={{ uri: prefixUrl + book.back_image}} 
-          style={styles.bookImage} 
-        />
+        <BookSlider books={images} />
 
         <Text style={styles.bookTitle}>{book.book.title}</Text>
 
@@ -36,9 +31,8 @@ const BookDetails = ({ route }) => {
           <Text style={styles.bookDetail}><Text style={styles.label}>ISBN: </Text>{book.book.isbn}</Text>
           <Text style={styles.bookDetail}><Text style={styles.label}>For Sale: </Text>{book.is_for_sale ? 'Yes' : 'No'}</Text>
           <Text style={styles.bookDetail}><Text style={styles.label}>Owner: </Text>{owner}</Text>
-          <Text style={styles.bookDetail}><Text style={styles.label}>LOL: </Text>{book.front_image}</Text>
         </View>
-        {userName != owner && (
+        {userName !== owner && (
             <Button title="Send a message to the owner" onPress={() => {}} />
         )}
         
@@ -57,18 +51,11 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
-  bookImage: {
-    width: 200,
-    height: 300,
-    marginBottom: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-  },
   bookTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 15,
+    marginTop: -150,
     textAlign: 'center',
     color: '#333',
   },

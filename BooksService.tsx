@@ -33,10 +33,8 @@ export const addBookToProfile = async (isbn: string, token: string, firstPhoto: 
   try {
     const formData = new FormData();
 
-    // Dodaj ISBN
     formData.append('isbn', isbn);
 
-    // Dodaj zdjęcia
     if (firstPhoto) {
       formData.append('front_image', {
         uri: firstPhoto,
@@ -70,9 +68,6 @@ export const addBookToProfile = async (isbn: string, token: string, firstPhoto: 
   }
 };
 
-
-
-
 export const securedEndpoint = async (token: string) => {
   try {
     const response = await axios.post(
@@ -90,7 +85,7 @@ export const securedEndpoint = async (token: string) => {
   }
 };
 
-export const  getUserBooks = async (token: string) => {
+export const getUserBooks = async (token: string) => {
   try {
     const response = await axios.get(
       "http://192.168.100.9:8000/api/entries/get_user_books/",
@@ -100,6 +95,7 @@ export const  getUserBooks = async (token: string) => {
       }
       }
     );
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error occurred:', error.response ? error.response.data : error.message);

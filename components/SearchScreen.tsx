@@ -43,10 +43,20 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
 
   const handleBookPress = (book) => {
     const owner = "DORIAN"
-    const updatedBook = {
-      ...book,
-      cover_image: book.cover_image.replace("http://192.168.100.9:8000", "")
-    };
+    var updatedBook;
+    if(book.front_image){
+      updatedBook = {
+        ...book,
+        cover_image: book.cover_image.replace("http://192.168.100.9:8000", ""),
+        front_image: book.front_image.replace("http://192.168.100.9:8000/api/entries/search_users_with_book", "/media"),
+        back_image: book.back_image.replace("http://192.168.100.9:8000/api/entries/search_users_with_book", "/media"),
+      };
+    } else {
+      updatedBook = {
+        ...book,
+        cover_image: book.cover_image.replace("http://192.168.100.9:8000", "")
+      };
+    }
     navigation.navigate('BookDetails', { book: { book: updatedBook }, owner });
   };
 
@@ -71,6 +81,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
         {results.length > 0 ? (
           results.map((item, index) => (
             <TouchableOpacity key={index} style={styles.resultContainer} onPress={() => handleBookPress(item)}>
+              {console.log("BITHC" + item.cover_image.replace("/media/", "/media/cover_images/") )}
               <Image
                 source={{ 
                   uri: item.cover_image.replace("/media/", "/media/cover_images/") 
