@@ -2,6 +2,23 @@ import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { useUserData } from './authentication/UserData';
 import BookSlider from './components/BookSlider';
+import atomoweNawyki from './img/atomowe-nawyki.jpg'
+import jobs from './img/jobs.png';
+import teoriaLiczb from './img/teoria-liczb.png';
+import goggins from './img/goggins.png'
+import korwin from './img/korwin.jpg'
+import pulapka from './img/pulapka.jpg'
+import wedrowka from  './img/wedrowka.png'
+
+const books = [
+  { id: '1', image: atomoweNawyki },
+  { id: '2', image: jobs },
+  { id: '3', image: teoriaLiczb },
+  { id: '4', image: goggins },
+  { id: '5', image: korwin },
+  { id: '6', image: pulapka },
+  { id: '7', image: wedrowka },
+];
 
 type NavigationProp = {
   navigate: (screen: string) => void;
@@ -19,12 +36,11 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
       </Text>
 
       <View style={styles.imageContainer}>
-        <BookSlider />
+        <BookSlider books={books} />
       </View>
 
       {token ? (
         <>
-          <Text style={styles.loggedInText}>You are logged in</Text>
           <TouchableOpacity style={styles.button} onPress={() => logout()}>
             <Text style={styles.buttonText}>Log out</Text>
           </TouchableOpacity>
@@ -73,16 +89,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 30,
-  },
-  image: {
-    width: 80,
-    height: 120,
-    marginHorizontal: 10,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
   },
   loggedInText: {
     fontSize: 18,

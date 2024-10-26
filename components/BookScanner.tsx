@@ -34,7 +34,6 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
   };
 
   const handleSaveButton = () => {
-    console.log("JAZDA: " + firstPhoto + " " + secondPhoto);
     addBookToProfile(isbnCode, token, firstPhoto, secondPhoto);
     resetForm();
     onClose();
