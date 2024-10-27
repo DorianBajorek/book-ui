@@ -8,17 +8,17 @@ const BookDetails = ({ route }) => {
   const { userName } = useUserData();
   const prefixUrl = "http://192.168.100.9:8000";
   const images = [
-    { id: '1', image: { uri: prefixUrl + book.book.cover_image.replace("/media/", "/media/cover_images/") } },
-    { id: '2', image: { uri: prefixUrl + book.front_image } },
-    { id: '3', image: { uri: prefixUrl + book.back_image } },
-  ];
+    { id: '1', image: { uri:book.cover_book.replace("/media/", "/media/cover_images/") } },
+    ...(book.frontImage ? [{ id: '2', image: { uri: book.frontImage } }] : []),
+    ...(book.backImage ? [{ id: '3', image: { uri: book.backImage } }] : []),
+  ];  
 
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
         <BookSlider books={images} />
 
-        <Text style={styles.bookTitle}>{book.book.title}</Text>
+        <Text style={styles.bookTitle}>{book.title}</Text>
 
         <Text style={styles.bookDescription}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
@@ -26,9 +26,9 @@ const BookDetails = ({ route }) => {
         </Text>
 
         <View style={styles.detailsContainer}>
-          <Text style={styles.bookDetail}><Text style={styles.label}>Author: </Text>{book.book.author}</Text>
+          <Text style={styles.bookDetail}><Text style={styles.label}>Author: </Text>{book.author}</Text>
           <Text style={styles.bookDetail}><Text style={styles.label}>Condition: </Text>{book.condition}</Text>
-          <Text style={styles.bookDetail}><Text style={styles.label}>ISBN: </Text>{book.book.isbn}</Text>
+          <Text style={styles.bookDetail}><Text style={styles.label}>ISBN: </Text>{book.isbn}</Text>
           <Text style={styles.bookDetail}><Text style={styles.label}>For Sale: </Text>{book.is_for_sale ? 'Yes' : 'No'}</Text>
           <Text style={styles.bookDetail}><Text style={styles.label}>Owner: </Text>{owner}</Text>
         </View>

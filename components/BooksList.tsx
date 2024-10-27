@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { getUserBooks } from '../BooksService';
+import { getUserOffers } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
 import { useNavigation } from '@react-navigation/native';
 
@@ -13,7 +13,7 @@ const BooksList = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const data = await getUserBooks(token);
+        const data = await getUserOffers(token);
         setBooks(data);
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -24,20 +24,21 @@ const BooksList = () => {
   }, [token, navigation]);
 
   const handleBookPress = (book: any) => {
+
     navigation.navigate('BookDetails', { book, owner: userName });
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {books.map((item) => (
-        <TouchableOpacity key={item.id} onPress={() => handleBookPress(item)} style={styles.bookContainer}>
+        <TouchableOpacity key={item.offer_id} onPress={() => handleBookPress(item)} style={styles.bookContainer}>
           <Image 
-            source={{ uri: prefixUrl + item.book.cover_image.replace("/media/", "/media/cover_images/") }} 
+            source={{ uri: item.cover_book.replace("/media/", "/media/cover_images/") }}
             style={styles.bookImage} 
           />
           <View style={styles.textContainer}>
-            <Text style={styles.bookTitle}>{item.book.title}</Text>
-            <Text style={styles.bookDescription}>Authorr: {item.book.author}</Text>
+            <Text style={styles.bookTitle}>{item.title}</Text>
+            <Text style={styles.bookDescription}>Author: {item.author}</Text>
             <Text style={styles.bookDescription}>Condition: {item.condition}</Text>
           </View>
         </TouchableOpacity>

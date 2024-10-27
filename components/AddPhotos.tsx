@@ -4,8 +4,8 @@ import * as ImagePicker from 'expo-image-picker';
 
 const PhotoPickerModal: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [firstPhoto, setFirstPhoto] = useState<string | null>(null);
-  const [secondPhoto, setSecondPhoto] = useState<string | null>(null);
+  const [frontImage, setfrontImage] = useState<string | null>(null);
+  const [backImage, setbackImage] = useState<string | null>(null);
 
   const pickImage = async (setImage: React.Dispatch<React.SetStateAction<string | null>>) => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -26,8 +26,8 @@ const PhotoPickerModal: React.FC = () => {
   };
 
   const resetPhotos = () => {
-    setFirstPhoto(null);
-    setSecondPhoto(null);
+    setfrontImage(null);
+    setbackImage(null);
   };
 
   return (
@@ -41,11 +41,11 @@ const PhotoPickerModal: React.FC = () => {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalView}>
-          <Button title="Zrób pierwsze zdjęcie" onPress={() => pickImage(setFirstPhoto)} />
-          {firstPhoto && <Image source={{ uri: firstPhoto }} style={styles.image} />}
+          <Button title="Zrób pierwsze zdjęcie" onPress={() => pickImage(setfrontImage)} />
+          {frontImage && <Image source={{ uri: frontImage }} style={styles.image} />}
 
-          <Button title="Zrób drugie zdjęcie" onPress={() => pickImage(setSecondPhoto)} />
-          {secondPhoto && <Image source={{ uri: secondPhoto }} style={styles.image} />}
+          <Button title="Zrób drugie zdjęcie" onPress={() => pickImage(setbackImage)} />
+          {backImage && <Image source={{ uri: backImage }} style={styles.image} />}
 
           <Button title="Zapisz i zamknij" onPress={() => setModalVisible(false)} />
           <Button title="Zresetuj zdjęcia" onPress={resetPhotos} color="red" />

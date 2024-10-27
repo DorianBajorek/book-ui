@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, TextInput, Text, Image, ScrollView } from 'react-native';
 import { useUserData } from '../authentication/UserData';
-import { findBooks } from '../BooksService';
+import { getOffersByQuery } from '../BooksService';
 
 type NavigationProp = {
   navigate: (screen: string) => void;
@@ -24,9 +24,9 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
 
     const newTimeout = setTimeout(async () => {
       try {
-        const data = await findBooks(token, searchQuery);
+        const data = await getOffersByQuery(token, searchQuery);
         if (data) {
-          setResults(data.results);
+          setResults(data);
         }
       } catch (error) {
         console.error('Error fetching search results:', error);
@@ -43,21 +43,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
 
   const handleBookPress = (book) => {
     const owner = "DORIAN"
-    var updatedBook;
-    if(book.front_image){
-      updatedBook = {
-        ...book,
-        cover_image: book.cover_image.replace("http://192.168.100.9:8000", ""),
-        front_image: book.front_image.replace("http://192.168.100.9:8000/api/entries/search_users_with_book", "/media"),
-        back_image: book.back_image.replace("http://192.168.100.9:8000/api/entries/search_users_with_book", "/media"),
-      };
-    } else {
-      updatedBook = {
-        ...book,
-        cover_image: book.cover_image.replace("http://192.168.100.9:8000", "")
-      };
-    }
-    navigation.navigate('BookDetails', { book: { book: updatedBook }, owner });
+    navigation.navigate('BookDetails', {book, owner});
   };
 
   return (
@@ -81,10 +67,9 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
         {results.length > 0 ? (
           results.map((item, index) => (
             <TouchableOpacity key={index} style={styles.resultContainer} onPress={() => handleBookPress(item)}>
-              {console.log("BITHC" + item.cover_image.replace("/media/", "/media/cover_images/") )}
               <Image
-                source={{ 
-                  uri: item.cover_image.replace("/media/", "/media/cover_images/") 
+                source={{
+                  uri: item.cover_book.replace("/media/", "/media/cover_images/") 
                 }}
                 style={styles.bookImage}
               />

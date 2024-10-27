@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, Button, StyleSheet, TextInput, Image, Alert, ScrollView } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as ImagePicker from 'expo-image-picker';
-import { addBookToProfile } from '../BooksService';
+import { createOffer } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
 
 type BookScannerProps = {
@@ -16,8 +16,8 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
   const [isbnCode, setIsbnCode] = useState('');
   const [bookTitle, setBookTitle] = useState('');
   const [isManualAdd, setIsManualAdd] = useState(false);
-  const [firstPhoto, setFirstPhoto] = useState<string | null>(null);
-  const [secondPhoto, setSecondPhoto] = useState<string | null>(null);
+  const [frontImage, setfrontImage] = useState<string | null>(null);
+  const [backImage, setbackImage] = useState<string | null>(null);
   const { token } = useUserData();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
   };
 
   const handleSaveButton = () => {
-    addBookToProfile(isbnCode, token, firstPhoto, secondPhoto);
+    createOffer(isbnCode, token, frontImage, backImage);
     resetForm();
     onClose();
   };
@@ -53,8 +53,8 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
     setScanned(false);
     setIsbnCode('');
     setBookTitle('');
-    setFirstPhoto(null);
-    setSecondPhoto(null);
+    setfrontImage(null);
+    setbackImage(null);
   };
 
   const pickImage = async (setImage: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -120,10 +120,10 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
           ) : scanned ? (
             <>
               <Button title={'Scan Again'} onPress={() => setScanned(false)} />
-              <Button title={'Add Front of Book'} onPress={() => pickImage(setFirstPhoto)} />
-              {firstPhoto && <Image source={{ uri: firstPhoto }} style={styles.image} />}
-              <Button title={'Add Back of Book'} onPress={() => pickImage(setSecondPhoto)} />
-              {secondPhoto && <Image source={{ uri: secondPhoto }} style={styles.image} />}
+              <Button title={'Add Front of Book'} onPress={() => pickImage(setfrontImage)} />
+              {frontImage && <Image source={{ uri: frontImage }} style={styles.image} />}
+              <Button title={'Add Back of Book'} onPress={() => pickImage(setbackImage)} />
+              {backImage && <Image source={{ uri: backImage }} style={styles.image} />}
             </>
           ) : (
             <View style={styles.scannerContainer}>
@@ -135,7 +135,7 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
           )}
 
           {!isManualAdd && <Button title="Add Manually" onPress={handleAddManually} />}
-          <Button title="Save" onPress={handleSaveButton} disabled={!isbnCode || !firstPhoto || !secondPhoto} />
+          <Button title="Save" onPress={handleSaveButton} disabled={!isbnCode || !frontImage || !backImage} />
           <Button title="Close" onPress={onClose} />
         </View>
       </View>

@@ -33,7 +33,6 @@ const Register: React.FC<Props> = ({ navigation }) => {
   const handleRegister = async () => {
     try {
       const data = await registerUser(email, username, password);
-  
       if (data) {
         updateToken(data.token);
         updateUserName(data.username);
