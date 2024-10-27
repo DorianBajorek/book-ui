@@ -24,7 +24,6 @@ const BooksList = () => {
   }, [token, navigation]);
 
   const handleBookPress = (book: any) => {
-
     navigation.navigate('BookDetails', { book, owner: userName });
   };
 

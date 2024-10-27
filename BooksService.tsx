@@ -102,6 +102,23 @@ export const getUserOffers = async (token: string) => {
   }
 };
 
+export const deleteOffer = async (token: string, offerId: string) => {
+  try {
+    const response = await axios.delete(
+      `http://192.168.100.9:8000/books/v1/delete_offer/${offerId}/`,
+      {
+        headers: {
+          'Authorization': `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.status === 204 ? "Offer deleted successfully" : response.data;
+  } catch (error) {
+    console.error('Error occurred:', error.response ? error.response.data : error.message);
+  }
+};
+
 export const getOffersByQuery = async (token: string, searchQuery: string) => {
   try {
     const url = `http://192.168.100.9:8000/books/v1/search_users_with_title/?searchQuery=${encodeURIComponent(searchQuery)}`;
