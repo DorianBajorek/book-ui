@@ -7,8 +7,8 @@ export const registerUser = async (email: string, username: string, password: st
         username: username,
         password: password
       };
-      const response = await axios.post("http://192.168.100.9:8000/auth/register/", payload);
-      return response.data;
+      const response = await axios.post("http://192.168.100.9:8000/auth/v1/register/", payload);
+      return response.data
     } catch (error) {
       console.error('Registration failed', error);
       return null;
@@ -21,7 +21,7 @@ export const loginUser = async (username: string, password: string) => {
       username: username,
       password: password
     };
-    const response = await axios.post("http://192.168.100.9:8000/auth/login/", payload);
+    const response = await axios.post("http://192.168.100.9:8000/auth/v1/login/", payload);
     return response.data;
   } catch (error) {
     console.error('Invalid login to the service', error);
@@ -29,30 +29,30 @@ export const loginUser = async (username: string, password: string) => {
   }
 };
 
-export const addBookToProfile = async (isbn: string, token: string, firstPhoto: string, secondPhoto: string) => {
+export const createOffer = async (isbn: string, token: string, frontImage: string, backImage: string) => {
   try {
     const formData = new FormData();
 
     formData.append('isbn', isbn);
 
-    if (firstPhoto) {
-      formData.append('front_image', {
-        uri: firstPhoto,
+    if (frontImage) {
+      formData.append('frontImage', {
+        uri: frontImage,
         name: 'front_image.jpg',
         type: 'image/jpeg',
       });
     }
 
-    if (secondPhoto) {
-      formData.append('back_image', {
-        uri: secondPhoto,
+    if (backImage) {
+      formData.append('backImage', {
+        uri: backImage,
         name: 'back_image.jpg',
         type: 'image/jpeg',
       });
     }
 
     const response = await axios.post(
-      `http://192.168.100.9:8000/api/entries/get_book/`,
+      `http://192.168.100.9:8000/books/v1/create_offer/`,
       formData,
       {
         headers: {
@@ -85,32 +85,31 @@ export const securedEndpoint = async (token: string) => {
   }
 };
 
-export const getUserBooks = async (token: string) => {
+export const getUserOffers = async (token: string) => {
   try {
     const response = await axios.get(
-      "http://192.168.100.9:8000/api/entries/get_user_books/",
+      "http://192.168.100.9:8000/books/v1/get_user_offers/",
       {
         headers: {
-          Authorization: `Token ${token}`
-      }
+          'Authorization': `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
       }
     );
-    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error occurred:', error.response ? error.response.data : error.message);
   }
 };
 
-export const findBooks = async (token: string, searchQuery: string) => {
+export const getOffersByQuery = async (token: string, searchQuery: string) => {
   try {
-    const url = `http://192.168.100.9:8000/api/entries/search_users_with_book/?searchQuery=${encodeURIComponent(searchQuery)}`;
+    const url = `http://192.168.100.9:8000/books/v1/search_users_with_title/?searchQuery=${encodeURIComponent(searchQuery)}`;
     const response = await axios.get(url, {
       headers: {
         Authorization: `Token ${token}`
       }
     });
-    
     return response.data;
   } catch (error) {
     console.error('Search failed', error);
