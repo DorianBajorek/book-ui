@@ -11,6 +11,10 @@ const UserContext = createContext({
   password: '',
   updatePassword: (password: string) => {},
   logout: () => {},
+  isCreateOfferInProgress: false,
+  setIsCreateOfferInProgress: (inProgress: boolean) => {},
+  isDeleteOfferInProgress: false,
+  setIsDeleteOfferInProgress: (inProgress: boolean) => {},
 });
 
 export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -18,6 +22,8 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [userName, setUserName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isCreateOfferInProgress, setIsCreateOfferInProgress] = useState(false);
+  const [isDeleteOfferInProgress, setIsDeleteOfferInProgress] = useState(false);
 
   const loadData = async () => {
     const savedToken = await AsyncStorage.getItem('token');
@@ -65,7 +71,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   return (
     <UserContext.Provider
-      value={{ token, updateToken, userName, updateUserName, email, updateEmail, password, updatePassword, logout }}
+      value={{ token, updateToken, userName, updateUserName, email, updateEmail, password, updatePassword, logout, isCreateOfferInProgress, setIsCreateOfferInProgress, isDeleteOfferInProgress, setIsDeleteOfferInProgress }}
     >
       {children}
     </UserContext.Provider>

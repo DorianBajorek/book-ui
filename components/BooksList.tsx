@@ -5,9 +5,8 @@ import { useUserData } from '../authentication/UserData';
 import { useNavigation } from '@react-navigation/native';
 
 const BooksList = () => {
-  const { token, userName } = useUserData();
+  const { token, userName, isCreateOfferInProgress, isDeleteOfferInProgress } = useUserData();
   const [books, setBooks] = useState([]);
-  const prefixUrl = "http://192.168.100.9:8000";
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -21,7 +20,7 @@ const BooksList = () => {
     };
 
     fetchBooks();
-  }, [token, navigation]);
+  }, [token, navigation, isCreateOfferInProgress, isDeleteOfferInProgress]);
 
   const handleBookPress = (book: any) => {
     navigation.navigate('BookDetails', { book, owner: userName });

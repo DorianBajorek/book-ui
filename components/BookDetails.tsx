@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, Button, ScrollView, Alert } from 'react-native'
 import { useUserData } from '../authentication/UserData';
 import BookSlider from './BookSlider';
 import { deleteOffer } from '../BooksService';
+import LoadingSpinner from './LoadingSpinner';
 
 const BookDetails = ({ route, navigation }) => {
   const { book, owner } = route.params;
-  const { userName, token } = useUserData();
+  const { userName, token, setIsDeleteOfferInProgress, isDeleteOfferInProgress } = useUserData();
   const images = [
     { id: '1', image: { uri: book.cover_book.replace("/media/", "/media/cover_images/") } },
     ...(book.frontImage ? [{ id: '2', image: { uri: book.frontImage } }] : []),
@@ -21,8 +22,9 @@ const BookDetails = ({ route, navigation }) => {
         { text: "Cancel", style: "cancel" },
         { text: "Delete", style: "destructive", onPress: async () => {
             try {
-              console.log("TOKEN: " + token)
+              setIsDeleteOfferInProgress(true);
               await deleteOffer(token, book.offer_id);
+              setIsDeleteOfferInProgress(false);
               Alert.alert("Offer deleted successfully.");
               navigation.goBack();
             } catch (error) {
@@ -54,7 +56,7 @@ const BookDetails = ({ route, navigation }) => {
           <Text style={styles.bookDetail}><Text style={styles.label}>For Sale: </Text>{book.is_for_sale ? 'Yes' : 'No'}</Text>
           <Text style={styles.bookDetail}><Text style={styles.label}>Owner: </Text>{owner}</Text>
         </View>
-        
+        <LoadingSpinner visible={isDeleteOfferInProgress} />
         {userName !== owner ? (
           <Button title="Send a message to the owner" onPress={() => {}} />
         ) : (

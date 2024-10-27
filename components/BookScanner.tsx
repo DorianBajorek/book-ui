@@ -4,6 +4,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as ImagePicker from 'expo-image-picker';
 import { createOffer } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
+import LoadingSpinner from './LoadingSpinner';
 
 type BookScannerProps = {
   isVisible: boolean;
@@ -18,7 +19,7 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
   const [isManualAdd, setIsManualAdd] = useState(false);
   const [frontImage, setfrontImage] = useState<string | null>(null);
   const [backImage, setbackImage] = useState<string | null>(null);
-  const { token } = useUserData();
+  const { token, setIsCreateOfferInProgress, isCreateOfferInProgress } = useUserData();
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -33,8 +34,10 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
     setIsbnCode(data);
   };
 
-  const handleSaveButton = () => {
-    createOffer(isbnCode, token, frontImage, backImage);
+  const handleSaveButton = async () => {
+    setIsCreateOfferInProgress(true);
+    await createOffer(isbnCode, token, frontImage, backImage);
+    setIsCreateOfferInProgress(false);
     resetForm();
     onClose();
   };
@@ -95,6 +98,7 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
           <Text style={styles.modalTitle}>
             {isManualAdd ? 'Add Book Manually' : 'Scan ISBN Code'}
           </Text>
+
           {isManualAdd ? (
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
               <View style={styles.scannerContainer}>
@@ -137,6 +141,9 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
           {!isManualAdd && <Button title="Add Manually" onPress={handleAddManually} />}
           <Button title="Save" onPress={handleSaveButton} disabled={!isbnCode || !frontImage || !backImage} />
           <Button title="Close" onPress={onClose} />
+
+          {/* Dodanie LoadingSpinner */}
+          <LoadingSpinner visible={isCreateOfferInProgress} />
         </View>
       </View>
     </Modal>
