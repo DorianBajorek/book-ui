@@ -9,6 +9,7 @@ import goggins from './img/goggins.png'
 import korwin from './img/korwin.jpg'
 import pulapka from './img/pulapka.jpg'
 import wedrowka from  './img/wedrowka.png'
+import LoadingSpinner from './components/LoadingSpinner';
 
 const books = [
   { id: '1', image: atomoweNawyki },
