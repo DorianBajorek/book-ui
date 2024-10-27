@@ -13,7 +13,6 @@ const BookSlider = ({ books }: { books: { id: string; image: any }[] }) => {
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <View style={styles.bookContainer}>
-            {console.log(item.image)}
             <Image source={item.image} style={styles.bookImage} />
           </View>
         )}

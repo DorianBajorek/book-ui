@@ -1,17 +1,39 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Button, ScrollView, Alert } from 'react-native';
 import { useUserData } from '../authentication/UserData';
 import BookSlider from './BookSlider';
+import { deleteOffer } from '../BooksService';
 
-const BookDetails = ({ route }) => {
+const BookDetails = ({ route, navigation }) => {
   const { book, owner } = route.params;
-  const { userName } = useUserData();
-  const prefixUrl = "http://192.168.100.9:8000";
+  const { userName, token } = useUserData();
   const images = [
-    { id: '1', image: { uri:book.cover_book.replace("/media/", "/media/cover_images/") } },
+    { id: '1', image: { uri: book.cover_book.replace("/media/", "/media/cover_images/") } },
     ...(book.frontImage ? [{ id: '2', image: { uri: book.frontImage } }] : []),
     ...(book.backImage ? [{ id: '3', image: { uri: book.backImage } }] : []),
-  ];  
+  ];
+
+  const handleDeleteOffer = async () => {
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this offer?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Delete", style: "destructive", onPress: async () => {
+            try {
+              console.log("TOKEN: " + token)
+              await deleteOffer(token, book.offer_id);
+              Alert.alert("Offer deleted successfully.");
+              navigation.goBack();
+            } catch (error) {
+              Alert.alert("Error", "Failed to delete the offer.");
+              console.error(error);
+            }
+          }
+        }
+      ]
+    );
+  };
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -32,10 +54,12 @@ const BookDetails = ({ route }) => {
           <Text style={styles.bookDetail}><Text style={styles.label}>For Sale: </Text>{book.is_for_sale ? 'Yes' : 'No'}</Text>
           <Text style={styles.bookDetail}><Text style={styles.label}>Owner: </Text>{owner}</Text>
         </View>
-        {userName !== owner && (
-            <Button title="Send a message to the owner" onPress={() => {}} />
-        )}
         
+        {userName !== owner ? (
+          <Button title="Send a message to the owner" onPress={() => {}} />
+        ) : (
+          <Button title="Delete Offer" color="red" onPress={handleDeleteOffer} />
+        )}
       </View>
     </ScrollView>
   );
