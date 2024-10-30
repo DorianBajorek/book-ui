@@ -162,7 +162,7 @@ export const getAllConversations = async (token: string) => {
       headers: {
         Authorization: `Token ${token}`
       }
-    });
+    }); 
     return response.data;
   } catch (error) {
     console.error('Search failed', error);

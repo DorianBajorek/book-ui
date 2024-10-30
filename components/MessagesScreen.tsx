@@ -13,21 +13,17 @@ const messages = [
 ];
 
 const MessagesScreen = () => {
-  const {token} = useUserData();
+  const {token, conversations} = useUserData();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    console.log("SIEMA");
-    getAllConversations(token);
-  })
   const renderMessageItem = ({ item }) => (
     <TouchableOpacity
       style={styles.messageItem}
       onPress={() => navigation.navigate('Chat', { userName: item.userName })}
     >
       <View style={styles.messageContent}>
-        <Text style={styles.userName}>{item.userName}</Text>
-        <Text style={styles.lastMessage}>{item.lastMessage}</Text>
+        <Text style={styles.userName}>{item.recipient}</Text>
+        <Text style={styles.lastMessage}>{item.messages[0].message ? item.messages[0].message : "JOOLA" }</Text>
       </View>
       <Text style={styles.messageTime}>{item.time}</Text>
     </TouchableOpacity>
@@ -37,8 +33,8 @@ const MessagesScreen = () => {
     <View style={styles.container}>
       <Text style={styles.header}>Messages</Text>
       <FlatList
-        data={messages}
-        keyExtractor={(item) => item.id}
+        data={conversations}
+        keyExtractor={(item, index) => item.recipient + index}
         renderItem={renderMessageItem}
         contentContainerStyle={styles.listContainer}
       />

@@ -20,8 +20,6 @@ const ChatScreen = ({ route }) => {
 
   const handleSendMessage = async() => {
     if (newMessage.trim() === '') return;
-    const data = await getAllConversations(token);
-    console.log('API Response2:', JSON.stringify(data, null, 2));
     const message = {
       sender: 'DORIAN',
       message: newMessage,

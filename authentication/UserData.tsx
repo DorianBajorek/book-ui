@@ -8,6 +8,11 @@ type Message = {
   isRead: boolean;
 };
 
+type Conversation = {
+  recipient: string;
+  messages: Message[];
+};
+
 const UserContext = createContext({
   token: '',
   updateToken: (token: string) => {},
@@ -22,6 +27,7 @@ const UserContext = createContext({
   setIsCreateOfferInProgress: (inProgress: boolean) => {},
   isDeleteOfferInProgress: false,
   setIsDeleteOfferInProgress: (inProgress: boolean) => {},
+  conversations: [] as Conversation[]
 });
 
 export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -31,7 +37,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [password, setPassword] = useState<string>('');
   const [isCreateOfferInProgress, setIsCreateOfferInProgress] = useState(false);
   const [isDeleteOfferInProgress, setIsDeleteOfferInProgress] = useState(false);
-  const [converstations, setConversations] = useState<Message[]>([])
+  const [conversations, setConversations] = useState<Conversation[]>([]);
 
   const loadData = async () => {
     const savedToken = await AsyncStorage.getItem('token');
@@ -45,10 +51,20 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     if (savedPassword) setPassword(savedPassword);
   };
   const startLogging = () => {
-    setInterval(() => {
+    setInterval(async () => {
       console.log('Logging every 30 seconds');
-      //const data = getAllConversations(token)
-    }, 30000);
+      const data = await getAllConversations(token);
+      if(data){
+        console.log("WPADAM")
+        const mappedConversations: Conversation[] = data.map((item: any) => ({
+          recipient: item.recipient,
+          messages: item.conversations,
+        }));
+        
+        setConversations(mappedConversations);
+        console.log("Conversations have been set:", JSON.stringify(mappedConversations, null, 2));
+      }
+    }, 10);
   };
 
   useEffect(() => {
@@ -58,7 +74,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   useEffect(() => {
     if (token) {
-      const loggingInterval = setInterval(startLogging, 30000);
+      const loggingInterval = setInterval(startLogging, 10);
       return () => clearInterval(loggingInterval);
     }
   }, [token]);
@@ -93,7 +109,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   return (
     <UserContext.Provider
-      value={{ token, updateToken, userName, updateUserName, email, updateEmail, password, updatePassword, logout, isCreateOfferInProgress, setIsCreateOfferInProgress, isDeleteOfferInProgress, setIsDeleteOfferInProgress }}
+      value={{ token, updateToken, userName, updateUserName, email, updateEmail, password, updatePassword, logout, isCreateOfferInProgress, setIsCreateOfferInProgress, isDeleteOfferInProgress, setIsDeleteOfferInProgress, conversations }}
     >
       {children}
     </UserContext.Provider>
