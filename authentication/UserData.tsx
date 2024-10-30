@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAllConversations } from '../BooksService';
+
+type Message = {
+  sender: string;
+  message: string;
+  isRead: boolean;
+};
 
 const UserContext = createContext({
   token: '',
@@ -24,6 +31,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [password, setPassword] = useState<string>('');
   const [isCreateOfferInProgress, setIsCreateOfferInProgress] = useState(false);
   const [isDeleteOfferInProgress, setIsDeleteOfferInProgress] = useState(false);
+  const [converstations, setConversations] = useState<Message[]>([])
 
   const loadData = async () => {
     const savedToken = await AsyncStorage.getItem('token');
@@ -36,10 +44,24 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     if (savedEmail) setEmail(savedEmail);
     if (savedPassword) setPassword(savedPassword);
   };
+  const startLogging = () => {
+    setInterval(() => {
+      console.log('Logging every 30 seconds');
+      //const data = getAllConversations(token)
+    }, 30000);
+  };
 
   useEffect(() => {
     loadData();
   }, []);
+
+
+  useEffect(() => {
+    if (token) {
+      const loggingInterval = setInterval(startLogging, 30000);
+      return () => clearInterval(loggingInterval);
+    }
+  }, [token]);
 
   const updateToken = async (newToken: string) => {
     setToken(newToken);

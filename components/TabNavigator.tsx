@@ -6,6 +6,7 @@ import HomeView from '../HomeView';
 import Profile from './Profile';
 import SearchScreen from './SearchScreen';
 import { useUserData } from '../authentication/UserData';
+import MessagesScreen from './MessagesScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,16 +39,16 @@ const TabNavigator = () => {
           />
           <Tab.Screen 
             name="Profile" 
-            component={Profile} 
+            component={Profile}
             options={{ 
               tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />
             }} 
           />
           <Tab.Screen 
-            name="Search" 
-            component={SearchScreen} 
+            name="Messages" 
+            component={MessagesScreen} 
             options={{ 
-              tabBarIcon: ({ color }) => <Ionicons name="search" size={24} color={color} />
+              tabBarIcon: ({ color }) => <Ionicons name="chatbubble-outline" size={24} color={color} />
             }} 
           />
           <Tab.Screen 

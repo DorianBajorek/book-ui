@@ -133,3 +133,60 @@ export const getOffersByQuery = async (token: string, searchQuery: string) => {
     return null;
   }
 }
+
+export const sendMessage = async (token: string, recipient: string, message: string) => {
+  try {
+    const payload = {
+      recipient: recipient,
+      message: message,
+    };
+    const response = await axios.post("http://192.168.100.9:8000/messages/v1/send_message/", 
+      payload,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      } );
+    return response.data;
+  } catch (error) {
+    console.error('Happend something with ', error);
+    return null;
+  }
+}
+
+export const getAllConversations = async (token: string) => {
+  try {
+    const url = `http://192.168.100.9:8000/messages/v1/get_all_conversations/`;
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Token ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Search failed', error);
+    return null;
+  }
+}
+
+export const readMessage = async (token: string, recipant: string) => {
+  try {
+    const payload = {
+      recipant: recipant,
+    };
+    const response = await axios.post("http://192.168.100.9:8000/messages/v1/read_messages/", 
+      payload,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      } );
+    return response.data;
+  } catch (error) {
+    console.error('Happend something with ', error);
+    return null;
+  }
+}
+

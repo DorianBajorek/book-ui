@@ -96,7 +96,7 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>
-            {isManualAdd ? 'Add Book Manually' : 'Scan ISBN Code'}
+            {isManualAdd ? 'Add Book Manually' : 'Scan ISBN Code'},
           </Text>
 
           {isManualAdd ? (
@@ -142,7 +142,6 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
           <Button title="Save" onPress={handleSaveButton} disabled={!isbnCode || !frontImage || !backImage} />
           <Button title="Close" onPress={onClose} />
 
-          {/* Dodanie LoadingSpinner */}
           <LoadingSpinner visible={isCreateOfferInProgress} />
         </View>
       </View>
