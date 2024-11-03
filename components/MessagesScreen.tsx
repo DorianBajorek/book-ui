@@ -15,17 +15,19 @@ const messages = [
 const MessagesScreen = () => {
   const {token, conversations} = useUserData();
   const navigation = useNavigation();
-
+//{"messages": [{"isRead": false, "message": "xd2", "sender": "ass4tsgdaffffdagd"}], "recipient": "ass4tsgdaffffdagd"}
   const renderMessageItem = ({ item }) => (
     <TouchableOpacity
       style={styles.messageItem}
-      onPress={() => navigation.navigate('Chat', { userName: item.userName })}
+      onPress={() => navigation.navigate('Chat', { recipient: item.recipient })}
     >
       <View style={styles.messageContent}>
         <Text style={styles.userName}>{item.recipient}</Text>
-        <Text style={styles.lastMessage}>{item.messages[0].message ? item.messages[0].message : "JOOLA" }</Text>
+        <Text style={styles.lastMessage}>
+          {item.messages && item.messages.length > 0 ? item.messages[0].message : "No messages yet"}
+        </Text>
       </View>
-      <Text style={styles.messageTime}>{item.time}</Text>
+      <Text style={styles.messageTime}>{item.time || "N/A"}</Text>
     </TouchableOpacity>
   );
 

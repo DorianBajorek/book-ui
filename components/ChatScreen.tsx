@@ -1,32 +1,38 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import { getAllConversations, sendMessage } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
-
-const initialMessages = [
-  { sender: 'DORIAN', message: 'Hello!', isRead: true },
-  { sender: 'user', message: 'Hi, how are you?', isRead: true },
-  { sender: 'DORIAN', message: 'I’m doing well, thanks!', isRead: true },
-  { sender: 'user', message: 'Glad to hear!', isRead: false },
-  { sender: 'DORIAN', message: 'Are we still on for later?', isRead: false },
-];
+import { sendMessageMock } from '../BooksService';
 
 const ChatScreen = ({ route }) => {
-  const { userName } = route.params;
-  const {token} = useUserData()
-  const [messages, setMessages] = useState(initialMessages);
-  const [newMessage, setNewMessage] = useState('');
+  const {token, conversations, userName } = useUserData();
   const flatListRef = useRef();
+  const [messages, setMessages] = useState([]);
+  const { recipient } = route.params;
+//{"messages": [{"isRead": false, "message": "xd2", "sender": "ass4tsgdaffffdagd"}], "recipient": "ass4tsgdaffffdagd"}
+  useEffect(() => {
+    const conversation = conversations.find(conv => conv.recipient === recipient);
+    console.log("JAZDA" + conversation)
+    if (conversation) {
+      setMessages(conversation.messages);
+    }
+  }, [conversations, recipient]);
 
-  const handleSendMessage = async() => {
+  const [newMessage, setNewMessage] = useState('');
+
+  const handleSendMessage = async () => {
     if (newMessage.trim() === '') return;
+
     const message = {
-      sender: 'DORIAN',
+      sender: 'DORIAN', // Replace with current user's identifier
       message: newMessage,
-      isRead: true,
+      isRead: false,
     };
-    //sendMessage(token, 'Dorian1', newMessage)
+
+    // Update local state
     setMessages((prevMessages) => [...prevMessages, message]);
+
+    await sendMessageMock(token, recipient, message);
+
     setNewMessage('');
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
   };
@@ -52,7 +58,7 @@ const ChatScreen = ({ route }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={90}
     >
-      <Text style={styles.header}>Chat with {userName}</Text>
+      <Text style={styles.header}>Chat with {conversations.recipient}</Text>
 
       <FlatList
         ref={flatListRef}
@@ -105,7 +111,7 @@ const styles = StyleSheet.create({
   messageRight: {
     alignSelf: 'flex-end',
     backgroundColor: '#4f93e8',
-    marginRight: 6
+    marginRight: 6,
   },
   messageText: {
     color: '#000',
@@ -117,7 +123,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ddd',
     paddingTop: 10,
-    marginBottom: 25
+    marginBottom: 25,
   },
   input: {
     flex: 1,

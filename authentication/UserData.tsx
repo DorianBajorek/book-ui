@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAllConversations } from '../BooksService';
+import { getAllConversations, getAllConversationsMock } from '../BooksService';
 
 type Message = {
   sender: string;
@@ -52,19 +52,15 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   };
   const startLogging = () => {
     setInterval(async () => {
-      console.log('Logging every 30 seconds');
-      const data = await getAllConversations(token);
+      const data = await getAllConversationsMock(token);
       if(data){
-        console.log("WPADAM")
         const mappedConversations: Conversation[] = data.map((item: any) => ({
           recipient: item.recipient,
           messages: item.conversations,
         }));
-        
         setConversations(mappedConversations);
-        console.log("Conversations have been set:", JSON.stringify(mappedConversations, null, 2));
       }
-    }, 10);
+    }, 10000);
   };
 
   useEffect(() => {
@@ -74,7 +70,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   useEffect(() => {
     if (token) {
-      const loggingInterval = setInterval(startLogging, 10);
+      const loggingInterval = setInterval(startLogging, 10000);
       return () => clearInterval(loggingInterval);
     }
   }, [token]);

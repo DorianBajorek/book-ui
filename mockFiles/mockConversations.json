@@ -1,0 +1,22 @@
+[
+  {
+    "recipient": "ass4dfadddtsgfdgd",
+    "conversations": [
+      {
+        "sender": "ass4tsgdaffffdagd",
+        "message": "xd1",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "recipient": "ass4tsgdaffffdagd",
+    "conversations": [
+      {
+        "sender": "ass4tsgdaffffdagd",
+        "message": "xd2",
+        "isRead": false
+      }
+    ]
+  }
+]

@@ -1,5 +1,29 @@
 import axios from 'axios';
 
+let mockConversations = [
+  {
+    recipient: "ass4dfadddtsgfdgd",
+    conversations: [
+      {
+        sender: "ass4tsgdaffffdagd",
+        message: "xd1",
+        isRead: false
+      }
+    ]
+  },
+  {
+    recipient: "ass4tsgdaffffdagd",
+    conversations: [
+      {
+        sender: "ass4tsgdaffffdagd",
+        message: "xd2",
+        isRead: false
+      }
+    ]
+  }
+];
+
+
 export const registerUser = async (email: string, username: string, password: string) => {
     try {
       const payload = {
@@ -7,7 +31,7 @@ export const registerUser = async (email: string, username: string, password: st
         username: username,
         password: password
       };
-      const response = await axios.post("http://192.168.100.9:8000/auth/v1/register/", payload);
+      const response = await axios.post("http://192.168.1.22:8000/auth/v1/register/", payload);
       return response.data
     } catch (error) {
       console.error('Registration failed', error);
@@ -21,7 +45,7 @@ export const loginUser = async (username: string, password: string) => {
       username: username,
       password: password
     };
-    const response = await axios.post("http://192.168.100.9:8000/auth/v1/login/", payload);
+    const response = await axios.post("http://192.168.1.22:8000/auth/v1/login/", payload);
     return response.data;
   } catch (error) {
     console.error('Invalid login to the service', error);
@@ -52,7 +76,7 @@ export const createOffer = async (isbn: string, token: string, frontImage: strin
     }
 
     const response = await axios.post(
-      `http://192.168.100.9:8000/books/v1/create_offer/`,
+      `http://192.168.1.22:8000/books/v1/create_offer/`,
       formData,
       {
         headers: {
@@ -71,7 +95,7 @@ export const createOffer = async (isbn: string, token: string, frontImage: strin
 export const securedEndpoint = async (token: string) => {
   try {
     const response = await axios.post(
-      "http://192.168.100.9:8000/auth/secured/",
+      "http://192.168.1.22:8000/auth/secured/",
       {
         headers: {
           'Authorization': `Token ${token}`,
@@ -88,7 +112,7 @@ export const securedEndpoint = async (token: string) => {
 export const getUserOffers = async (token: string) => {
   try {
     const response = await axios.get(
-      "http://192.168.100.9:8000/books/v1/get_user_offers/",
+      "http://192.168.1.22:8000/books/v1/get_user_offers/",
       {
         headers: {
           'Authorization': `Token ${token}`,
@@ -105,7 +129,7 @@ export const getUserOffers = async (token: string) => {
 export const deleteOffer = async (token: string, offerId: string) => {
   try {
     const response = await axios.delete(
-      `http://192.168.100.9:8000/books/v1/delete_offer/${offerId}/`,
+      `http://192.168.1.22:8000/books/v1/delete_offer/${offerId}/`,
       {
         headers: {
           'Authorization': `Token ${token}`,
@@ -121,7 +145,7 @@ export const deleteOffer = async (token: string, offerId: string) => {
 
 export const getOffersByQuery = async (token: string, searchQuery: string) => {
   try {
-    const url = `http://192.168.100.9:8000/books/v1/search_users_with_title/?searchQuery=${encodeURIComponent(searchQuery)}`;
+    const url = `http://192.168.1.22:8000/books/v1/search_users_with_title/?searchQuery=${encodeURIComponent(searchQuery)}`;
     const response = await axios.get(url, {
       headers: {
         Authorization: `Token ${token}`
@@ -140,7 +164,7 @@ export const sendMessage = async (token: string, recipient: string, message: str
       recipient: recipient,
       message: message,
     };
-    const response = await axios.post("http://192.168.100.9:8000/messages/v1/send_message/", 
+    const response = await axios.post("http://192.168.1.22:8000/messages/v1/send_message/", 
       payload,
       {
         headers: {
@@ -155,14 +179,33 @@ export const sendMessage = async (token: string, recipient: string, message: str
   }
 }
 
+export const sendMessageMock = (token: string, recipient: string, message: string) => {
+  const newMessage = {
+    sender: 'mock_sender',
+    message: message,
+    isRead: false,
+  };
+  const conversation = mockConversations.find(conv => conv.recipient === recipient);
+  if (conversation) {
+    conversation.conversations.push(newMessage);
+  } else {
+    mockConversations.push({
+      recipient: recipient,
+      conversations: [newMessage],
+    });
+  }
+
+  return newMessage;
+};
+
 export const getAllConversations = async (token: string) => {
   try {
-    const url = `http://192.168.100.9:8000/messages/v1/get_all_conversations/`;
+    const url = `http://192.168.1.22:8000/messages/v1/get_all_conversations/`;
     const response = await axios.get(url, {
       headers: {
         Authorization: `Token ${token}`
       }
-    }); 
+    });
     return response.data;
   } catch (error) {
     console.error('Search failed', error);
@@ -170,12 +213,21 @@ export const getAllConversations = async (token: string) => {
   }
 }
 
+export const getAllConversationsMock = async () => {
+  try {
+    return mockConversations;
+  } catch (error) {
+    console.error('Error fetching conversations:', error);
+    return null;
+  }
+};
+
 export const readMessage = async (token: string, recipant: string) => {
   try {
     const payload = {
       recipant: recipant,
     };
-    const response = await axios.post("http://192.168.100.9:8000/messages/v1/read_messages/", 
+    const response = await axios.post("http://192.168.1.22:8000/messages/v1/read_messages/", 
       payload,
       {
         headers: {
@@ -188,5 +240,4 @@ export const readMessage = async (token: string, recipant: string) => {
     console.error('Happend something with ', error);
     return null;
   }
-}
-
+};
