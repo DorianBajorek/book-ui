@@ -50,29 +50,32 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     if (savedEmail) setEmail(savedEmail);
     if (savedPassword) setPassword(savedPassword);
   };
-  const startLogging = () => {
-    setInterval(async () => {
-      const data = await getAllConversationsMock(token);
-      if(data){
-        const mappedConversations: Conversation[] = data.map((item: any) => ({
-          recipient: item.recipient,
-          messages: item.conversations,
-        }));
-        setConversations(mappedConversations);
-      }
-    }, 10000);
+
+  const updateConversations = async () => {
+    const data = await getAllConversations(token);
+    if (data) {
+      const mappedConversations: Conversation[] = data?.map((item: any) => ({
+        recipient: item.recipient,
+        messages: item.conversations,
+      }));
+      setConversations(mappedConversations);
+    }
   };
 
   useEffect(() => {
     loadData();
   }, []);
 
-
   useEffect(() => {
+    let loggingInterval: NodeJS.Timeout;
+
     if (token) {
-      const loggingInterval = setInterval(startLogging, 10000);
-      return () => clearInterval(loggingInterval);
+      updateConversations();
+
+      loggingInterval = setInterval(updateConversations, 10000);
     }
+
+    return () => clearInterval(loggingInterval);
   }, [token]);
 
   const updateToken = async (newToken: string) => {
@@ -100,12 +103,28 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     setUserName('');
     setEmail('');
     setPassword('');
+    setConversations([]);
     await AsyncStorage.multiRemove(['token', 'userName', 'email', 'password']);
   };
 
   return (
     <UserContext.Provider
-      value={{ token, updateToken, userName, updateUserName, email, updateEmail, password, updatePassword, logout, isCreateOfferInProgress, setIsCreateOfferInProgress, isDeleteOfferInProgress, setIsDeleteOfferInProgress, conversations }}
+      value={{
+        token,
+        updateToken,
+        userName,
+        updateUserName,
+        email,
+        updateEmail,
+        password,
+        updatePassword,
+        logout,
+        isCreateOfferInProgress,
+        setIsCreateOfferInProgress,
+        isDeleteOfferInProgress,
+        setIsDeleteOfferInProgress,
+        conversations
+      }}
     >
       {children}
     </UserContext.Provider>

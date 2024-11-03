@@ -37,6 +37,10 @@ const BookDetails = ({ route, navigation }) => {
     );
   };
 
+  const handleSendMessageToOwner = () => {
+    navigation.navigate('Chat', { recipient: owner });
+  };
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -58,7 +62,7 @@ const BookDetails = ({ route, navigation }) => {
         </View>
         <LoadingSpinner visible={isDeleteOfferInProgress} />
         {userName !== owner ? (
-          <Button title="Send a message to the owner" onPress={() => {}} />
+          <Button title="Send a message to the owner" onPress={handleSendMessageToOwner} />
         ) : (
           <Button title="Delete Offer" color="red" onPress={handleDeleteOffer} />
         )}

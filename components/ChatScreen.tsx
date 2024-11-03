@@ -1,53 +1,57 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { useUserData } from '../authentication/UserData';
-import { sendMessageMock } from '../BooksService';
+import { sendMessage } from '../BooksService';
 
 const ChatScreen = ({ route }) => {
-  const {token, conversations, userName } = useUserData();
+  const { token, conversations, userName } = useUserData();
   const flatListRef = useRef();
-  const [messages, setMessages] = useState([]);
   const { recipient } = route.params;
-//{"messages": [{"isRead": false, "message": "xd2", "sender": "ass4tsgdaffffdagd"}], "recipient": "ass4tsgdaffffdagd"}
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+
   useEffect(() => {
     const conversation = conversations.find(conv => conv.recipient === recipient);
-    console.log("JAZDA" + conversation)
     if (conversation) {
       setMessages(conversation.messages);
     }
   }, [conversations, recipient]);
 
-  const [newMessage, setNewMessage] = useState('');
-
   const handleSendMessage = async () => {
-    if (newMessage.trim() === '') return;
+    if (newMessage.trim()) {
+      const messageToSend = {
+        sender: userName,
+        message: newMessage,
+      };
 
-    const message = {
-      sender: 'DORIAN', // Replace with current user's identifier
-      message: newMessage,
-      isRead: false,
-    };
+      setMessages(prevMessages => [...prevMessages, messageToSend]);
 
-    // Update local state
-    setMessages((prevMessages) => [...prevMessages, message]);
+      setNewMessage('');
 
-    await sendMessageMock(token, recipient, message);
+      flatListRef.current.scrollToEnd({ animated: true });
 
-    setNewMessage('');
-    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
+      try {
+        await sendMessage(token, recipient, newMessage);
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
   };
 
   const renderMessageItem = ({ item }) => {
-    const isSenderDorian = item.sender === 'DORIAN';
+    const isSender = item.sender === userName;
 
     return (
       <View
         style={[
           styles.messageContainer,
-          isSenderDorian ? styles.messageRight : styles.messageLeft,
+          isSender ? styles.messageRight : styles.messageLeft,
         ]}
       >
-        <Text style={styles.messageText}>{item.message}</Text>
+        <Text style={styles.messageText}>
+          {item.message ? item.message : 'Brak wiadomości'}
+        </Text>
       </View>
     );
   };
@@ -58,7 +62,7 @@ const ChatScreen = ({ route }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={90}
     >
-      <Text style={styles.header}>Chat with {conversations.recipient}</Text>
+      <Text style={styles.header}>Chat with {recipient}</Text>
 
       <FlatList
         ref={flatListRef}
@@ -66,6 +70,7 @@ const ChatScreen = ({ route }) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderMessageItem}
         contentContainerStyle={styles.messagesList}
+        onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}
       />
 
       <View style={styles.inputContainer}>
@@ -74,6 +79,8 @@ const ChatScreen = ({ route }) => {
           value={newMessage}
           onChangeText={setNewMessage}
           placeholder="Type a message"
+          onSubmitEditing={handleSendMessage}
+          returnKeyType="send"
         />
         <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
           <Text style={styles.sendButtonText}>Send</Text>
