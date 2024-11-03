@@ -42,7 +42,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   }, [searchQuery, token]);
 
   const handleBookPress = (book) => {
-    const owner = "DORIAN"
+    const owner = book.user
     navigation.navigate('BookDetails', {book, owner});
   };
 

@@ -1,49 +1,57 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import { getAllConversations, sendMessage } from '../BooksService';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { useUserData } from '../authentication/UserData';
-
-const initialMessages = [
-  { sender: 'DORIAN', message: 'Hello!', isRead: true },
-  { sender: 'user', message: 'Hi, how are you?', isRead: true },
-  { sender: 'DORIAN', message: 'I’m doing well, thanks!', isRead: true },
-  { sender: 'user', message: 'Glad to hear!', isRead: false },
-  { sender: 'DORIAN', message: 'Are we still on for later?', isRead: false },
-];
+import { sendMessage } from '../BooksService';
 
 const ChatScreen = ({ route }) => {
-  const { userName } = route.params;
-  const {token} = useUserData()
-  const [messages, setMessages] = useState(initialMessages);
-  const [newMessage, setNewMessage] = useState('');
+  const { token, conversations, userName } = useUserData();
   const flatListRef = useRef();
+  const { recipient } = route.params;
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
 
-  const handleSendMessage = async() => {
-    if (newMessage.trim() === '') return;
-    const data = await getAllConversations(token);
-    console.log('API Response2:', JSON.stringify(data, null, 2));
-    const message = {
-      sender: 'DORIAN',
-      message: newMessage,
-      isRead: true,
-    };
-    //sendMessage(token, 'Dorian1', newMessage)
-    setMessages((prevMessages) => [...prevMessages, message]);
-    setNewMessage('');
-    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
+  useEffect(() => {
+    const conversation = conversations.find(conv => conv.recipient === recipient);
+    if (conversation) {
+      setMessages(conversation.messages);
+    }
+  }, [conversations, recipient]);
+
+  const handleSendMessage = async () => {
+    if (newMessage.trim()) {
+      const messageToSend = {
+        sender: userName,
+        message: newMessage,
+      };
+
+      setMessages(prevMessages => [...prevMessages, messageToSend]);
+
+      setNewMessage('');
+
+      flatListRef.current.scrollToEnd({ animated: true });
+
+      try {
+        await sendMessage(token, recipient, newMessage);
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
   };
 
   const renderMessageItem = ({ item }) => {
-    const isSenderDorian = item.sender === 'DORIAN';
+    const isSender = item.sender === userName;
 
     return (
       <View
         style={[
           styles.messageContainer,
-          isSenderDorian ? styles.messageRight : styles.messageLeft,
+          isSender ? styles.messageRight : styles.messageLeft,
         ]}
       >
-        <Text style={styles.messageText}>{item.message}</Text>
+        <Text style={styles.messageText}>
+          {item.message ? item.message : 'Brak wiadomości'}
+        </Text>
       </View>
     );
   };
@@ -54,7 +62,7 @@ const ChatScreen = ({ route }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={90}
     >
-      <Text style={styles.header}>Chat with {userName}</Text>
+      <Text style={styles.header}>Chat with {recipient}</Text>
 
       <FlatList
         ref={flatListRef}
@@ -62,6 +70,7 @@ const ChatScreen = ({ route }) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderMessageItem}
         contentContainerStyle={styles.messagesList}
+        onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}
       />
 
       <View style={styles.inputContainer}>
@@ -70,6 +79,8 @@ const ChatScreen = ({ route }) => {
           value={newMessage}
           onChangeText={setNewMessage}
           placeholder="Type a message"
+          onSubmitEditing={handleSendMessage}
+          returnKeyType="send"
         />
         <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
           <Text style={styles.sendButtonText}>Send</Text>
@@ -107,7 +118,7 @@ const styles = StyleSheet.create({
   messageRight: {
     alignSelf: 'flex-end',
     backgroundColor: '#4f93e8',
-    marginRight: 6
+    marginRight: 6,
   },
   messageText: {
     color: '#000',
@@ -119,7 +130,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ddd',
     paddingTop: 10,
-    marginBottom: 25
+    marginBottom: 25,
   },
   input: {
     flex: 1,

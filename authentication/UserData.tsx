@@ -1,11 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAllConversations } from '../BooksService';
+import { getAllConversations, getAllConversationsMock } from '../BooksService';
 
 type Message = {
   sender: string;
   message: string;
   isRead: boolean;
+};
+
+type Conversation = {
+  recipient: string;
+  messages: Message[];
 };
 
 const UserContext = createContext({
@@ -22,6 +27,7 @@ const UserContext = createContext({
   setIsCreateOfferInProgress: (inProgress: boolean) => {},
   isDeleteOfferInProgress: false,
   setIsDeleteOfferInProgress: (inProgress: boolean) => {},
+  conversations: [] as Conversation[]
 });
 
 export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -31,7 +37,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [password, setPassword] = useState<string>('');
   const [isCreateOfferInProgress, setIsCreateOfferInProgress] = useState(false);
   const [isDeleteOfferInProgress, setIsDeleteOfferInProgress] = useState(false);
-  const [converstations, setConversations] = useState<Message[]>([])
+  const [conversations, setConversations] = useState<Conversation[]>([]);
 
   const loadData = async () => {
     const savedToken = await AsyncStorage.getItem('token');
@@ -44,23 +50,32 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     if (savedEmail) setEmail(savedEmail);
     if (savedPassword) setPassword(savedPassword);
   };
-  const startLogging = () => {
-    setInterval(() => {
-      console.log('Logging every 30 seconds');
-      //const data = getAllConversations(token)
-    }, 30000);
+
+  const updateConversations = async () => {
+    const data = await getAllConversations(token);
+    if (data) {
+      const mappedConversations: Conversation[] = data?.map((item: any) => ({
+        recipient: item.recipient,
+        messages: item.conversations,
+      }));
+      setConversations(mappedConversations);
+    }
   };
 
   useEffect(() => {
     loadData();
   }, []);
 
-
   useEffect(() => {
+    let loggingInterval: NodeJS.Timeout;
+
     if (token) {
-      const loggingInterval = setInterval(startLogging, 30000);
-      return () => clearInterval(loggingInterval);
+      updateConversations();
+
+      loggingInterval = setInterval(updateConversations, 10000);
     }
+
+    return () => clearInterval(loggingInterval);
   }, [token]);
 
   const updateToken = async (newToken: string) => {
@@ -88,12 +103,28 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     setUserName('');
     setEmail('');
     setPassword('');
+    setConversations([]);
     await AsyncStorage.multiRemove(['token', 'userName', 'email', 'password']);
   };
 
   return (
     <UserContext.Provider
-      value={{ token, updateToken, userName, updateUserName, email, updateEmail, password, updatePassword, logout, isCreateOfferInProgress, setIsCreateOfferInProgress, isDeleteOfferInProgress, setIsDeleteOfferInProgress }}
+      value={{
+        token,
+        updateToken,
+        userName,
+        updateUserName,
+        email,
+        updateEmail,
+        password,
+        updatePassword,
+        logout,
+        isCreateOfferInProgress,
+        setIsCreateOfferInProgress,
+        isDeleteOfferInProgress,
+        setIsDeleteOfferInProgress,
+        conversations
+      }}
     >
       {children}
     </UserContext.Provider>

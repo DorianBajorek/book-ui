@@ -22,6 +22,7 @@ export const loginUser = async (username: string, password: string) => {
       password: password
     };
     const response = await axios.post("http://192.168.100.9:8000/auth/v1/login/", payload);
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Invalid login to the service', error);
@@ -139,6 +140,7 @@ export const sendMessage = async (token: string, recipient: string, message: str
     const payload = {
       recipient: recipient,
       message: message,
+      isRead: false,
     };
     const response = await axios.post("http://192.168.100.9:8000/messages/v1/send_message/", 
       payload,
@@ -188,5 +190,4 @@ export const readMessage = async (token: string, recipant: string) => {
     console.error('Happend something with ', error);
     return null;
   }
-}
-
+};
