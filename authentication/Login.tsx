@@ -19,7 +19,7 @@ type Props = {
 const Login: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState<string | null>(null); 
+  const [loginError, setLoginError] = useState<string | null>(null);
   const { updateToken, updateUserName, updateEmail } = useUserData();
 
   const handleLogin = async () => {
@@ -48,14 +48,14 @@ const Login: React.FC<Props> = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container} 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
     >
       {loginError && <ErrorBanner message={loginError} />}
       
       <View style={styles.formContainer}>
-        <Text style={styles.label}>Username:</Text>
+        <Text style={styles.label}>Nazwa użytkownika:</Text>
         <TextInput
           style={styles.input}
           placeholder="Username"
@@ -64,7 +64,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
           onChangeText={setUsername}
         />
 
-        <Text style={styles.label}>Password:</Text>
+        <Text style={styles.label}>Hasło:</Text>
         <TextInput
           style={styles.input}
           placeholder="Password"
@@ -87,47 +87,52 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#f2f2f7',
   },
   formContainer: {
     width: '90%',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    padding: 25,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
     shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 4 },
     shadowRadius: 8,
-    elevation: 5,
+    elevation: 8,
   },
   label: {
     fontSize: 16,
-    marginBottom: 8,
+    marginBottom: 5,
     color: '#333',
-    fontWeight: '600'
+    fontWeight: '500',
   },
   input: {
     width: '100%',
-    height: 40,
-    borderColor: '#ccc',
+    height: 45,
+    borderColor: '#e0e0e0',
     borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
+    borderRadius: 10,
+    paddingHorizontal: 12,
     marginBottom: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#fafafa',
     color: '#333',
   },
   button: {
     backgroundColor: '#4682B4',
-    paddingVertical: 10,
-    borderRadius: 5,
+    paddingVertical: 14,
+    borderRadius: 25,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
+    elevation: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: '#ffffff',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 });
 

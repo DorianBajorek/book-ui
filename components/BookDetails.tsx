@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useUserData } from '../authentication/UserData';
 import BookSlider from './BookSlider';
 import { deleteOffer } from '../BooksService';
@@ -8,6 +8,7 @@ import LoadingSpinner from './LoadingSpinner';
 const BookDetails = ({ route, navigation }) => {
   const { book, owner } = route.params;
   const { userName, token, setIsDeleteOfferInProgress, isDeleteOfferInProgress } = useUserData();
+  
   const images = [
     { id: '1', image: { uri: book.cover_book.replace("/media/", "/media/cover_images/") } },
     ...(book.frontImage ? [{ id: '2', image: { uri: book.frontImage } }] : []),
@@ -25,7 +26,7 @@ const BookDetails = ({ route, navigation }) => {
               setIsDeleteOfferInProgress(true);
               await deleteOffer(token, book.offer_id);
               setIsDeleteOfferInProgress(false);
-              Alert.alert("Offer deleted successfully.");
+              Alert.alert("Success", "Offer deleted successfully.");
               navigation.goBack();
             } catch (error) {
               Alert.alert("Error", "Failed to delete the offer.");
@@ -44,28 +45,40 @@ const BookDetails = ({ route, navigation }) => {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        <BookSlider books={images} />
+        <View style={styles.card}>
+          <BookSlider books={images} />
+          <Text style={styles.bookTitle}>{book.title}</Text>
 
-        <Text style={styles.bookTitle}>{book.title}</Text>
+          <Text style={styles.bookDescription}>
+            {book.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum."}
+          </Text>
 
-        <Text style={styles.bookDescription}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-          Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.
-        </Text>
-
-        <View style={styles.detailsContainer}>
-          <Text style={styles.bookDetail}><Text style={styles.label}>Author: </Text>{book.author}</Text>
-          <Text style={styles.bookDetail}><Text style={styles.label}>Condition: </Text>{book.condition}</Text>
-          <Text style={styles.bookDetail}><Text style={styles.label}>ISBN: </Text>{book.isbn}</Text>
-          <Text style={styles.bookDetail}><Text style={styles.label}>For Sale: </Text>{book.is_for_sale ? 'Yes' : 'No'}</Text>
-          <Text style={styles.bookDetail}><Text style={styles.label}>Owner: </Text>{owner}</Text>
+          <View style={styles.detailsContainer}>
+            <Text style={styles.bookDetail}>
+              <Text style={styles.label}>Autor: </Text>{book.author || "Brak"}
+            </Text>
+            <Text style={styles.bookDetail}>
+              <Text style={styles.label}>Użytkownik: </Text>{owner}
+            </Text>
+            <Text style={styles.bookDetail}>
+              <Text style={styles.label}>ISBN: </Text>{book.isbn}
+            </Text>
+          </View>
         </View>
+
         <LoadingSpinner visible={isDeleteOfferInProgress} />
-        {userName !== owner ? (
-          <Button title="Send a message to the owner" onPress={handleSendMessageToOwner} />
-        ) : (
-          <Button title="Delete Offer" color="red" onPress={handleDeleteOffer} />
-        )}
+
+        <View style={styles.buttonContainer}>
+          {userName !== owner ? (
+            <TouchableOpacity style={styles.button} onPress={handleSendMessageToOwner}>
+              <Text style={styles.buttonText}>Napisz wiadomość do właściciela</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleDeleteOffer}>
+              <Text style={styles.buttonText}>Usuń ofertę</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </ScrollView>
   );
@@ -81,26 +94,36 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 5,
+    marginBottom: 20,
+    width: '100%',
+  },
   bookTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 15,
-    marginTop: -150,
+    fontWeight: '700',
+    marginTop: 10,
+    marginBottom: 10,
     textAlign: 'center',
     color: '#333',
   },
   bookDescription: {
     fontSize: 16,
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    marginBottom: 15,
     textAlign: 'center',
     color: '#666',
   },
   detailsContainer: {
     alignItems: 'flex-start',
     width: '100%',
-    paddingHorizontal: 20,
-    marginBottom: 20,
+    marginTop: 10,
   },
   bookDetail: {
     fontSize: 16,
@@ -110,6 +133,25 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     color: '#333',
+  },
+  buttonContainer: {
+    width: '100%',
+    paddingHorizontal: 20,
+  },
+  button: {
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+    padding: 15,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  deleteButton: {
+    backgroundColor: 'red', // Red for delete button
   },
 });
 

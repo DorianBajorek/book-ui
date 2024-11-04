@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, Button, StyleSheet, TextInput, Image, Alert, ScrollView } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, TextInput, Image, Alert, ScrollView } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as ImagePicker from 'expo-image-picker';
 import { createOffer } from '../BooksService';
@@ -17,8 +17,8 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
   const [isbnCode, setIsbnCode] = useState('');
   const [bookTitle, setBookTitle] = useState('');
   const [isManualAdd, setIsManualAdd] = useState(false);
-  const [frontImage, setfrontImage] = useState<string | null>(null);
-  const [backImage, setbackImage] = useState<string | null>(null);
+  const [frontImage, setFrontImage] = useState<string | null>(null);
+  const [backImage, setBackImage] = useState<string | null>(null);
   const { token, setIsCreateOfferInProgress, isCreateOfferInProgress } = useUserData();
 
   useEffect(() => {
@@ -56,8 +56,8 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
     setScanned(false);
     setIsbnCode('');
     setBookTitle('');
-    setfrontImage(null);
-    setbackImage(null);
+    setFrontImage(null);
+    setBackImage(null);
   };
 
   const pickImage = async (setImage: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -87,46 +87,36 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
   }
 
   return (
-    <Modal
-      transparent={true}
-      visible={isVisible}
-      animationType="slide"
-      onRequestClose={onClose}
-    >
+    <Modal transparent={true} visible={isVisible} animationType="slide" onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>
-            {isManualAdd ? 'Add Book Manually' : 'Scan ISBN Code'},
+            {isManualAdd ? 'Dodaj manualnie' : 'Zeskanuj kod kreskowy'}
           </Text>
 
           {isManualAdd ? (
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-              <View style={styles.scannerContainer}>
-                <View style={styles.row}>
-                  <Text style={styles.label}>ISBN:</Text>
-                  <TextInput
-                    style={styles.input}
-                    value={isbnCode}
-                    onChangeText={setIsbnCode}
-                  />
-                </View>
-                <View style={styles.row}>
-                  <Text style={styles.label}>Title:</Text>
-                  <TextInput
-                    style={styles.input}
-                    value={bookTitle}
-                    onChangeText={setBookTitle}
-                  />
-                </View>
-                <Button title="Back to Scanner" onPress={handleBackToScanner} />
+              <View style={styles.row}>
+                <Text style={styles.label}>ISBN:</Text>
+                <TextInput style={styles.input} value={isbnCode} onChangeText={setIsbnCode} placeholder="Wprowadź ISBN" />
               </View>
+              <View style={styles.row}>
+                <Text style={styles.label}>Title:</Text>
+                <TextInput style={styles.input} value={bookTitle} onChangeText={setBookTitle} placeholder="Wprowadź tytuł" />
+              </View>
+              <TouchableOpacity style={styles.secondaryButton} onPress={handleBackToScanner}>
+                <Text style={styles.secondaryButtonText}>Wróć do skanera</Text>
+              </TouchableOpacity>
             </ScrollView>
           ) : scanned ? (
             <>
-              <Button title={'Scan Again'} onPress={() => setScanned(false)} />
-              <Button title={'Add Front of Book'} onPress={() => pickImage(setfrontImage)} />
+              <TouchableOpacity style={styles.secondaryButton} onPress={() => pickImage(setFrontImage)}>
+                <Text style={styles.secondaryButtonText}>Dodaj przód książki</Text>
+              </TouchableOpacity>
               {frontImage && <Image source={{ uri: frontImage }} style={styles.image} />}
-              <Button title={'Add Back of Book'} onPress={() => pickImage(setbackImage)} />
+              <TouchableOpacity style={styles.secondaryButton} onPress={() => pickImage(setBackImage)}>
+                <Text style={styles.secondaryButtonText}>Dodaj tył książki</Text>
+              </TouchableOpacity>
               {backImage && <Image source={{ uri: backImage }} style={styles.image} />}
             </>
           ) : (
@@ -138,9 +128,16 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
             </View>
           )}
 
-          {!isManualAdd && <Button title="Add Manually" onPress={handleAddManually} />}
-          <Button title="Save" onPress={handleSaveButton} disabled={!isbnCode || !frontImage || !backImage} />
-          <Button title="Close" onPress={onClose} />
+          <TouchableOpacity
+            style={[styles.saveButton, (!isbnCode || !frontImage || !backImage) && styles.disabledButton]}
+            onPress={handleSaveButton}
+            disabled={!isbnCode || !frontImage || !backImage}
+          >
+            <Text style={styles.saveButtonText}>Zapisz</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.secondaryButton} onPress={onClose}>
+            <Text style={styles.secondaryButtonText}>Wyjdź</Text>
+          </TouchableOpacity>
 
           <LoadingSpinner visible={isCreateOfferInProgress} />
         </View>
@@ -157,15 +154,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: '80%',
+    width: '85%',
     padding: 20,
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
     elevation: 10,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
+    color: '#333',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -182,30 +184,61 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
+    width: '100%',
   },
   label: {
-    fontSize: 18,
-    color: '#333',
-    width: 80,
+    fontSize: 16,
+    color: '#666',
+    width: 90,
+    fontWeight: '600',
   },
   input: {
+    flex: 1,
     height: 40,
-    width: 150,
-    borderColor: 'gray',
+    borderColor: '#ddd',
     borderWidth: 1,
-    paddingLeft: 8,
-    borderRadius: 5,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: '#f9f9f9',
   },
   image: {
     width: 200,
     height: 200,
+    borderRadius: 10,
     marginVertical: 10,
+    alignSelf: 'center',
   },
   scrollViewContent: {
     flexGrow: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+  },
+  saveButton: {
+    backgroundColor: '#4682B4',
+    borderRadius: 25,
+    paddingVertical: 15,
+    alignItems: 'center',
+    marginVertical: 15,
+  },
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  disabledButton: {
+    backgroundColor: '#A9A9A9',
+  },
+  secondaryButton: {
+    backgroundColor: '#f1f1f1',
+    borderRadius: 25,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  secondaryButtonText: {
+    color: '#4682B4',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
