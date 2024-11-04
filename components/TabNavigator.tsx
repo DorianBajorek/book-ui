@@ -24,35 +24,35 @@ const TabNavigator = () => {
       {token ? (
         <>
           <Tab.Screen 
-            name="Home" 
+            name="Start" 
             component={HomeView} 
             options={{ 
               tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={color} />
             }} 
           />
           <Tab.Screen 
-            name="MarketPlace" 
+            name="Ogłoszenia" 
             component={SearchScreen} 
             options={{ 
               tabBarIcon: ({ color }) => <Ionicons name="storefront-outline" size={24} color={color} />
             }} 
           />
           <Tab.Screen 
-            name="Profile" 
+            name="Profil" 
             component={Profile}
             options={{ 
               tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />
             }} 
           />
           <Tab.Screen 
-            name="Messages" 
+            name="Wiadomości" 
             component={MessagesScreen} 
             options={{ 
               tabBarIcon: ({ color }) => <Ionicons name="chatbubble-outline" size={24} color={color} />
             }} 
           />
           <Tab.Screen 
-            name="Settings" 
+            name="Ustawienia" 
             component={SettingsScreen} 
             options={{ 
               tabBarIcon: ({ color }) => <Ionicons name="settings" size={24} color={color} />
@@ -61,7 +61,7 @@ const TabNavigator = () => {
         </>
       ) : (
         <Tab.Screen 
-          name="Home" 
+          name="Start" 
           component={HomeView} 
           options={{ 
             tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={color} />

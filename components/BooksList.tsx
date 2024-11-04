@@ -29,15 +29,19 @@ const BooksList = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {books.map((item) => (
-        <TouchableOpacity key={item.offer_id} onPress={() => handleBookPress(item)} style={styles.bookContainer}>
+        <TouchableOpacity 
+          key={item.offer_id} 
+          onPress={() => handleBookPress(item)} 
+          style={styles.bookContainer}
+          activeOpacity={0.8}
+        >
           <Image 
             source={{ uri: item.cover_book.replace("/media/", "/media/cover_images/") }}
             style={styles.bookImage} 
           />
           <View style={styles.textContainer}>
             <Text style={styles.bookTitle}>{item.title}</Text>
-            <Text style={styles.bookDescription}>Author: {item.author}</Text>
-            <Text style={styles.bookDescription}>Condition: {item.condition}</Text>
+            <Text style={styles.bookDescription}>Autor: {item.author || "Brak"}</Text>
           </View>
         </TouchableOpacity>
       ))}
@@ -48,31 +52,45 @@ const BooksList = () => {
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     alignItems: 'flex-start',
   },
   bookContainer: {
     flexDirection: 'row',
-    marginBottom: 20,
-    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    padding: 15,
+    marginBottom: 15,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 5,
+    width: '100%',
   },
   bookImage: {
-    width: 100,
-    height: 150,
+    width: 80,
+    height: 120,
     borderRadius: 10,
     marginRight: 15,
+    borderWidth: 1,
+    borderColor: '#ddd',
   },
   textContainer: {
     flex: 1,
+    justifyContent: 'center',
   },
   bookTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 4,
   },
   bookDescription: {
     fontSize: 14,
-    color: '#666',
+    color: '#777',
+    marginTop: 4,
+    lineHeight: 20,
   },
 });
 

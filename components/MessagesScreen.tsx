@@ -30,7 +30,7 @@ const MessagesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Messages</Text>
+      <Text style={styles.header}>Wiadomości</Text>
       <FlatList
         data={conversations}
         keyExtractor={(item) => item.recipient}

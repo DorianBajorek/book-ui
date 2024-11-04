@@ -19,7 +19,7 @@ export default function App() {
     <UserData>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Main">
-          <Stack.Screen name="HomeView" component={HomeView} />
+          <Stack.Screen name="Strona główna" component={HomeView} />
           <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Login" component={Login} />

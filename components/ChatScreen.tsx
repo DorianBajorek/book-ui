@@ -62,7 +62,7 @@ const ChatScreen = ({ route }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={90}
     >
-      <Text style={styles.header}>Chat with {recipient}</Text>
+      <Text style={styles.header}>Wiadomości z {recipient}</Text>
 
       <FlatList
         ref={flatListRef}
@@ -78,12 +78,12 @@ const ChatScreen = ({ route }) => {
           style={styles.input}
           value={newMessage}
           onChangeText={setNewMessage}
-          placeholder="Type a message"
+          placeholder="Napisz wiadomość"
           onSubmitEditing={handleSendMessage}
           returnKeyType="send"
         />
         <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
-          <Text style={styles.sendButtonText}>Send</Text>
+          <Text style={styles.sendButtonText}>Wyślij</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
