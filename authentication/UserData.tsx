@@ -52,7 +52,8 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   };
 
   const updateConversations = async () => {
-    const data = await getAllConversations(token);
+    //const data = await getAllConversations(token);
+    const data = ["xd"]
     if (data) {
       const mappedConversations: Conversation[] = data?.map((item: any) => ({
         recipient: item.recipient,

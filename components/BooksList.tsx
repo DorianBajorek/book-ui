@@ -28,7 +28,7 @@ const BooksList = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {books.map((item) => (
+      {books?.map((item) => (
         <TouchableOpacity 
           key={item.offer_id} 
           onPress={() => handleBookPress(item)} 
@@ -42,6 +42,7 @@ const BooksList = () => {
           <View style={styles.textContainer}>
             <Text style={styles.bookTitle}>{item.title}</Text>
             <Text style={styles.bookDescription}>Autor: {item.author || "Brak"}</Text>
+            <Text style={styles.bookDescription}>Cena: {item.price || "Brak"}</Text>
           </View>
         </TouchableOpacity>
       ))}

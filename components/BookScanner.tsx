@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, TextInput, Image, Alert, ScrollView } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as ImagePicker from 'expo-image-picker';
+import Slider from '@react-native-community/slider';
 import { createOffer } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
 import LoadingSpinner from './LoadingSpinner';
@@ -19,6 +20,8 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
   const [isManualAdd, setIsManualAdd] = useState(false);
   const [frontImage, setFrontImage] = useState<string | null>(null);
   const [backImage, setBackImage] = useState<string | null>(null);
+  const [price, setPrice] = useState(10);
+  const [showPriceStep, setShowPriceStep] = useState(false); // New state for controlling the price step
   const { token, setIsCreateOfferInProgress, isCreateOfferInProgress } = useUserData();
 
   useEffect(() => {
@@ -36,7 +39,7 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
 
   const handleSaveButton = async () => {
     setIsCreateOfferInProgress(true);
-    await createOffer(isbnCode, token, frontImage, backImage);
+    await createOffer(isbnCode, token, frontImage, backImage, price);
     setIsCreateOfferInProgress(false);
     resetForm();
     onClose();
@@ -58,6 +61,8 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
     setBookTitle('');
     setFrontImage(null);
     setBackImage(null);
+    setPrice(10);
+    setShowPriceStep(false);
   };
 
   const pickImage = async (setImage: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -110,14 +115,39 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
             </ScrollView>
           ) : scanned ? (
             <>
-              <TouchableOpacity style={styles.secondaryButton} onPress={() => pickImage(setFrontImage)}>
-                <Text style={styles.secondaryButtonText}>Dodaj przód książki</Text>
-              </TouchableOpacity>
-              {frontImage && <Image source={{ uri: frontImage }} style={styles.image} />}
-              <TouchableOpacity style={styles.secondaryButton} onPress={() => pickImage(setBackImage)}>
-                <Text style={styles.secondaryButtonText}>Dodaj tył książki</Text>
-              </TouchableOpacity>
-              {backImage && <Image source={{ uri: backImage }} style={styles.image} />}
+              {!showPriceStep ? (
+                <>
+                  <TouchableOpacity style={styles.secondaryButton} onPress={() => pickImage(setFrontImage)}>
+                    <Text style={styles.secondaryButtonText}>Dodaj przód książki</Text>
+                  </TouchableOpacity>
+                  {frontImage && <Image source={{ uri: frontImage }} style={styles.image} />}
+                  <TouchableOpacity style={styles.secondaryButton} onPress={() => pickImage(setBackImage)}>
+                    <Text style={styles.secondaryButtonText}>Dodaj tył książki</Text>
+                  </TouchableOpacity>
+                  {backImage && <Image source={{ uri: backImage }} style={styles.image} />}
+
+                  {/* Show Next button only if both images are added */}
+                  {frontImage && backImage && (
+                    <TouchableOpacity style={styles.secondaryButton} onPress={() => setShowPriceStep(true)}>
+                      <Text style={styles.secondaryButtonText}>Dalej</Text>
+                    </TouchableOpacity>
+                  )}
+                </>
+              ) : (
+                <>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>Cena: {price} zł</Text>
+                  </View>
+                  <Slider
+                    style={styles.slider}
+                    minimumValue={0}
+                    maximumValue={100}
+                    step={1}
+                    value={price}
+                    onValueChange={(value) => setPrice(value)}
+                  />
+                </>
+              )}
             </>
           ) : (
             <View style={styles.scannerContainer}>
@@ -128,13 +158,17 @@ const BookScanner: React.FC<BookScannerProps> = ({ isVisible, onClose }) => {
             </View>
           )}
 
-          <TouchableOpacity
-            style={[styles.saveButton, (!isbnCode || !frontImage || !backImage) && styles.disabledButton]}
-            onPress={handleSaveButton}
-            disabled={!isbnCode || !frontImage || !backImage}
-          >
-            <Text style={styles.saveButtonText}>Zapisz</Text>
-          </TouchableOpacity>
+          {/* Show Save button only in the price step */}
+          {showPriceStep && (
+            <TouchableOpacity
+              style={[styles.saveButton, (!isbnCode || !frontImage || !backImage) && styles.disabledButton]}
+              onPress={handleSaveButton}
+              disabled={!isbnCode || !frontImage || !backImage}
+            >
+              <Text style={styles.saveButtonText}>Zapisz</Text>
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity style={styles.secondaryButton} onPress={onClose}>
             <Text style={styles.secondaryButtonText}>Wyjdź</Text>
           </TouchableOpacity>
@@ -239,6 +273,10 @@ const styles = StyleSheet.create({
     color: '#4682B4',
     fontSize: 16,
     fontWeight: '600',
+  },
+  slider: {
+    width: '100%',
+    height: 40,
   },
 });
 
