@@ -61,6 +61,9 @@ const BookDetails = ({ route, navigation }) => {
               <Text style={styles.label}>Użytkownik: </Text>{owner}
             </Text>
             <Text style={styles.bookDetail}>
+              <Text style={styles.label}>Cena: </Text>{book.price}
+            </Text>
+            <Text style={styles.bookDetail}>
               <Text style={styles.label}>ISBN: </Text>{book.isbn}
             </Text>
           </View>
