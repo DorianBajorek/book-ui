@@ -74,7 +74,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
                   Autor: {item.author ? item.author : 'Brak'}
                 </Text>
                 <Text style={styles.bookDescription}>Użytkownik: {item.user}</Text>
-                <Text style={styles.bookDescription}>Cena: {item.price}</Text>
+                <Text style={styles.bookDescription}>Cena: {item.price + ",00 zł"}</Text>
               </View>
             </TouchableOpacity>
           ))

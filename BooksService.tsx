@@ -86,10 +86,10 @@ export const securedEndpoint = async (token: string) => {
   }
 };
 
-export const getUserOffers = async (token: string) => {
+export const getUserOffers = async (token: string, username: string) => {
   try {
     const response = await axios.get(
-      "http://192.168.68.129:8000/books/v1/get_user_offers/",
+      `http://192.168.68.129:8000/books/v1/get_user_offers/${username}/`,
       {
         headers: {
           'Authorization': `Token ${token}`,
@@ -99,7 +99,7 @@ export const getUserOffers = async (token: string) => {
     );
     return response.data;
   } catch (error) {
-    console.error('Error occurred:', error.response ? error.response.data : error.message);
+    console.error("Error fetching user offers:", error);
   }
 };
 

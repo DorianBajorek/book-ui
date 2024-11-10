@@ -12,7 +12,7 @@ const BooksList = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const data = await getUserOffers(token);
+        const data = await getUserOffers(token, userName);
         setBooks(data);
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -42,7 +42,7 @@ const BooksList = () => {
           <View style={styles.textContainer}>
             <Text style={styles.bookTitle}>{item.title}</Text>
             <Text style={styles.bookDescription}>Autor: {item.author || "Brak"}</Text>
-            <Text style={styles.bookDescription}>Cena: {item.price || "Brak"}</Text>
+            <Text style={styles.bookDescription}>Cena: {item.price + ",00 zł" || "Brak"}</Text>
           </View>
         </TouchableOpacity>
       ))}
