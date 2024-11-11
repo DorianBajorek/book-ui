@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaView } from 'react-native';
 import { useUserData } from '../authentication/UserData';
 import BooksList from './BooksList';
-import BookScanner from './BookScanner';
-
 const Profile = () => {
   const { email, userName } = useUserData();
   const [isModalScanener, setIsModalScanener] = useState(false);
@@ -37,7 +35,6 @@ const Profile = () => {
 
         <View style={styles.separator} />
 
-        <BookScanner isVisible={isModalScanener} onClose={toggleModal} />
         <BooksList />
       </ScrollView>
     </SafeAreaView>

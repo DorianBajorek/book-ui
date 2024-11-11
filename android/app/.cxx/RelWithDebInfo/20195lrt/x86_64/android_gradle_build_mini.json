@@ -1,0 +1,31 @@
+{
+  "buildFiles": [
+    "C:\\Users\\Dorian\\Desktop\\Hello\\jazda\\node_modules\\react-native\\ReactAndroid\\cmake-utils\\default-app-setup\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\Dorian\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\Users\\Dorian\\Desktop\\Hello\\jazda\\android\\app\\.cxx\\RelWithDebInfo\\20195lrt\\x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\Dorian\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\Users\\Dorian\\Desktop\\Hello\\jazda\\android\\app\\.cxx\\RelWithDebInfo\\20195lrt\\x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "appmodules::@6890427a1f51a3e7e1df": {
+      "artifactName": "appmodules",
+      "abi": "x86_64",
+      "output": "C:\\Users\\Dorian\\Desktop\\Hello\\jazda\\android\\app\\build\\intermediates\\cxx\\RelWithDebInfo\\20195lrt\\obj\\x86_64\\libappmodules.so",
+      "runtimeFiles": [
+        "C:\\Users\\Dorian\\.gradle\\caches\\8.10.2\\transforms\\eb4b98dea289284ca2b26e9265bd49ab\\transformed\\fbjni-0.6.0\\prefab\\modules\\fbjni\\libs\\android.x86_64\\libfbjni.so",
+        "C:\\Users\\Dorian\\.gradle\\caches\\8.10.2\\transforms\\335e806144778f46a943d799acdead8b\\transformed\\react-android-0.76.1-release\\prefab\\modules\\jsi\\libs\\android.x86_64\\libjsi.so",
+        "C:\\Users\\Dorian\\.gradle\\caches\\8.10.2\\transforms\\335e806144778f46a943d799acdead8b\\transformed\\react-android-0.76.1-release\\prefab\\modules\\reactnative\\libs\\android.x86_64\\libreactnative.so"
+      ]
+    }
+  }
+}

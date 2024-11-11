@@ -1,0 +1,3 @@
+C:/Users/Dorian/Desktop/Hello/jazda/android/app/.cxx/RelWithDebInfo/20195lrt/armeabi-v7a/CMakeFiles/appmodules.dir
+C:/Users/Dorian/Desktop/Hello/jazda/android/app/.cxx/RelWithDebInfo/20195lrt/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/Dorian/Desktop/Hello/jazda/android/app/.cxx/RelWithDebInfo/20195lrt/armeabi-v7a/CMakeFiles/rebuild_cache.dir

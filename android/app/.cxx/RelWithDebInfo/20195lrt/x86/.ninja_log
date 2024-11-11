@@ -1,0 +1,5 @@
+# ninja log v5
+1	22	0	C:/Users/Dorian/Desktop/Hello/jazda/android/app/.cxx/RelWithDebInfo/20195lrt/x86/CMakeFiles/cmake.verify_globs	ebdabfa30d8a229b
+2	2760	7530529744928256	CMakeFiles/appmodules.dir/C_/Users/Dorian/Desktop/Hello/jazda/android/app/build/generated/autolinking/src/main/jni/autolinking.cpp.o	9685a0ec79fe8bf2
+0	3117	7530529748470385	CMakeFiles/appmodules.dir/OnLoad.cpp.o	ccfbe88becd16750
+3118	3188	7530529749251982	C:/Users/Dorian/Desktop/Hello/jazda/android/app/build/intermediates/cxx/RelWithDebInfo/20195lrt/obj/x86/libappmodules.so	8ed2720922f8bf32

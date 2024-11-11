@@ -1,0 +1,1 @@
+C:\Users\Dorian\Desktop\Hello\jazda\node_modules\react-native\ReactAndroid\cmake-utils\default-app-setup\CMakeLists.txt

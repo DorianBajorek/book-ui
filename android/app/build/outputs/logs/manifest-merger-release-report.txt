@@ -1,0 +1,282 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:1:1-26:12
+INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:1:1-26:12
+INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:1:1-26:12
+INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:1:1-26:12
+MERGED from [com.facebook.react:react-android:0.76.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\335e806144778f46a943d799acdead8b\transformed\react-android-0.76.1-release\AndroidManifest.xml:2:1-12:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\25a31f22afffca05e983b266b435edf4\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6af91d290b6c48be1d0dbd8c30784c44\transformed\appcompat-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\223364b6b60dfda560b40a620164dde4\transformed\imagepipeline-okhttp3-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\e7b42ca7a47a4c0284116ea684f4a6a2\transformed\fragment-1.3.6\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.6.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a06594f8fd5b995a917a4ee5213fb9f6\transformed\activity-1.6.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6e0b2f4a4ec04b7a64671591742e20a5\transformed\lifecycle-viewmodel-savedstate-2.5.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\76b8daa81eb406ed22a0b6a88e85025b\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\57348d70664e2c1ea3572d5c47c987f3\transformed\lifecycle-viewmodel-2.5.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7b4c3856cc769db05c18852bc3ebd957\transformed\savedstate-1.2.0\AndroidManifest.xml:17:1-24:12
+MERGED from [com.facebook.fresco:fresco:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\b20a46ea03616ed48d5f8cb151d1d924\transformed\fresco-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:drawee:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\1244e84750d8236ce09e598dea8ab954\transformed\drawee-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:nativeimagefilters:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\38121d9a394be56d5089dd0c0944d28c\transformed\nativeimagefilters-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:memory-type-native:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\ac67bc3ccef266cad7f6c2969baf068f\transformed\memory-type-native-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:memory-type-java:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\3bb77a5fcd5c4131923d3ac2bff88b01\transformed\memory-type-java-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:imagepipeline-native:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\c8ee8c4c27d3ea5b96018b03cc8fb91c\transformed\imagepipeline-native-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:memory-type-ashmem:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f0ec714a6416c6a74ba4e0dd44e5420f\transformed\memory-type-ashmem-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:imagepipeline:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\63e8a66cb22585ceff9543614b28b49b\transformed\imagepipeline-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:nativeimagetranscoder:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\d35ac9001d3cbfe6a4fe386fd63a965d\transformed\nativeimagetranscoder-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:imagepipeline-base:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6a5058fa29d86d81acb83203307e6645\transformed\imagepipeline-base-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:middleware:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f44835c3b054ebbf8ecf242314a85172\transformed\middleware-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:ui-common:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7ffc21a967e2f0c9c1b89a28abbf77b6\transformed\ui-common-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:soloader:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\07335aef48e6a7e2da79362df6cdc677\transformed\soloader-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.fresco:fbcore:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\152aa2e841a0b3c854c053bee46a66e3\transformed\fbcore-3.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.react:hermes-android:0.76.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\461b16042a3fbc3d5214703f3c2d7ff2\transformed\hermes-android-0.76.1-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\50914aaea93bd47dc1d763c7a7637f72\transformed\swiperefreshlayout-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\0c09d49229da0658fa86774e4b96941e\transformed\emoji2-views-helper-1.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:17:1-37:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\62f290facca0ce52db15fda6753b65c2\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\32a4ddd6f9d7ca74e8bfa06f9c62772a\transformed\tracing-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.autofill:autofill:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\ba76bb39cd3e571c94d3936efba02e00\transformed\autofill-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\af465e83823ef7970d24bd6348f17bf9\transformed\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\810ac5413377c88fa5a09397e508f0b9\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\03446184a3d95dc508d5727eea938a35\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-ktx:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\2a853f9bf0c5448a884c474d3cf249bb\transformed\core-ktx-1.9.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\e535967dd95b173dd8550f491f0f8c48\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\07c0aae71273a1e4600dc97c48f91772\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6cc0bc5cb63c888ebc87779a014e2142\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\1e53402a542010169e8dd6527ca3d2db\transformed\lifecycle-runtime-2.5.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\8b17c9f61f2b1310e675323f79719cf2\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\676456ad6d15bcb3fc262052291325ad\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\af50f9bf96322219a177bf7a48cee197\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\82af6096291c0843c55e68ead63930f7\transformed\lifecycle-livedata-core-2.5.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\805ef36eaf6fdaa0f24b52bad163551e\transformed\core-runtime-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\da8d857d6aba7dbb83628a00ab3d97f5\transformed\annotation-experimental-1.3.0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.facebook.fbjni:fbjni:0.6.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\eb4b98dea289284ca2b26e9265bd49ab\transformed\fbjni-0.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.facebook.soloader:soloader:0.12.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f368bb971dc09aa9579851c0dac74d81\transformed\soloader-0.12.1\AndroidManifest.xml:2:1-17:12
+	package
+		INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:3:5-67
+	android:name
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:3:22-64
+application
+ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:5:5-25:19
+INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:5:5-25:19
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\62f290facca0ce52db15fda6753b65c2\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\62f290facca0ce52db15fda6753b65c2\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\676456ad6d15bcb3fc262052291325ad\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\676456ad6d15bcb3fc262052291325ad\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [com.facebook.soloader:soloader:0.12.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f368bb971dc09aa9579851c0dac74d81\transformed\soloader-0.12.1\AndroidManifest.xml:11:5-15:19
+MERGED from [com.facebook.soloader:soloader:0.12.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f368bb971dc09aa9579851c0dac74d81\transformed\soloader-0.12.1\AndroidManifest.xml:11:5-15:19
+	android:extractNativeLibs
+		INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:12:7-33
+	android:label
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:7:7-39
+	android:roundIcon
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:9:7-52
+	android:icon
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:8:7-41
+	android:allowBackup
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:10:7-34
+	android:theme
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:11:7-38
+	android:name
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:6:7-38
+activity#com.jazda.MainActivity
+ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:13:7-24:18
+	android:label
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:15:9-41
+	android:launchMode
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:17:9-40
+	android:windowSoftInputMode
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:18:9-51
+	android:exported
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:19:9-32
+	android:configChanges
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:16:9-118
+	android:name
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:14:9-37
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:20:9-23:25
+action#android.intent.action.MAIN
+ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:21:13-65
+	android:name
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:21:21-62
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:22:13-73
+	android:name
+		ADDED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml:22:23-70
+uses-sdk
+INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml
+MERGED from [com.facebook.react:react-android:0.76.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\335e806144778f46a943d799acdead8b\transformed\react-android-0.76.1-release\AndroidManifest.xml:10:5-44
+MERGED from [com.facebook.react:react-android:0.76.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\335e806144778f46a943d799acdead8b\transformed\react-android-0.76.1-release\AndroidManifest.xml:10:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\25a31f22afffca05e983b266b435edf4\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\25a31f22afffca05e983b266b435edf4\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6af91d290b6c48be1d0dbd8c30784c44\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6af91d290b6c48be1d0dbd8c30784c44\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\223364b6b60dfda560b40a620164dde4\transformed\imagepipeline-okhttp3-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\223364b6b60dfda560b40a620164dde4\transformed\imagepipeline-okhttp3-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\e7b42ca7a47a4c0284116ea684f4a6a2\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\e7b42ca7a47a4c0284116ea684f4a6a2\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.6.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a06594f8fd5b995a917a4ee5213fb9f6\transformed\activity-1.6.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.6.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a06594f8fd5b995a917a4ee5213fb9f6\transformed\activity-1.6.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6e0b2f4a4ec04b7a64671591742e20a5\transformed\lifecycle-viewmodel-savedstate-2.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6e0b2f4a4ec04b7a64671591742e20a5\transformed\lifecycle-viewmodel-savedstate-2.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\76b8daa81eb406ed22a0b6a88e85025b\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\76b8daa81eb406ed22a0b6a88e85025b\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\57348d70664e2c1ea3572d5c47c987f3\transformed\lifecycle-viewmodel-2.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\57348d70664e2c1ea3572d5c47c987f3\transformed\lifecycle-viewmodel-2.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7b4c3856cc769db05c18852bc3ebd957\transformed\savedstate-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7b4c3856cc769db05c18852bc3ebd957\transformed\savedstate-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [com.facebook.fresco:fresco:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\b20a46ea03616ed48d5f8cb151d1d924\transformed\fresco-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:fresco:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\b20a46ea03616ed48d5f8cb151d1d924\transformed\fresco-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:drawee:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\1244e84750d8236ce09e598dea8ab954\transformed\drawee-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:drawee:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\1244e84750d8236ce09e598dea8ab954\transformed\drawee-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:nativeimagefilters:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\38121d9a394be56d5089dd0c0944d28c\transformed\nativeimagefilters-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:nativeimagefilters:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\38121d9a394be56d5089dd0c0944d28c\transformed\nativeimagefilters-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:memory-type-native:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\ac67bc3ccef266cad7f6c2969baf068f\transformed\memory-type-native-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:memory-type-native:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\ac67bc3ccef266cad7f6c2969baf068f\transformed\memory-type-native-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:memory-type-java:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\3bb77a5fcd5c4131923d3ac2bff88b01\transformed\memory-type-java-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:memory-type-java:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\3bb77a5fcd5c4131923d3ac2bff88b01\transformed\memory-type-java-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:imagepipeline-native:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\c8ee8c4c27d3ea5b96018b03cc8fb91c\transformed\imagepipeline-native-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:imagepipeline-native:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\c8ee8c4c27d3ea5b96018b03cc8fb91c\transformed\imagepipeline-native-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:memory-type-ashmem:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f0ec714a6416c6a74ba4e0dd44e5420f\transformed\memory-type-ashmem-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:memory-type-ashmem:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f0ec714a6416c6a74ba4e0dd44e5420f\transformed\memory-type-ashmem-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:imagepipeline:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\63e8a66cb22585ceff9543614b28b49b\transformed\imagepipeline-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:imagepipeline:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\63e8a66cb22585ceff9543614b28b49b\transformed\imagepipeline-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:nativeimagetranscoder:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\d35ac9001d3cbfe6a4fe386fd63a965d\transformed\nativeimagetranscoder-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:nativeimagetranscoder:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\d35ac9001d3cbfe6a4fe386fd63a965d\transformed\nativeimagetranscoder-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:imagepipeline-base:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6a5058fa29d86d81acb83203307e6645\transformed\imagepipeline-base-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:imagepipeline-base:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6a5058fa29d86d81acb83203307e6645\transformed\imagepipeline-base-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:middleware:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f44835c3b054ebbf8ecf242314a85172\transformed\middleware-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:middleware:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f44835c3b054ebbf8ecf242314a85172\transformed\middleware-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:ui-common:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7ffc21a967e2f0c9c1b89a28abbf77b6\transformed\ui-common-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:ui-common:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7ffc21a967e2f0c9c1b89a28abbf77b6\transformed\ui-common-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:soloader:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\07335aef48e6a7e2da79362df6cdc677\transformed\soloader-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:soloader:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\07335aef48e6a7e2da79362df6cdc677\transformed\soloader-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:fbcore:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\152aa2e841a0b3c854c053bee46a66e3\transformed\fbcore-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fresco:fbcore:3.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\152aa2e841a0b3c854c053bee46a66e3\transformed\fbcore-3.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.react:hermes-android:0.76.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\461b16042a3fbc3d5214703f3c2d7ff2\transformed\hermes-android-0.76.1-release\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.react:hermes-android:0.76.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\461b16042a3fbc3d5214703f3c2d7ff2\transformed\hermes-android-0.76.1-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\50914aaea93bd47dc1d763c7a7637f72\transformed\swiperefreshlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\50914aaea93bd47dc1d763c7a7637f72\transformed\swiperefreshlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\0c09d49229da0658fa86774e4b96941e\transformed\emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\0c09d49229da0658fa86774e4b96941e\transformed\emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\62f290facca0ce52db15fda6753b65c2\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\62f290facca0ce52db15fda6753b65c2\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\32a4ddd6f9d7ca74e8bfa06f9c62772a\transformed\tracing-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\32a4ddd6f9d7ca74e8bfa06f9c62772a\transformed\tracing-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\ba76bb39cd3e571c94d3936efba02e00\transformed\autofill-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\ba76bb39cd3e571c94d3936efba02e00\transformed\autofill-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\af465e83823ef7970d24bd6348f17bf9\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\af465e83823ef7970d24bd6348f17bf9\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\810ac5413377c88fa5a09397e508f0b9\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\810ac5413377c88fa5a09397e508f0b9\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\03446184a3d95dc508d5727eea938a35\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\03446184a3d95dc508d5727eea938a35\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\2a853f9bf0c5448a884c474d3cf249bb\transformed\core-ktx-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\2a853f9bf0c5448a884c474d3cf249bb\transformed\core-ktx-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\e535967dd95b173dd8550f491f0f8c48\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\e535967dd95b173dd8550f491f0f8c48\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\07c0aae71273a1e4600dc97c48f91772\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\07c0aae71273a1e4600dc97c48f91772\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6cc0bc5cb63c888ebc87779a014e2142\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\6cc0bc5cb63c888ebc87779a014e2142\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\1e53402a542010169e8dd6527ca3d2db\transformed\lifecycle-runtime-2.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\1e53402a542010169e8dd6527ca3d2db\transformed\lifecycle-runtime-2.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\8b17c9f61f2b1310e675323f79719cf2\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\8b17c9f61f2b1310e675323f79719cf2\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\676456ad6d15bcb3fc262052291325ad\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\676456ad6d15bcb3fc262052291325ad\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\af50f9bf96322219a177bf7a48cee197\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\af50f9bf96322219a177bf7a48cee197\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\82af6096291c0843c55e68ead63930f7\transformed\lifecycle-livedata-core-2.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\82af6096291c0843c55e68ead63930f7\transformed\lifecycle-livedata-core-2.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\805ef36eaf6fdaa0f24b52bad163551e\transformed\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\805ef36eaf6fdaa0f24b52bad163551e\transformed\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\da8d857d6aba7dbb83628a00ab3d97f5\transformed\annotation-experimental-1.3.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\da8d857d6aba7dbb83628a00ab3d97f5\transformed\annotation-experimental-1.3.0\AndroidManifest.xml:20:5-44
+MERGED from [com.facebook.fbjni:fbjni:0.6.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\eb4b98dea289284ca2b26e9265bd49ab\transformed\fbjni-0.6.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.fbjni:fbjni:0.6.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\eb4b98dea289284ca2b26e9265bd49ab\transformed\fbjni-0.6.0\AndroidManifest.xml:5:5-44
+MERGED from [com.facebook.soloader:soloader:0.12.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f368bb971dc09aa9579851c0dac74d81\transformed\soloader-0.12.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.soloader:soloader:0.12.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f368bb971dc09aa9579851c0dac74d81\transformed\soloader-0.12.1\AndroidManifest.xml:7:5-9:41
+	android:targetSdkVersion
+		INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\Dorian\Desktop\Hello\jazda\android\app\src\main\AndroidManifest.xml
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\62f290facca0ce52db15fda6753b65c2\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\62f290facca0ce52db15fda6753b65c2\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\86b8f0d43e11168c51ff0ffa71dc10a1\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\7bd01047eda15fbf1cab798782263d28\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+permission#com.jazda.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+uses-permission#com.jazda.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.9.0] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\a4cc07da18dac1137b1cc252650afbb4\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+meta-data#com.facebook.soloader.enabled
+ADDED from [com.facebook.soloader:soloader:0.12.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f368bb971dc09aa9579851c0dac74d81\transformed\soloader-0.12.1\AndroidManifest.xml:12:9-14:37
+	android:value
+		ADDED from [com.facebook.soloader:soloader:0.12.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f368bb971dc09aa9579851c0dac74d81\transformed\soloader-0.12.1\AndroidManifest.xml:14:13-34
+	android:name
+		ADDED from [com.facebook.soloader:soloader:0.12.1] C:\Users\Dorian\.gradle\caches\8.10.2\transforms\f368bb971dc09aa9579851c0dac74d81\transformed\soloader-0.12.1\AndroidManifest.xml:13:13-57

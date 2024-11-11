@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.jazda.app-mergeReleaseResources-24:/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Dorian\\.gradle\\caches\\8.10.2\\transforms\\6af91d290b6c48be1d0dbd8c30784c44\\transformed\\appcompat-1.6.1\\res\\values-port\\values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}
