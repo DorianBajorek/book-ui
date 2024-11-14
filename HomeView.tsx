@@ -4,7 +4,6 @@ import { useUserData } from './authentication/UserData';
 import BookSlider from './components/BookSlider';
 import atomoweNawyki from './img/atomowe-nawyki.jpg';
 import jobs from './img/jobs.png';
-import teoriaLiczb from './img/teoria-liczb.png';
 import goggins from './img/goggins.png';
 import korwin from './img/korwin.jpg';
 import pulapka from './img/pulapka.jpg';
@@ -13,7 +12,7 @@ import wedrowka from './img/wedrowka.png';
 const books = [
   { id: '1', image: atomoweNawyki },
   { id: '2', image: jobs },
-  { id: '3', image: teoriaLiczb },
+  { id: '3', image: jobs },
   { id: '4', image: goggins },
   { id: '5', image: korwin },
   { id: '6', image: pulapka },

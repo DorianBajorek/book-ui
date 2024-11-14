@@ -1,4 +1,0 @@
-#Mon Nov 11 19:30:21 CET 2024
-base.0=C\:\\Users\\Dorian\\Desktop\\Hello\\jazda\\android\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
-renamed.0=classes.dex
-path.0=classes.dex

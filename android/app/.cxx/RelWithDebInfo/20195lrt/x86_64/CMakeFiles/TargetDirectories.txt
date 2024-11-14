@@ -1,3 +1,0 @@
-C:/Users/Dorian/Desktop/Hello/jazda/android/app/.cxx/RelWithDebInfo/20195lrt/x86_64/CMakeFiles/appmodules.dir
-C:/Users/Dorian/Desktop/Hello/jazda/android/app/.cxx/RelWithDebInfo/20195lrt/x86_64/CMakeFiles/edit_cache.dir
-C:/Users/Dorian/Desktop/Hello/jazda/android/app/.cxx/RelWithDebInfo/20195lrt/x86_64/CMakeFiles/rebuild_cache.dir
