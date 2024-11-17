@@ -37,7 +37,6 @@ const Profile = () => {
 
         <View style={styles.separator} />
 
-        <BookScanner isVisible={isModalScanener} onClose={toggleModal} />
         <BooksList />
       </ScrollView>
     </SafeAreaView>

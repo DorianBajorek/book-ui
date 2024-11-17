@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { useUserData } from './authentication/UserData';
 import BookSlider from './components/BookSlider';
@@ -8,6 +8,7 @@ import goggins from './img/goggins.png';
 import korwin from './img/korwin.jpg';
 import pulapka from './img/pulapka.jpg';
 import wedrowka from './img/wedrowka.png';
+import { testEndpointGet } from './BooksService';
 
 const books = [
   { id: '1', image: atomoweNawyki },
@@ -25,12 +26,28 @@ type NavigationProp = {
 
 const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
   const { logout, token } = useUserData();
+  const [userName, setUserName] = useState<string>(''); // State to hold fetched data
+
+  // Function to fetch user data from endpoint
+  const handleClick = () => {
+    const fetchData = async () => {
+      try {
+        const response = await testEndpointGet();
+        setUserName(response?.data[0].name)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.appTitle}>Druga Książka</Text>
-
+      
       <Text style={styles.description}>
+        LECE 
         Druga Książka to platforma, gdzie możesz wymieniać książki i dawać im drugie życie. Dołącz do naszej społeczności, odkrywaj nowe tytuły lub dziel się swoją kolekcją z innymi!
       </Text>
       
@@ -48,7 +65,7 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
               <Text style={styles.buttonText}>Zarejestruj się</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+            <TouchableOpacity style={styles.button} onPress={handleClick}>
               <Text style={styles.buttonText}>Zaloguj się</Text>
             </TouchableOpacity>
           </>
@@ -69,6 +86,7 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
           <Text style={styles.howItWorksStep}>📷 Robisz zdjęcie tyłu książki.</Text>
           <Text style={styles.howItWorksStep}>💰 Ustawiasz cenę.</Text>
           <Text style={styles.howItWorksStep}>✅ I gotowe!</Text>
+          <Text style={styles.userName}>User Name: {userName ? userName : 'Loading...'}</Text>
         </View>
       </View>
     </ScrollView>
@@ -158,6 +176,13 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginVertical: 5,
     lineHeight: 22,
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#2E86C1',
   },
 });
 
