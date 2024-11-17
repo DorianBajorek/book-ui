@@ -34,6 +34,16 @@ export const registerUser = async (email: string, username: string, password: st
       return null;
     }
   };
+
+  export const testEndpointGet3 = async () => {
+    try {
+      const response = await axios.get("http://198.244.188.128:8000/auth/xd/");
+      return response
+    } catch (error) {
+      console.error('Registration failed', error);
+      return null;
+    }
+  };
   
 export const loginUser = async (username: string, password: string) => {
   try {

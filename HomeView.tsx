@@ -8,7 +8,7 @@ import goggins from './img/goggins.png';
 import korwin from './img/korwin.jpg';
 import pulapka from './img/pulapka.jpg';
 import wedrowka from './img/wedrowka.png';
-import { testEndpointGet, testEndpointGet2 } from './BooksService';
+import { testEndpointGet, testEndpointGet2, testEndpointGet3 } from './BooksService';
 
 const books = [
   { id: '1', image: atomoweNawyki },
@@ -28,15 +28,17 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
   const { logout, token } = useUserData();
   const [userName, setUserName] = useState<string>('');
   const [userName2, setUserName2] = useState<string>('');
+  const [userName3, setUserName3] = useState<string>('');
 
-  // Function to fetch user data from endpoint
   const handleClick = () => {
     const fetchData = async () => {
       try {
         const response = await testEndpointGet();
         setUserName(response?.data[0].name)
         const response2 = await testEndpointGet2();
-        setUserName2(response?.data[0].name)
+        setUserName2(response2?.data[0].name)
+        const response3 = await testEndpointGet3();
+        setUserName3(response3?.data.message)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -91,6 +93,7 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
           <Text style={styles.howItWorksStep}>✅ I gotowe!</Text>
           <Text style={styles.userName}>User Name: {userName ? userName : 'Loading...'}</Text>
           <Text style={styles.userName}>User Name2: {userName2 ? userName2 : 'Loading...'}</Text>
+          <Text style={styles.userName}>User Name2: {userName3 ? userName3 : 'Loading...'}</Text>
         </View>
       </View>
     </ScrollView>
