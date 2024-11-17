@@ -24,6 +24,16 @@ export const registerUser = async (email: string, username: string, password: st
       return null;
     }
   };
+
+  export const testEndpointGet2 = async () => {
+    try {
+      const response = await axios.get("http://fake-json-api.mock.beeceptor.com/users");
+      return response
+    } catch (error) {
+      console.error('Registration failed', error);
+      return null;
+    }
+  };
   
 export const loginUser = async (username: string, password: string) => {
   try {
