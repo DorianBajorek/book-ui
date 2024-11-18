@@ -21,7 +21,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator>
-      {token ? (
+      {true ? (
         <>
           <Tab.Screen 
             name="Start" 

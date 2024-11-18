@@ -1,85 +1,73 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useUserData } from '../authentication/UserData';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useState } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const MessagesScreen = () => {
-  const { conversations } = useUserData();
-  const navigation = useNavigation();
+export default function App() {
+  const [facing, setFacing] = useState<CameraType>('back');
+  const [permission, requestPermission] = useCameraPermissions();
+  const [value, setValue] = useState("");
 
-  const renderMessageItem = ({ item }) => {
-    const lastMessage = item.messages && item.messages.length > 0 ? item.messages[item.messages.length - 1] : null;
+  if (!permission) {
+    // Camera permissions are still loading.
+    return <View />;
+  }
 
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
     return (
-      <TouchableOpacity
-        style={styles.messageItem}
-        onPress={() => navigation.navigate('Chat', { recipient: item.recipient })}
-      >
-        <View style={styles.messageContent}>
-          <Text style={styles.userName}>{item.recipient}</Text>
-          <Text style={styles.lastMessage}>
-            {lastMessage && typeof lastMessage.message === 'string'
-              ? lastMessage.message
-              : "No messages yet"}
-          </Text>
-        </View>
-        <Text style={styles.messageTime}>{lastMessage ? lastMessage.time || "N/A" : "N/A"}</Text>
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
     );
-  };
+  }
+
+  function toggleCameraFacing() {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Wiadomości</Text>
-      <FlatList
-        data={conversations}
-        keyExtractor={(item) => item.recipient}
-        renderItem={renderMessageItem}
-        contentContainerStyle={styles.listContainer}
-      />
+      <CameraView style={styles.camera} facing={facing} onBarcodeScanned={({data}) => {
+        console.log("DATA: " + data)
+        setValue(data)
+      }}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Text style={styles.text}>Flip Camera {value}</Text>
+          </TouchableOpacity>
+        </View>
+      </CameraView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 20,
+    justifyContent: 'center',
   },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingHorizontal: 16,
+  message: {
+    textAlign: 'center',
     paddingBottom: 10,
   },
-  listContainer: {
-    paddingHorizontal: 16,
-  },
-  messageItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  messageContent: {
+  camera: {
     flex: 1,
   },
-  userName: {
-    fontSize: 18,
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 24,
     fontWeight: 'bold',
-  },
-  lastMessage: {
-    fontSize: 14,
-    color: '#555',
-    marginTop: 2,
-  },
-  messageTime: {
-    fontSize: 12,
-    color: '#999',
+    color: 'white',
   },
 });
-
-export default MessagesScreen;
