@@ -1,85 +1,109 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useUserData } from '../authentication/UserData';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useState, useRef } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 
-const MessagesScreen = () => {
-  const { conversations } = useUserData();
-  const navigation = useNavigation();
+export default function App() {
+  const [facing, setFacing] = useState<CameraType>('back');
+  const [permission, requestPermission] = useCameraPermissions();
+  const [photo, setPhoto] = useState<string | null>(null);
+  const cameraRef = useRef<CameraView>(null);
 
-  const renderMessageItem = ({ item }) => {
-    const lastMessage = item.messages && item.messages.length > 0 ? item.messages[item.messages.length - 1] : null;
+  if (!permission) {
+    return <View />;
+  }
 
+  if (!permission.granted) {
     return (
-      <TouchableOpacity
-        style={styles.messageItem}
-        onPress={() => navigation.navigate('Chat', { recipient: item.recipient })}
-      >
-        <View style={styles.messageContent}>
-          <Text style={styles.userName}>{item.recipient}</Text>
-          <Text style={styles.lastMessage}>
-            {lastMessage && typeof lastMessage.message === 'string'
-              ? lastMessage.message
-              : "No messages yet"}
-          </Text>
-        </View>
-        <Text style={styles.messageTime}>{lastMessage ? lastMessage.time || "N/A" : "N/A"}</Text>
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
     );
-  };
+  }
+
+  function toggleCameraFacing() {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  }
+
+  async function takePicture() {
+    if (cameraRef.current) {
+      const photoData = await cameraRef.current.takePictureAsync();
+      setPhoto(photoData.uri);
+    }
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Wiadomości</Text>
-      <FlatList
-        data={conversations}
-        keyExtractor={(item) => item.recipient}
-        renderItem={renderMessageItem}
-        contentContainerStyle={styles.listContainer}
-      />
+      <CameraView
+        ref={cameraRef}
+        style={styles.camera}
+        facing={facing}
+      >
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={takePicture}>
+            <Text style={styles.text}>Take Picture</Text>
+          </TouchableOpacity>
+        </View>
+      </CameraView>
+      
+      {photo && (
+        <View style={styles.photoContainer}>
+          <Text style={styles.message}>Your Photo:</Text>
+          <Image source={{ uri: photo }} style={styles.photo} />
+        </View>
+      )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingHorizontal: 16,
+  message: {
+    textAlign: 'center',
     paddingBottom: 10,
   },
-  listContainer: {
-    paddingHorizontal: 16,
+  camera: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
-  messageItem: {
+  buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingBottom: 40,
   },
-  messageContent: {
+  button: {
     flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 10,
+    borderRadius: 5,
+    margin: 5,
   },
-  userName: {
+  text: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white',
   },
-  lastMessage: {
-    fontSize: 14,
-    color: '#555',
-    marginTop: 2,
+  photoContainer: {
+    alignItems: 'center',
+    marginTop: 20,
   },
-  messageTime: {
-    fontSize: 12,
-    color: '#999',
+  photo: {
+    width: 300,
+    height: 300,
+    borderRadius: 10,
+    marginTop: 10,
   },
 });
-
-export default MessagesScreen;

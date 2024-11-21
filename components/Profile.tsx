@@ -40,7 +40,6 @@ const Profile = () => {
         <BooksList />
       </ScrollView>
 
-      {/* Modal */}
       <Modal
         visible={isModalScanner}
         animationType="slide"
@@ -50,10 +49,10 @@ const Profile = () => {
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
             <BarcodeScanner />
-          </View>
-          <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+            <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
               <Text style={styles.closeButtonText}>Zamknij</Text>
             </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </SafeAreaView>
@@ -147,8 +146,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: '100%',
-    height: '50%',
+    width: '90%',
+    minHeight: '60%',
     justifyContent: 'flex-end',
     backgroundColor: '#fff',
     borderTopLeftRadius: 15,

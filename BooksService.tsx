@@ -7,38 +7,8 @@ export const registerUser = async (email: string, username: string, password: st
         username: username,
         password: password
       };
-      const response = await axios.post("http://192.168.100.9:8000/auth/v1/register/", payload);
+      const response = await axios.post("https://drugaksiazka.pl/api/auth/v1/register/", payload);
       return response.data
-    } catch (error) {
-      console.error('Registration failed', error);
-      return null;
-    }
-  };
-
-  export const testEndpointGet = async () => {
-    try {
-      const response = await axios.get("https://fake-json-api.mock.beeceptor.com/users");
-      return response
-    } catch (error) {
-      console.error('Registration failed', error);
-      return null;
-    }
-  };
-
-  export const testEndpointGet2 = async () => {
-    try {
-      const response = await axios.get("http://fake-json-api.mock.beeceptor.com/users");
-      return response
-    } catch (error) {
-      console.error('Registration failed', error);
-      return null;
-    }
-  };
-
-  export const testEndpointGet3 = async () => {
-    try {
-      const response = await axios.get("http://192.168.100.9:8000/auth/xd/");
-      return response
     } catch (error) {
       console.error('Registration failed', error);
       return null;
@@ -51,7 +21,7 @@ export const loginUser = async (username: string, password: string) => {
       username: username,
       password: password
     };
-    const response = await axios.post("http://192.168.100.9:8000/auth/v1/login/", payload);
+    const response = await axios.post("https://drugaksiazka.pl/api/auth/v1/login/", payload);
     console.log(response.data)
     return response.data;
   } catch (error) {
@@ -83,7 +53,7 @@ export const createOffer = async (isbn: string, token: string, frontImage: strin
     }
 
     const response = await axios.post(
-      `http://192.168.100.9:8000/books/v1/create_offer/`,
+      `https://drugaksiazka.pl/api/books/v1/create_offer/`,
       formData,
       {
         headers: {
@@ -102,7 +72,7 @@ export const createOffer = async (isbn: string, token: string, frontImage: strin
 export const securedEndpoint = async (token: string) => {
   try {
     const response = await axios.post(
-      "http://192.168.100.9:8000/auth/secured/",
+      "https://drugaksiazka.pl/api/auth/secured/",
       {
         headers: {
           'Authorization': `Token ${token}`,
@@ -119,7 +89,7 @@ export const securedEndpoint = async (token: string) => {
 export const getUserOffers = async (token: string, username: string) => {
   try {
     const response = await axios.get(
-      `http://192.168.100.9:8000/books/v1/get_user_offers/${username}/`,
+      `https://drugaksiazka.pl/api/books/v1/get_user_offers/${username}/`,
       {
         headers: {
           'Authorization': `Token ${token}`,
@@ -136,7 +106,7 @@ export const getUserOffers = async (token: string, username: string) => {
 export const deleteOffer = async (token: string, offerId: string) => {
   try {
     const response = await axios.delete(
-      `http://192.168.100.9:8000/books/v1/delete_offer/${offerId}/`,
+      `https://drugaksiazka.pl/api/books/v1/delete_offer/${offerId}/`,
       {
         headers: {
           'Authorization': `Token ${token}`,
@@ -152,7 +122,7 @@ export const deleteOffer = async (token: string, offerId: string) => {
 
 export const getOffersByQuery = async (token: string, searchQuery: string) => {
   try {
-    const url = `http://192.168.100.9:8000/books/v1/search_users_with_title/?searchQuery=${encodeURIComponent(searchQuery)}`;
+    const url = `https://drugaksiazka.pl/api/books/v1/search_users_with_title/?searchQuery=${encodeURIComponent(searchQuery)}`;
     const response = await axios.get(url, {
       headers: {
         Authorization: `Token ${token}`
@@ -172,7 +142,7 @@ export const sendMessage = async (token: string, recipient: string, message: str
       message: message,
       isRead: false,
     };
-    const response = await axios.post("http://192.168.100.9:8000/messages/v1/send_message/", 
+    const response = await axios.post("https://drugaksiazka.pl/api/messages/v1/send_message/", 
       payload,
       {
         headers: {
@@ -189,7 +159,7 @@ export const sendMessage = async (token: string, recipient: string, message: str
 
 export const getAllConversations = async (token: string) => {
   try {
-    const url = `http://192.168.100.9:8000/messages/v1/get_all_conversations/`;
+    const url = `https://drugaksiazka.pl/api/messages/v1/get_all_conversations/`;
     const response = await axios.get(url, {
       headers: {
         Authorization: `Token ${token}`
@@ -207,7 +177,7 @@ export const readMessage = async (token: string, recipant: string) => {
     const payload = {
       recipant: recipant,
     };
-    const response = await axios.post("http://192.168.100.9:8000/messages/v1/read_messages/", 
+    const response = await axios.post("https://drugaksiazka.pl/api/messages/v1/read_messages/", 
       payload,
       {
         headers: {

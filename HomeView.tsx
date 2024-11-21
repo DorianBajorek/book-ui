@@ -8,7 +8,6 @@ import goggins from './img/goggins.png';
 import korwin from './img/korwin.jpg';
 import pulapka from './img/pulapka.jpg';
 import wedrowka from './img/wedrowka.png';
-import { testEndpointGet, testEndpointGet2, testEndpointGet3 } from './BooksService';
 
 const books = [
   { id: '1', image: atomoweNawyki },
@@ -52,7 +51,6 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
       <Text style={styles.appTitle}>Druga Książka</Text>
       
       <Text style={styles.description}>
-        LECE 
         Druga Książka to platforma, gdzie możesz wymieniać książki i dawać im drugie życie. Dołącz do naszej społeczności, odkrywaj nowe tytuły lub dziel się swoją kolekcją z innymi!
       </Text>
       
@@ -70,7 +68,7 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
               <Text style={styles.buttonText}>Zarejestruj się</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleClick}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
               <Text style={styles.buttonText}>Zaloguj się</Text>
             </TouchableOpacity>
           </>
