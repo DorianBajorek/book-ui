@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaView, Modal } from 'react-native';
 import { useUserData } from '../authentication/UserData';
 import BooksList from './BooksList';
-import BookScanner from './BookScanner';
+import BarcodeScanner from './BarcodeScanner';
 
 const Profile = () => {
   const { email, userName } = useUserData();
-  const [isModalScanener, setIsModalScanener] = useState(false);
+  const [isModalScanner, setIsModalScanner] = useState(false);
 
   const toggleModal = () => {
-    setIsModalScanener(!isModalScanener);
+    setIsModalScanner(!isModalScanner);
   };
 
   return (
@@ -37,9 +37,24 @@ const Profile = () => {
 
         <View style={styles.separator} />
 
-        <BookScanner isVisible={isModalScanener} onClose={toggleModal} />
         <BooksList />
       </ScrollView>
+
+      <Modal
+        visible={isModalScanner}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <BarcodeScanner />
+            <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+              <Text style={styles.closeButtonText}>Zamknij</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -123,6 +138,33 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 1,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: '90%',
+    minHeight: '60%',
+    justifyContent: 'flex-end',
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
+  closeButton: {
+    backgroundColor: '#4682B4',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 30,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

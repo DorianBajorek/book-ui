@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { useUserData } from './authentication/UserData';
 import BookSlider from './components/BookSlider';
@@ -25,11 +25,31 @@ type NavigationProp = {
 
 const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
   const { logout, token } = useUserData();
+  const [userName, setUserName] = useState<string>('');
+  const [userName2, setUserName2] = useState<string>('');
+  const [userName3, setUserName3] = useState<string>('');
+
+  const handleClick = () => {
+    const fetchData = async () => {
+      try {
+        const response = await testEndpointGet();
+        setUserName(response?.data[0].name)
+        const response2 = await testEndpointGet2();
+        setUserName2(response2?.data[0].name)
+        const response3 = await testEndpointGet3();
+        setUserName3(response3?.data.message)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.appTitle}>Druga Książka</Text>
-
+      
       <Text style={styles.description}>
         Druga Książka to platforma, gdzie możesz wymieniać książki i dawać im drugie życie. Dołącz do naszej społeczności, odkrywaj nowe tytuły lub dziel się swoją kolekcją z innymi!
       </Text>
@@ -69,6 +89,9 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
           <Text style={styles.howItWorksStep}>📷 Robisz zdjęcie tyłu książki.</Text>
           <Text style={styles.howItWorksStep}>💰 Ustawiasz cenę.</Text>
           <Text style={styles.howItWorksStep}>✅ I gotowe!</Text>
+          <Text style={styles.userName}>User Name: {userName ? userName : 'Loading...'}</Text>
+          <Text style={styles.userName}>User Name2: {userName2 ? userName2 : 'Loading...'}</Text>
+          <Text style={styles.userName}>User Name2: {userName3 ? userName3 : 'Loading...'}</Text>
         </View>
       </View>
     </ScrollView>
@@ -158,6 +181,13 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginVertical: 5,
     lineHeight: 22,
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#2E86C1',
   },
 });
 
