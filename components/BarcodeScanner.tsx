@@ -98,27 +98,15 @@ export default function App() {
         )}
         {frontPhoto && !backPhoto && (
             <View style={styles.photoSection}>
-              <Text style={styles.message}>Front Photo:</Text>
               <Image source={{ uri: frontPhoto }} style={styles.smallPhoto} />
             </View>
           )}
 
           {!frontPhoto && backPhoto && (
             <View style={styles.photoSection}>
-              <Text style={styles.message}>Back Photo:</Text>
               <Image source={{ uri: backPhoto }} style={styles.smallPhoto} />
             </View>
           )}
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setCameraVisible(true);
-              setPhotoMode('none');
-            }}
-          >
-            <Text style={styles.buttonText}>Skanuj ponownie</Text>
-          </TouchableOpacity>
         </View>
       )}
 
