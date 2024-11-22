@@ -4,6 +4,7 @@ import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-n
 import { createOffer } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -37,18 +38,27 @@ export default function App() {
     setPhotoMode('none');
   };
 
-  async function takePicture() {
-    if (cameraRef.current) {
-      const photoData = await cameraRef.current.takePictureAsync();
-      if (photoMode === 'front') {
-        setFrontPhoto(photoData.uri);
-      } else if (photoMode === 'back') {
-        setBackPhoto(photoData.uri);
-      }
-      setPhotoMode('none');
-      setCameraVisible(false);
+async function takePicture() {
+  if (cameraRef.current) {
+    const photoData = await cameraRef.current.takePictureAsync();
+
+    // Compress the image
+    const compressedPhoto = await manipulateAsync(
+      photoData.uri,
+      [],
+      { compress: 0.7, format: SaveFormat.JPEG }
+    );
+
+    if (photoMode === 'front') {
+      setFrontPhoto(compressedPhoto.uri);
+    } else if (photoMode === 'back') {
+      setBackPhoto(compressedPhoto.uri);
     }
+
+    setPhotoMode('none');
+    setCameraVisible(false);
   }
+}
 
   const saveBook = async () => {
     console.log(isbnCode + " " + token + " " + frontPhoto + "  " + backPhoto);

@@ -36,7 +36,7 @@ const BooksList = () => {
           activeOpacity={0.8}
         >
           <Image 
-            source={{ uri: item.cover_book.replace("/media/", "/media/cover_images/") }}
+            source={{ uri: item.cover_book.replace("/media/", "/media/cover_images/").replace("http", "https")}}
             style={styles.bookImage} 
           />
           <View style={styles.textContainer}>

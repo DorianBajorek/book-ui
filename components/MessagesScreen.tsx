@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useUserData } from '../authentication/UserData';
+import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
 
 const MessagesScreen = () => {
   const { conversations } = useUserData();
