@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaView, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaView, Modal, Share, Alert  } from 'react-native';
 import { useUserData } from '../authentication/UserData';
 import BooksList from './BooksList';
 import BarcodeScanner from './BarcodeScanner';
@@ -10,6 +10,27 @@ const Profile = () => {
 
   const toggleModal = () => {
     setIsModalScanner(!isModalScanner);
+  };
+
+  const shareProfile = async () => {
+    try {
+      const result = await Share.share({
+        message: 'Odwiedź profil użytkownika: https://www.drugaksiazka.pl/profile/' + userName ,
+        url: 'https://www.drugaksiazka.pl/profile/' + userName,
+        title: 'Profil użytkownika',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          Alert.alert('Shared with activity type: ', result.activityType);
+        } else {
+          Alert.alert('Content shared successfully!');
+        }
+      } else if (result.action === Share.dismissedAction) {
+        Alert.alert('Sharing dismissed!');
+      }
+    } catch (error) {
+      Alert.alert('Error sharing', error.message);
+    }
   };
 
   return (
@@ -33,7 +54,12 @@ const Profile = () => {
           <TouchableOpacity style={styles.button} onPress={toggleModal}>
             <Text style={styles.buttonText}>Dodaj książkę</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={shareProfile}>
+            <Text style={styles.buttonText}>Udostępnij profil</Text>
+          </TouchableOpacity>
         </View>
+        
 
         <View style={styles.separator} />
 
@@ -111,7 +137,9 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   buttonContainer: {
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
     marginBottom: 30,
   },
   button: {
@@ -123,11 +151,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 4,
+    width: '50%',
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   separator: {
     height: 1,
