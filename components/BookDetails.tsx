@@ -10,9 +10,9 @@ const BookDetails = ({ route, navigation }) => {
   const { userName, token, setIsDeleteOfferInProgress, isDeleteOfferInProgress } = useUserData();
   
   const images = [
-    { id: '1', image: { uri: book.cover_book.replace("/media/", "/media/cover_images/") } },
-    ...(book.frontImage ? [{ id: '2', image: { uri: book.frontImage } }] : []),
-    ...(book.backImage ? [{ id: '3', image: { uri: book.backImage } }] : []),
+    { id: '1', image: { uri: book.cover_book.replace("/media/", "/media/cover_images/").replace("http", "https") } },
+    ...(book.frontImage ? [{ id: '2', image: { uri: book.frontImage.replace("http", "https") } }] : []),
+    ...(book.backImage ? [{ id: '3', image: { uri: book.backImage.replace("http", "https") } }] : []),
   ];
 
   const handleDeleteOffer = async () => {
