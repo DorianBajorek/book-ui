@@ -1,10 +1,12 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image, PanResponder, Animated } from 'react-native';
 import { createOffer } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
+import Slider from '@react-native-community/slider'; // Import Slider
+import LoadingSpinner from './LoadingSpinner';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -14,6 +16,7 @@ export default function App() {
   const [frontPhoto, setFrontPhoto] = useState<string | null>(null);
   const [backPhoto, setBackPhoto] = useState<string | null>(null);
   const [photoMode, setPhotoMode] = useState<'none' | 'front' | 'back'>('none');
+  const [amount, setAmount] = useState(10); // State to store the selected amount
   const cameraRef = useRef<CameraView>(null);
   const { token, setIsCreateOfferInProgress, isCreateOfferInProgress } = useUserData();
 
@@ -38,35 +41,40 @@ export default function App() {
     setPhotoMode('none');
   };
 
-async function takePicture() {
-  if (cameraRef.current) {
-    const photoData = await cameraRef.current.takePictureAsync();
+  async function takePicture() {
+    if (cameraRef.current) {
+      const photoData = await cameraRef.current.takePictureAsync();
 
-    // Compress the image
-    const compressedPhoto = await manipulateAsync(
-      photoData.uri,
-      [],
-      { compress: 0.7, format: SaveFormat.JPEG }
-    );
+      // Compress the image
+      const compressedPhoto = await manipulateAsync(
+        photoData.uri,
+        [],
+        { compress: 0.7, format: SaveFormat.JPEG }
+      );
 
-    if (photoMode === 'front') {
-      setFrontPhoto(compressedPhoto.uri);
-    } else if (photoMode === 'back') {
-      setBackPhoto(compressedPhoto.uri);
+      if (photoMode === 'front') {
+        setFrontPhoto(compressedPhoto.uri);
+      } else if (photoMode === 'back') {
+        setBackPhoto(compressedPhoto.uri);
+      }
+
+      setPhotoMode('none');
+      setCameraVisible(false);
     }
-
-    setPhotoMode('none');
-    setCameraVisible(false);
   }
-}
 
   const saveBook = async () => {
     console.log(isbnCode + " " + token + " " + frontPhoto + "  " + backPhoto);
-    await createOffer(isbnCode, token, frontPhoto || "", backPhoto || "", "10");
+    setIsCreateOfferInProgress(true);
+    await createOffer(isbnCode, token, frontPhoto || "", backPhoto || "", amount.toString());
+    setIsCreateOfferInProgress(false);
   };
 
   return (
     <View style={styles.container}>
+      {isCreateOfferInProgress && (
+        <LoadingSpinner visible={isCreateOfferInProgress} />
+      )}
       {cameraVisible ? (
         photoMode === 'none' ? (
           <View style={styles.cameraContainer}>
@@ -86,7 +94,7 @@ async function takePicture() {
             >
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.buttonPhoto} onPress={takePicture}>
-                <Icon name="camera" size={40} color="#fff" />
+                  <Icon name="camera" size={40} color="#fff" />
                 </TouchableOpacity>
               </View>
             </CameraView>
@@ -141,6 +149,22 @@ async function takePicture() {
           >
             <Text style={styles.buttonText}>Dodaj zdjęcie tyłu</Text>
           </TouchableOpacity>
+
+          {/* Add Slider for setting the amount */}
+          <View style={styles.sliderContainer}>
+            <Text style={styles.sliderText}>Kwota: {amount} PLN</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={5}
+              maximumValue={100}
+              step={1}
+              value={amount}
+              onValueChange={(value) => setAmount(value)}
+              minimumTrackTintColor="#2b92c2"
+              maximumTrackTintColor="#d3d3d3"
+              thumbTintColor="#2b92c2"
+            />
+          </View>
 
           <TouchableOpacity
             style={styles.button}
@@ -256,5 +280,18 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 10,
     textAlign: 'center',
+  },
+  sliderContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  sliderText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  slider: {
+    width: 300,
+    height: 40,
   },
 });

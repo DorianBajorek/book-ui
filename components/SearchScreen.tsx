@@ -64,7 +64,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
             <TouchableOpacity key={index} style={styles.resultContainer} onPress={() => handleBookPress(item)}>
               <Image
                 source={{
-                  uri: item.cover_book.replace('/media/', '/media/cover_images/'),
+                  uri: item.cover_book.replace('/media/', '/media/cover_images/').replace('http', 'https'),
                 }}
                 style={styles.bookImage}
               />
