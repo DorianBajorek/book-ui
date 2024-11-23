@@ -7,6 +7,7 @@ import Profile from './Profile';
 import SearchScreen from './SearchScreen';
 import { useUserData } from '../authentication/UserData';
 import MessagesScreen from './MessagesScreen';
+import { featureFlippersMessages, featureFlippersSettings } from './Constatns';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +22,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator>
-      {true ? (
+      {token ? (
         <>
           <Tab.Screen 
             name="Start" 
@@ -44,20 +45,24 @@ const TabNavigator = () => {
               tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />
             }} 
           />
-          <Tab.Screen 
-            name="Wiadomości" 
-            component={MessagesScreen} 
-            options={{ 
-              tabBarIcon: ({ color }) => <Ionicons name="chatbubble-outline" size={24} color={color} />
-            }} 
-          />
-          <Tab.Screen 
+          {featureFlippersMessages && (
+            <Tab.Screen 
+              name="Wiadomości" 
+              component={MessagesScreen} 
+              options={{ 
+                tabBarIcon: ({ color }) => <Ionicons name="chatbubble-outline" size={24} color={color} />
+              }} 
+            />
+          )}
+          {featureFlippersSettings && (
+            <Tab.Screen 
             name="Ustawienia" 
             component={SettingsScreen} 
             options={{ 
               tabBarIcon: ({ color }) => <Ionicons name="settings" size={24} color={color} />
             }} 
           />
+          )}
         </>
       ) : (
         <Tab.Screen 

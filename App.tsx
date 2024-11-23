@@ -13,7 +13,6 @@ import ChatScreen from './components/ChatScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
 export default function App() {
   return (
     <UserData>

@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaVi
 import { useUserData } from '../authentication/UserData';
 import BooksList from './BooksList';
 import BarcodeScanner from './BarcodeScanner';
+import LoadingSpinner from './LoadingSpinner';
 
 const Profile = () => {
-  const { email, userName } = useUserData();
+  const { email, userName, isCreateOfferInProgress } = useUserData();
   const [isModalScanner, setIsModalScanner] = useState(false);
 
   const toggleModal = () => {
@@ -19,15 +20,6 @@ const Profile = () => {
         url: 'https://www.drugaksiazka.pl/profile/' + userName,
         title: 'Profil użytkownika',
       });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          Alert.alert('Shared with activity type: ', result.activityType);
-        } else {
-          Alert.alert('Content shared successfully!');
-        }
-      } else if (result.action === Share.dismissedAction) {
-        Alert.alert('Sharing dismissed!');
-      }
     } catch (error) {
       Alert.alert('Error sharing', error.message);
     }
@@ -74,7 +66,8 @@ const Profile = () => {
       >
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
-            <BarcodeScanner />
+            <LoadingSpinner visible={isCreateOfferInProgress} />
+            <BarcodeScanner toggleModal={toggleModal}/>
             <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
               <Text style={styles.closeButtonText}>Zamknij</Text>
             </TouchableOpacity>

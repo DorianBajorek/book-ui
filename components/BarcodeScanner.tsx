@@ -1,14 +1,17 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Image, PanResponder, Animated } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image, } from 'react-native';
 import { createOffer } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
-import Slider from '@react-native-community/slider'; // Import Slider
-import LoadingSpinner from './LoadingSpinner';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+import Slider from '@react-native-community/slider';
 
-export default function App() {
+type BarcodeScannerProps = {
+  toggleModal: () => void;
+};
+
+export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [isbnCode, setIsbnCode] = useState('');
@@ -16,9 +19,9 @@ export default function App() {
   const [frontPhoto, setFrontPhoto] = useState<string | null>(null);
   const [backPhoto, setBackPhoto] = useState<string | null>(null);
   const [photoMode, setPhotoMode] = useState<'none' | 'front' | 'back'>('none');
-  const [amount, setAmount] = useState(10); // State to store the selected amount
+  const [amount, setAmount] = useState(10);
   const cameraRef = useRef<CameraView>(null);
-  const { token, setIsCreateOfferInProgress, isCreateOfferInProgress } = useUserData();
+  const { token, setIsCreateOfferInProgress } = useUserData();
 
   if (!permission) {
     return <View />;
@@ -34,7 +37,6 @@ export default function App() {
   }
 
   const handleBarcodeScanned = ({ data }) => {
-    console.log('DATA: ' + data);
     setIsbnCode(data);
     setCameraVisible(false);
     setFacing('back');
@@ -45,7 +47,6 @@ export default function App() {
     if (cameraRef.current) {
       const photoData = await cameraRef.current.takePictureAsync();
 
-      // Compress the image
       const compressedPhoto = await manipulateAsync(
         photoData.uri,
         [],
@@ -64,17 +65,14 @@ export default function App() {
   }
 
   const saveBook = async () => {
-    console.log(isbnCode + " " + token + " " + frontPhoto + "  " + backPhoto);
     setIsCreateOfferInProgress(true);
     await createOffer(isbnCode, token, frontPhoto || "", backPhoto || "", amount.toString());
     setIsCreateOfferInProgress(false);
+    toggleModal()
   };
 
   return (
     <View style={styles.container}>
-      {isCreateOfferInProgress && (
-        <LoadingSpinner visible={isCreateOfferInProgress} />
-      )}
       {cameraVisible ? (
         photoMode === 'none' ? (
           <View style={styles.cameraContainer}>
