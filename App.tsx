@@ -22,7 +22,7 @@ export default function App() {
           <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="BookDetails" component={BookDetails} />
+          <Stack.Screen name="BookDetails" component={BookDetails} options={{ headerShown: false }} />
           <Stack.Screen name="Chat" component={ChatScreen} />
         </Stack.Navigator>
       </NavigationContainer>

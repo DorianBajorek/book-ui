@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'; 
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import React from 'react'; 
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 import { useUserData } from './authentication/UserData';
 import BookSlider from './components/BookSlider';
 import atomoweNawyki from './img/atomowe-nawyki.jpg';
@@ -8,6 +8,7 @@ import goggins from './img/goggins.png';
 import korwin from './img/korwin.jpg';
 import pulapka from './img/pulapka.jpg';
 import wedrowka from './img/wedrowka.png';
+import simpleLogo from './img/simpleLogo.png';
 
 const books = [
   { id: '1', image: atomoweNawyki },
@@ -28,7 +29,10 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.appTitle}>Druga Książka</Text>
+       <View style={styles.headerContainer}>
+        <Image source={simpleLogo} style={styles.logo} />
+        <Text style={styles.appTitle}>Druga Książka</Text>
+      </View>
       
       <Text style={styles.description}>
         Druga Książka to platforma, gdzie możesz wymieniać książki i dawać im drugie życie. Dołącz do naszej społeczności, odkrywaj nowe tytuły lub dziel się swoją kolekcją z innymi!
@@ -87,6 +91,15 @@ const styles = StyleSheet.create({
     color: '#2E86C1',
     marginBottom: 20,
     textAlign: 'center',
+    marginLeft: 0
+  },
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  logo: {
+    width: 100,
+    height: 100,
   },
   description: {
     fontSize: 16,
