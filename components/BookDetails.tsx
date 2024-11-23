@@ -44,14 +44,13 @@ const BookDetails = ({ route, navigation }) => {
 
   return (
     <ScrollView style={styles.scrollView}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>Oferta</Text>
+      </View>
       <View style={styles.container}>
         <View style={styles.card}>
           <BookSlider books={images} />
           <Text style={styles.bookTitle}>{book.title}</Text>
-
-          <Text style={styles.bookDescription}>
-            {book.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum."}
-          </Text>
 
           <View style={styles.detailsContainer}>
             <Text style={styles.bookDetail}>
@@ -62,9 +61,6 @@ const BookDetails = ({ route, navigation }) => {
             </Text>
             <Text style={styles.bookDetail}>
               <Text style={styles.label}>Cena: </Text>{book.price + ",00 zł"}
-            </Text>
-            <Text style={styles.bookDetail}>
-              <Text style={styles.label}>ISBN: </Text>{book.isbn}
             </Text>
           </View>
         </View>
@@ -96,6 +92,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     alignItems: 'center',
+  },
+  headerContainer: {
+    paddingHorizontal: 30,
+    paddingVertical: 20,
+    backgroundColor: '#f5f5f5',
+    alignItems: 'flex-start', // Align text to the left
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
   },
   card: {
     backgroundColor: '#fff',

@@ -47,6 +47,10 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   };
 
   return (
+    <>
+    <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>Wyszukiwarka</Text>
+      </View>
     <View style={styles.container}>
       <Text style={styles.titleText}>Znajdź książkę po tytule</Text>
       <View style={styles.searchContainer}>
@@ -83,6 +87,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
         )}
       </ScrollView>
     </View>
+    </>
   );
 };
 
@@ -92,6 +97,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f4f4',
     paddingTop: 50,
     paddingHorizontal: 20,
+  },
+  headerContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    backgroundColor: '#f4f4f4',
+    alignItems: 'flex-start', // Aligns text to the left
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
   },
   titleText: {
     fontSize: 20,

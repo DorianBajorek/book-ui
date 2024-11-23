@@ -22,7 +22,6 @@ export const loginUser = async (username: string, password: string) => {
       password: password
     };
     const response = await axios.post("https://drugaksiazka.pl/api/auth/v1/login/", payload);
-    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Invalid login to the service', error);
@@ -65,7 +64,6 @@ export const createOffer = async (isbn: string, token: string, frontImage: strin
 
     return response.data;
   } catch (error) {
-    console.error('Error occurred:', error.response ? error.response.data : error.message);
   }
 };
 
@@ -99,7 +97,6 @@ export const getUserOffers = async (token: string, username: string) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching user offers:", error);
   }
 };
 
@@ -116,7 +113,6 @@ export const deleteOffer = async (token: string, offerId: string) => {
     );
     return response.status === 204 ? "Offer deleted successfully" : response.data;
   } catch (error) {
-    console.error('Error occurred:', error.response ? error.response.data : error.message);
   }
 };
 
@@ -130,7 +126,6 @@ export const getOffersByQuery = async (token: string, searchQuery: string) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Search failed', error);
     return null;
   }
 }
@@ -167,7 +162,6 @@ export const getAllConversations = async (token: string) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Search failed', error);
     return null;
   }
 }

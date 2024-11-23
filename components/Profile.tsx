@@ -28,6 +28,9 @@ const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>Profil użytkownika</Text>
+      </View>
         <View style={styles.profileContainer}>
           <Image source={require('../img/avatar.png')} style={styles.avatar} />
 
@@ -83,6 +86,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f7f9fc',
   },
+  headerContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: '#f7f9fc',
+    alignItems: 'flex-start',
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+  },
   scrollContainer: {
     flexGrow: 1,
     paddingVertical: 20,
@@ -137,14 +151,15 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#4682B4',
-    paddingVertical: 15,
+    paddingVertical: 5,
     paddingHorizontal: 30,
     borderRadius: 30,
     shadowColor: '#4682B4',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 4,
-    width: '50%',
+    width: '45%',
+    marginHorizontal: 5,
   },
   buttonText: {
     color: '#fff',

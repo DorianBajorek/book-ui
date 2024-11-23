@@ -21,7 +21,7 @@ const TabNavigator = () => {
   const { token } = useUserData();
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       {token ? (
         <>
           <Tab.Screen 

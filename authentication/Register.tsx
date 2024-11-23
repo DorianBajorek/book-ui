@@ -20,6 +20,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [registerError, setRegisterError] = useState<string | null>(null);
   const { updateToken, updateUserName, updateEmail } = useUserData();
 
@@ -31,6 +32,16 @@ const Register: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleRegister = async () => {
+    if (!email || !username || !password || !confirmPassword) {
+      showError('Wszystkie pola są wymagane.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      showError('Hasła nie są zgodne.');
+      return;
+    }
+
     try {
       const data = await registerUser(email, username, password);
       if (data) {
@@ -39,10 +50,10 @@ const Register: React.FC<Props> = ({ navigation }) => {
         updateEmail(data.email);
         navigation.replace('Main');
       } else {
-        showError("An error occurred. Please try again.");
+        showError('Wystąpił błąd. Spróbuj ponownie.');
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'An error occurred. Please try again.';
+      const errorMessage = error.response?.data?.error || 'Wystąpił błąd. Spróbuj ponownie.';
       showError(errorMessage);
     }
   };
@@ -82,6 +93,16 @@ const Register: React.FC<Props> = ({ navigation }) => {
           placeholderTextColor="#888"
           value={password}
           onChangeText={setPassword}
+          secureTextEntry
+        />
+
+        <Text style={styles.label}>Powtórz hasło:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Powtórz hasło"
+          placeholderTextColor="#888"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
           secureTextEntry
         />
 
