@@ -7,7 +7,7 @@ import Profile from './Profile';
 import SearchScreen from './SearchScreen';
 import { useUserData } from '../authentication/UserData';
 import MessagesScreen from './MessagesScreen';
-import { featureFlippersMessages, featureFlippersSettings } from './FeatureFlippers';
+import { featureFlippersMessages, featureFlippersSettings } from './Constatns';
 
 const Tab = createBottomTabNavigator();
 
