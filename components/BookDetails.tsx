@@ -42,6 +42,10 @@ const BookDetails = ({ route, navigation }) => {
     navigation.navigate('Chat', { recipient: owner });
   };
 
+  const handleNavigateToUserProfile = () => {
+    navigation.navigate('Profil', { username: owner });
+  };
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.headerContainer}>
@@ -57,8 +61,14 @@ const BookDetails = ({ route, navigation }) => {
               <Text style={styles.label}>Autor: </Text>{book.author || "Brak"}
             </Text>
             <Text style={styles.bookDetail}>
-              <Text style={styles.label}>Użytkownik: </Text>{owner}
-            </Text>
+            <Text style={styles.label}>Użytkownik: </Text>
+              <Text 
+                style={styles.link} 
+                onPress={handleNavigateToUserProfile}
+              >
+                {owner}
+              </Text>
+          </Text>
             <Text style={styles.bookDetail}>
               <Text style={styles.label}>Cena: </Text>{book.price + ",00 zł"}
             </Text>
@@ -97,7 +107,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 20,
     backgroundColor: '#f5f5f5',
-    alignItems: 'flex-start', // Align text to the left
+    alignItems: 'flex-start',
+  },
+  link: {
+    color: '#007bff',
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
+    cursor: 'pointer',
   },
   headerTitle: {
     fontSize: 24,

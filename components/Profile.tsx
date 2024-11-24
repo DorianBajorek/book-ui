@@ -5,9 +5,11 @@ import BooksList from './BooksList';
 import BarcodeScanner from './BarcodeScanner';
 import LoadingSpinner from './LoadingSpinner';
 
-const Profile = () => {
+const Profile = ({ route }) => {
   const { email, userName, phoneNumber, isCreateOfferInProgress } = useUserData();
   const [isModalScanner, setIsModalScanner] = useState(false);
+  const { username } = route.params;
+
 
   const toggleModal = () => {
     setIsModalScanner(!isModalScanner);
