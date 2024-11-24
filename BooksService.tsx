@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-export const registerUser = async (email: string, username: string, password: string) => {
+export const registerUser = async (email: string, username: string, password: string, phoneNumber: string) => {
     try {
       const payload = {
         email: email,
         username: username,
-        password: password
+        password: password,
+        phoneNumber: phoneNumber,
       };
       const response = await axios.post("https://drugaksiazka.pl/api/auth/v1/register/", payload);
       return response.data

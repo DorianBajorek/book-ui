@@ -6,7 +6,7 @@ import BarcodeScanner from './BarcodeScanner';
 import LoadingSpinner from './LoadingSpinner';
 
 const Profile = () => {
-  const { email, userName, isCreateOfferInProgress } = useUserData();
+  const { email, userName, phoneNumber, isCreateOfferInProgress } = useUserData();
   const [isModalScanner, setIsModalScanner] = useState(false);
 
   const toggleModal = () => {
@@ -43,6 +43,14 @@ const Profile = () => {
             <Text style={styles.label}>Email:</Text>
             <Text style={styles.infoValue}>{email}</Text>
           </View>
+
+          {phoneNumber && (
+            <View style={styles.infoRow}>
+              <Text style={styles.label}>Numer telefonu:</Text>
+              <Text style={styles.infoValue}>{phoneNumber}</Text>
+            </View>
+          )}
+
         </View>
 
         <View style={styles.buttonContainer}>
@@ -99,7 +107,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingVertical: 20,
+    paddingVertical: 15,
     backgroundColor: '#f7f9fc',
   },
   profileContainer: {
@@ -128,7 +136,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '60%',
+    width: '90%',
     marginBottom: 10,
   },
   label: {

@@ -20,7 +20,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState<string | null>(null);
-  const { updateToken, updateUserName, updateEmail } = useUserData();
+  const { updateToken, updateUserName, updateEmail, updatePhoneNumber } = useUserData();
 
   const handleLogin = async () => {
     try {
@@ -29,6 +29,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
         updateToken(data.token);
         updateUserName(data.username);
         updateEmail(data.email);
+        updatePhoneNumber(data?.phoneNumber)
         navigation.replace('Main');
         setLoginError(null);
       } else {
