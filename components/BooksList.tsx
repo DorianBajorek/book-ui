@@ -20,7 +20,7 @@ const BooksList = ({ username }) => {
     };
 
     fetchBooks();
-  }, [username]);
+  }, [username, isCreateOfferInProgress, isDeleteOfferInProgress]);
 
   const handleBookPress = (book: any) => {
     navigation.navigate('BookDetails', { book, owner: username });
@@ -28,7 +28,10 @@ const BooksList = ({ username }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {books?.map((item) => (
+    {books
+      ?.slice()
+      .reverse()
+      .map((item) => (
         <TouchableOpacity 
           key={item.offer_id} 
           onPress={() => handleBookPress(item)} 
@@ -36,7 +39,7 @@ const BooksList = ({ username }) => {
           activeOpacity={0.8}
         >
           <Image 
-            source={{ uri: item.cover_book.replace("/media/", "/media/cover_images/").replace("http", "https")}}
+            source={{ uri: item.cover_book.replace("/media/", "/media/cover_images/").replace("http", "https") }}
             style={styles.bookImage} 
           />
           <View style={styles.textContainer}>
@@ -45,7 +48,7 @@ const BooksList = ({ username }) => {
             <Text style={styles.bookDescription}>Cena: {item.price + ",00 zł" || "Brak"}</Text>
           </View>
         </TouchableOpacity>
-      ))}
+    ))}
     </ScrollView>
   );
 };
