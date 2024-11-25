@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
     backgroundColor: '#f4f4f4',
-    alignItems: 'flex-start', // Aligns text to the left
+    alignItems: 'flex-start',
   },
   headerTitle: {
     fontSize: 24,

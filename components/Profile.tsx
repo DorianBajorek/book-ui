@@ -1,13 +1,45 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaView, Modal, Share, Alert  } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaView, Modal, Share, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useUserData } from '../authentication/UserData';
 import BooksList from './BooksList';
 import BarcodeScanner from './BarcodeScanner';
 import LoadingSpinner from './LoadingSpinner';
+import { getUserData } from '../BooksService';
+import { useFocusEffect } from '@react-navigation/native';
 
-const Profile = () => {
-  const { email, userName, phoneNumber, isCreateOfferInProgress } = useUserData();
+const Profile = ({ route }) => {
+  const navigation = useNavigation();
+  const { userName, isCreateOfferInProgress, token } = useUserData();
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [profileName, setProfileName] = useState('');
   const [isModalScanner, setIsModalScanner] = useState(false);
+  const { owner } = route.params;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        if (token && profileName) {
+          const data = await getUserData(token, profileName);
+          if (data) {
+            setEmail(data.email || '');
+            setPhoneNumber(data.phoneNumber || '');
+          }
+        }
+      };
+  
+      fetchData();
+    }, [token, profileName])
+  );
+
+  useEffect(() => {
+    if (owner) {
+      setProfileName(owner);
+    } else {
+      setProfileName(userName);
+    }
+  }, [owner, userName]);
 
   const toggleModal = () => {
     setIsModalScanner(!isModalScanner);
@@ -16,8 +48,8 @@ const Profile = () => {
   const shareProfile = async () => {
     try {
       const result = await Share.share({
-        message: 'Odwiedź profil użytkownika: https://www.drugaksiazka.pl/profile/' + userName ,
-        url: 'https://www.drugaksiazka.pl/profile/' + userName,
+        message: 'Odwiedź profil użytkownika: https://www.drugaksiazka.pl/profile/' + profileName,
+        url: 'https://www.drugaksiazka.pl/profile/' + profileName,
         title: 'Profil użytkownika',
       });
     } catch (error) {
@@ -27,18 +59,24 @@ const Profile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.headerContainer}>
+        {owner !== userName && (
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeIcon}>
+            <Text style={styles.closeIconText}>X</Text>
+          </TouchableOpacity>
+        )}
         <Text style={styles.headerTitle}>Profil użytkownika</Text>
       </View>
+
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.profileContainer}>
           <Image source={require('../img/avatar.png')} style={styles.avatar} />
 
           <View style={styles.infoRow}>
             <Text style={styles.label}>Nazwa użytkownika:</Text>
-            <Text style={styles.infoValue}>{userName}</Text>
+            <Text style={styles.infoValue}>{profileName}</Text>
           </View>
-          
+
           <View style={styles.infoRow}>
             <Text style={styles.label}>Email:</Text>
             <Text style={styles.infoValue}>{email}</Text>
@@ -50,23 +88,20 @@ const Profile = () => {
               <Text style={styles.infoValue}>{phoneNumber}</Text>
             </View>
           )}
-
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleModal}>
-            <Text style={styles.buttonText}>Dodaj książkę</Text>
-          </TouchableOpacity>
-
+          {owner === userName && (
+            <TouchableOpacity style={styles.button} onPress={toggleModal}>
+              <Text style={styles.buttonText}>Dodaj książkę</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity style={styles.button} onPress={shareProfile}>
             <Text style={styles.buttonText}>Udostępnij profil</Text>
           </TouchableOpacity>
         </View>
-        
-
         <View style={styles.separator} />
-
-        <BooksList />
+        {profileName && <BooksList username={profileName} />}
       </ScrollView>
 
       <Modal
@@ -78,7 +113,7 @@ const Profile = () => {
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
             <LoadingSpinner visible={isCreateOfferInProgress} />
-            <BarcodeScanner toggleModal={toggleModal}/>
+            <BarcodeScanner toggleModal={toggleModal} />
             <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
               <Text style={styles.closeButtonText}>Zamknij</Text>
             </TouchableOpacity>
@@ -95,12 +130,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#f7f9fc',
   },
   headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: '#f7f9fc',
-    alignItems: 'flex-start',
   },
   headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  closeIcon: {
+    position: 'absolute',
+    right: 20,
+    top: 10,
+  },
+  closeIconText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',

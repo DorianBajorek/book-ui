@@ -4,15 +4,15 @@ import { getUserOffers } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
 import { useNavigation } from '@react-navigation/native';
 
-const BooksList = () => {
-  const { token, userName, isCreateOfferInProgress, isDeleteOfferInProgress } = useUserData();
+const BooksList = ({ username }) => {
+  const { token, isCreateOfferInProgress, isDeleteOfferInProgress } = useUserData();
   const [books, setBooks] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const data = await getUserOffers(token, userName);
+        const data = await getUserOffers(token, username);
         setBooks(data);
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -20,10 +20,10 @@ const BooksList = () => {
     };
 
     fetchBooks();
-  }, [token, navigation, isCreateOfferInProgress, isDeleteOfferInProgress]);
+  }, [username]);
 
   const handleBookPress = (book: any) => {
-    navigation.navigate('BookDetails', { book, owner: userName });
+    navigation.navigate('BookDetails', { book, owner: username });
   };
 
   return (

@@ -20,8 +20,6 @@ const UserContext = createContext({
   updateUserName: (userName: string) => {},
   email: '',
   updateEmail: (email: string) => {},
-  phoneNumber: '',
-  updatePhoneNumber: (phoneNumber: string) => {},
   password: '',
   updatePassword: (password: string) => {},
   logout: () => {},
@@ -36,7 +34,6 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [token, setToken] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isCreateOfferInProgress, setIsCreateOfferInProgress] = useState(false);
   const [isDeleteOfferInProgress, setIsDeleteOfferInProgress] = useState(false);
@@ -76,7 +73,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     if (token) {
       updateConversations();
 
-      loggingInterval = setInterval(updateConversations, 10000);
+      // loggingInterval = setInterval(updateConversations, 10000);
     }
 
     return () => clearInterval(loggingInterval);
@@ -95,11 +92,6 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const updateEmail = async (newEmail: string) => {
     setEmail(newEmail);
     await AsyncStorage.setItem('email', newEmail);
-  };
-
-  const updatePhoneNumber = async (newPhoneNumber: string) => {
-    setPhoneNumber(newPhoneNumber);
-    await AsyncStorage.setItem('phoneNumber', newPhoneNumber);
   };
 
   const updatePassword = async (newPassword: string) => {
@@ -125,8 +117,6 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
         updateUserName,
         email,
         updateEmail,
-        phoneNumber,
-        updatePhoneNumber,
         password,
         updatePassword,
         logout,

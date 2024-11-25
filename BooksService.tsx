@@ -75,7 +75,7 @@ export const securedEndpoint = async (token: string) => {
       {
         headers: {
           'Authorization': `Token ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'applicion/json',
         },
       }
     );
@@ -98,6 +98,23 @@ export const getUserOffers = async (token: string, username: string) => {
     );
     return response.data;
   } catch (error) {
+  }
+};
+
+export const getUserData = async (token: string, username: string) => {
+  try {
+    const response = await axios.get(
+      `https://drugaksiazka.pl/api/auth/v1/get_user_data/${username}/`,
+      {
+        headers: {
+          'Authorization': `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user offers:", error);
   }
 };
 
