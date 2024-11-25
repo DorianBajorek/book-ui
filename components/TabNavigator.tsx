@@ -18,11 +18,11 @@ const SettingsScreen = () => (
 );
 
 const TabNavigator = () => {
-  const { token } = useUserData();
+  const { token, userName } = useUserData();
 
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      {token ? (
+      {token && userName ? (
         <>
           <Tab.Screen 
             name="Start" 
@@ -41,6 +41,7 @@ const TabNavigator = () => {
           <Tab.Screen 
             name="Profil" 
             component={Profile}
+            initialParams={{ owner: userName }}
             options={{ 
               tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />
             }} 
