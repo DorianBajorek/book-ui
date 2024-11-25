@@ -128,7 +128,8 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
 
       {photoMode === 'none' && isbnCode && (
         <View style={styles.resultContainer}>
-          <TouchableOpacity
+          {!frontPhoto && (
+            <TouchableOpacity
             style={styles.button}
             onPress={() => {
               setPhotoMode('front');
@@ -137,18 +138,19 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
           >
             <Text style={styles.buttonText}>Dodaj zdjęcie przodu</Text>
           </TouchableOpacity>
+          )}
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setPhotoMode('back');
-              setCameraVisible(true);
-            }}
-          >
-            <Text style={styles.buttonText}>Dodaj zdjęcie tyłu</Text>
-          </TouchableOpacity>
-
-          {/* Add Slider for setting the amount */}
+         {!backPhoto && (
+           <TouchableOpacity
+           style={styles.button}
+           onPress={() => {
+             setPhotoMode('back');
+             setCameraVisible(true);
+           }}
+         >
+           <Text style={styles.buttonText}>Dodaj zdjęcie tyłu</Text>
+         </TouchableOpacity>
+         )}
           <View style={styles.sliderContainer}>
             <Text style={styles.sliderText}>Kwota: {amount} PLN</Text>
             <Slider
@@ -238,7 +240,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     padding: 5,
     borderRadius: 50,
-    margin: 5,
+    margin: -5,
   },
   text: {
     fontSize: 18,
@@ -259,8 +261,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   smallPhoto: {
-    width: 100,
-    height: 100,
+    width: 140,
+    height: 170,
     borderRadius: 10,
     margin: 10,
   },

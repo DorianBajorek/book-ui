@@ -112,11 +112,11 @@ const Profile = ({ route }) => {
       >
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
+            <TouchableOpacity onPress={toggleModal} style={styles.modalCloseIcon}>
+              <Text style={styles.closeIconText}>X</Text>
+            </TouchableOpacity>
             <LoadingSpinner visible={isCreateOfferInProgress} />
             <BarcodeScanner toggleModal={toggleModal} />
-            <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
-              <Text style={styles.closeButtonText}>Zamknij</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -136,6 +136,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: '#f7f9fc',
+  },
+  modalCloseIcon: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    zIndex: 10,
+    backgroundColor: '#fff',
+    padding: 5,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  closeIconText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
   },
   headerTitle: {
     fontSize: 24,

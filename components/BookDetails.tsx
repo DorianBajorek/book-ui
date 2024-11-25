@@ -20,16 +20,16 @@ const BookDetails = ({ route, navigation }) => {
 
   const handleDeleteOffer = async () => {
     Alert.alert(
-      "Confirm Deletion",
-      "Are you sure you want to delete this offer?",
+      "Potwierdź usuwanie.",
+      "Jesteś pewny, że chcesz usunąć ofertę?",
       [
-        { text: "Cancel", style: "cancel" },
-        { text: "Delete", style: "destructive", onPress: async () => {
+        { text: "Anuluj", style: "cancel" },
+        { text: "Usuń", style: "destructive", onPress: async () => {
             try {
               setIsDeleteOfferInProgress(true);
               await deleteOffer(token, book.offer_id);
               setIsDeleteOfferInProgress(false);
-              Alert.alert("Success", "Offer deleted successfully.");
+              Alert.alert("Sukces", "Książka została usunięta poprawnie.");
               navigation.goBack();
             } catch (error) {
               Alert.alert("Error", "Failed to delete the offer.");
@@ -50,6 +50,8 @@ const BookDetails = ({ route, navigation }) => {
   }
 
   return (
+    <>
+    <LoadingSpinner visible={isDeleteOfferInProgress} />
     <ScrollView style={styles.scrollView}>
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeIcon}>
@@ -78,8 +80,6 @@ const BookDetails = ({ route, navigation }) => {
           </View>
         </View>
 
-        <LoadingSpinner visible={isDeleteOfferInProgress} />
-
         <View style={styles.buttonContainer}>
           {userName !== owner ? (
             featureFlippersMessages ? (
@@ -95,6 +95,7 @@ const BookDetails = ({ route, navigation }) => {
         </View>
       </View>
     </ScrollView>
+    </>
   );
 };
 
