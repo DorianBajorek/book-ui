@@ -7,6 +7,7 @@ import BarcodeScanner from './BarcodeScanner';
 import LoadingSpinner from './LoadingSpinner';
 import { getUserData } from '../BooksService';
 import { useFocusEffect } from '@react-navigation/native';
+import CloseButton from './CloseButton';
 
 const Profile = ({ route }) => {
   const navigation = useNavigation();
@@ -61,9 +62,7 @@ const Profile = ({ route }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         {owner !== userName && (
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeIcon}>
-            <Text style={styles.closeIconText}>X</Text>
-          </TouchableOpacity>
+           <CloseButton onPress={() => navigation.goBack()} />
         )}
         <Text style={styles.headerTitle}>Profil użytkownika</Text>
       </View>

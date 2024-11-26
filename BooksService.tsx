@@ -11,7 +11,6 @@ export const registerUser = async (email: string, username: string, password: st
       const response = await axios.post("https://drugaksiazka.pl/api/auth/v1/register/", payload);
       return response.data
     } catch (error) {
-      console.error('Registration failed', error);
       return null;
     }
   };
@@ -23,9 +22,9 @@ export const loginUser = async (username: string, password: string) => {
       password: password
     };
     const response = await axios.post("https://drugaksiazka.pl/api/auth/v1/login/", payload);
+    console.log(response)
     return response.data;
   } catch (error) {
-    console.error('Invalid login to the service', error);
     return null;
   }
 };

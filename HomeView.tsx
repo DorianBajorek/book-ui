@@ -13,11 +13,10 @@ import simpleLogo from './img/simpleLogo.png';
 const books = [
   { id: '1', image: atomoweNawyki },
   { id: '2', image: jobs },
-  { id: '3', image: jobs },
-  { id: '4', image: goggins },
-  { id: '5', image: korwin },
-  { id: '6', image: pulapka },
-  { id: '7', image: wedrowka },
+  { id: '3', image: goggins },
+  { id: '4', image: korwin },
+  { id: '5', image: pulapka },
+  { id: '6', image: wedrowka },
 ];
 
 type NavigationProp = {

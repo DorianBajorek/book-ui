@@ -36,11 +36,13 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
     );
   }
 
-  const handleBarcodeScanned = ({ data }) => {
-    setIsbnCode(data);
-    setCameraVisible(false);
-    setFacing('back');
-    setPhotoMode('none');
+  const handleBarcodeScanned = ({ type, data }) => {
+    if (type === 'ean13') {
+      setIsbnCode(data);
+      setCameraVisible(false);
+      setFacing('back');
+      setPhotoMode('none');
+    }
   };
 
   async function takePicture() {
@@ -83,6 +85,9 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
               style={styles.scanner}
               facing={facing}
               onBarcodeScanned={handleBarcodeScanned}
+              barCodeScannerSettings={{
+                barCodeTypes: ['ean13'],
+              }}
             />
           </View>
         ) : (
