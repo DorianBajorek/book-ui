@@ -46,19 +46,21 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
   async function takePicture() {
     if (cameraRef.current) {
       const photoData = await cameraRef.current.takePictureAsync();
-
+  
       const compressedPhoto = await manipulateAsync(
         photoData.uri,
-        [],
+        [
+          { rotate: 0 },
+        ],
         { compress: 0.7, format: SaveFormat.JPEG }
       );
-
+  
       if (photoMode === 'front') {
         setFrontPhoto(compressedPhoto.uri);
       } else if (photoMode === 'back') {
         setBackPhoto(compressedPhoto.uri);
       }
-
+  
       setPhotoMode('none');
       setCameraVisible(false);
     }
