@@ -6,6 +6,7 @@ import Profile from './Profile';
 import { deleteOffer } from '../BooksService';
 import LoadingSpinner from './LoadingSpinner';
 import { featureFlippersMessages } from './Constatns';
+import CloseButton from './CloseButton';
 
 const BookDetails = ({ route, navigation }) => {
   const { book, owner } = route.params;
@@ -54,9 +55,7 @@ const BookDetails = ({ route, navigation }) => {
     <LoadingSpinner visible={isDeleteOfferInProgress} />
     <ScrollView style={styles.scrollView}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeIcon}>
-          <Text style={styles.closeIconText}>X</Text>
-        </TouchableOpacity>
+        <CloseButton onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>Oferta</Text>
       </View>
       <View style={styles.container}>

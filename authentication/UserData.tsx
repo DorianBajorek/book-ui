@@ -22,6 +22,7 @@ const UserContext = createContext({
   updateEmail: (email: string) => {},
   password: '',
   updatePassword: (password: string) => {},
+  updatePhoneNumber: (phoneNumber: string) => {},
   logout: () => {},
   isCreateOfferInProgress: false,
   setIsCreateOfferInProgress: (inProgress: boolean) => {},
@@ -35,6 +36,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [userName, setUserName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [isCreateOfferInProgress, setIsCreateOfferInProgress] = useState(false);
   const [isDeleteOfferInProgress, setIsDeleteOfferInProgress] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -44,11 +46,13 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     const savedUserName = await AsyncStorage.getItem('userName');
     const savedEmail = await AsyncStorage.getItem('email');
     const savedPassword = await AsyncStorage.getItem('password');
+    const savedPhoneNumber = await AsyncStorage.getItem('phoneNumber');
 
     if (savedToken) setToken(savedToken);
     if (savedUserName) setUserName(savedUserName);
     if (savedEmail) setEmail(savedEmail);
     if (savedPassword) setPassword(savedPassword);
+    if (savedPhoneNumber) setPhoneNumber(savedPhoneNumber);
   };
 
   const updateConversations = async () => {
@@ -99,6 +103,13 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     await AsyncStorage.setItem('password', newPassword);
   };
 
+  const updatePhoneNumber = async (newPhoneNumber: string) => {
+    setPhoneNumber(newPhoneNumber);
+    if(newPhoneNumber) {
+      await AsyncStorage.setItem('phoneNumber', newPhoneNumber);
+    }
+  };
+
   const logout = async () => {
     setToken('');
     setUserName('');
@@ -119,6 +130,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
         updateEmail,
         password,
         updatePassword,
+        updatePhoneNumber,
         logout,
         isCreateOfferInProgress,
         setIsCreateOfferInProgress,

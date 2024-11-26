@@ -31,7 +31,6 @@ const Login: React.FC<Props> = ({ navigation }) => {
         updateEmail(data.email);
         updatePhoneNumber(data?.phoneNumber)
         navigation.replace('Main');
-        setLoginError(null);
       } else {
         showError('Invalid Username or Password');
       }

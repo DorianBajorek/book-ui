@@ -27,9 +27,10 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
         const data = await getOffersByQuery(token, searchQuery);
         if (data) {
           setResults(data);
+        } else {
+          setResults([])
         }
       } catch (error) {
-        console.error('Error fetching search results:', error);
       }
     }, 500);
     setDebounceTimeout(newTimeout);
