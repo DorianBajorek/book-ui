@@ -53,10 +53,10 @@ const Register: React.FC<Props> = ({ navigation }) => {
         updatePhoneNumber(data?.phoneNumber)
         navigation.replace('Main');
       } else {
-        showError('Wystąpił błąd. Spróbuj ponownie.');
+        showError('Użytkownik o takich danych już istnieje');
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'Wystąpił błąd. Spróbuj ponownie.';
+      const errorMessage = "Użytkownik o takich danych już istnieje."
       showError(errorMessage);
     }
   };
@@ -70,10 +70,10 @@ const Register: React.FC<Props> = ({ navigation }) => {
       {registerError && <ErrorBanner message={registerError} />}
 
       <View style={styles.formContainer}>
-        <Text style={styles.label}>Email:</Text>
+        <Text style={styles.label}>E-mail:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="E-mail"
           placeholderTextColor="#888"
           value={email}
           onChangeText={setEmail}
@@ -138,8 +138,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalText}>
-              Podaj numer telefonu, aby klienci mogli się z Tobą skontaktować – zwiększa to szanse na sprzedaż i ułatwia nawiązanie relacji.
-            </Text>
+              Podaj numer telefonu, aby klienci mogli się z Tobą skontaktować – zwiększa to szanse na sprzedaż i ułatwia nawiązanie relacji. Numer telefonu będzie dostępny dla wszystkich klientów Druga Książka.</Text>
             <Pressable style={styles.closeButton} onPress={() => setIsModalVisible(false)}>
               <Text style={styles.closeButtonText}>Zamknij</Text>
             </Pressable>
@@ -221,7 +220,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalText: {
-    fontSize: 16,
+    fontSize: 17,
     color: '#333',
     marginBottom: 20,
     textAlign: 'center',
