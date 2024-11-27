@@ -22,7 +22,6 @@ export const loginUser = async (username: string, password: string) => {
       password: password
     };
     const response = await axios.post("https://drugaksiazka.pl/api/auth/v1/login/", payload);
-    console.log(response)
     return response.data;
   } catch (error) {
     return null;
@@ -113,7 +112,6 @@ export const getUserData = async (token: string, username: string) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching user offers:", error);
   }
 };
 
@@ -164,7 +162,6 @@ export const sendMessage = async (token: string, recipient: string, message: str
       } );
     return response.data;
   } catch (error) {
-    console.error('Happend something with ', error);
     return null;
   }
 }
@@ -198,7 +195,6 @@ export const readMessage = async (token: string, recipant: string) => {
       } );
     return response.data;
   } catch (error) {
-    console.error('Happend something with ', error);
     return null;
   }
 };
