@@ -29,7 +29,7 @@ jobs:
 
     # 4. Prebuild dla Expo
     - name: Expo prebuild
-      run: npx expo prebuild
+      run: npx expo prebuild --platform android
 
     # 5. Instalacja Java i Android SDK
     - name: Setup Java
