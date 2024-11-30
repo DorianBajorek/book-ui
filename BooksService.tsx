@@ -86,14 +86,7 @@ export const securedEndpoint = async (token: string) => {
 export const getUserOffers = async (token: string, username: string) => {
   try {
     const response = await axios.get(
-      `https://drugaksiazka.pl/api/books/v1/get_user_offers/${username}/`,
-      {
-        headers: {
-          'Authorization': `Token ${token}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+      `https://drugaksiazka.pl/api/books/v1/get_user_offers/${username}/`);
     return response.data;
   } catch (error) {
   }
@@ -149,7 +142,6 @@ export const getLastAddedOffers = async (token: string) => {
   try {
     const url = `https://drugaksiazka.pl/api/books/v1/get_last_added_offers`;
     const response = await axios.get(url)
-    console.log(response)
     return response.data;
   } catch (error) {
     return null;

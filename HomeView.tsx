@@ -1,23 +1,21 @@
-import React from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 import { useUserData } from './authentication/UserData';
 import BookSlider from './components/BookSlider';
-import atomoweNawyki from './img/atomowe-nawyki.jpg';
-import jobs from './img/jobs.png';
-import goggins from './img/goggins.png';
-import korwin from './img/korwin.jpg';
-import pulapka from './img/pulapka.jpg';
-import wedrowka from './img/wedrowka.png';
 import simpleLogo from './img/simpleLogo.png';
+import { getUserOffers } from './BooksService';
 
-const books = [
-  { id: '1', image: atomoweNawyki },
-  { id: '2', image: jobs },
-  { id: '3', image: goggins },
-  { id: '4', image: korwin },
-  { id: '5', image: pulapka },
-  { id: '6', image: wedrowka },
-];
+export interface Book {
+  offer_id: number;
+  cover_book: string;
+  title: string;
+  author?: string;
+  username?: string;
+  frontImage: string;
+  backImage: string;
+  price?: string;
+}
+
 
 type NavigationProp = {
   navigate: (screen: string) => void;
@@ -25,6 +23,22 @@ type NavigationProp = {
 
 const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
   const { logout, token } = useUserData();
+  const [books, setBooks] = useState<Book[]>([]);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const data = await getUserOffers(token, 'drugaksiazka');
+        if (data) {
+          setBooks(data);
+        }
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    };
+
+    fetchBooks();
+  }, [token]);
 
   return (
     <ScrollView style={styles.container}>
@@ -38,7 +52,7 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
       </Text>
       
       <View style={styles.imageContainer}>
-        <BookSlider books={books} />
+        <BookSlider books={books} navigation={navigation} username={"drugaksiazka"}/>
       </View>
 
       <View style={styles.buttonContainer}>

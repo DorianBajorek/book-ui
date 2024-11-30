@@ -1,9 +1,14 @@
 import React from 'react';
-import { View, Image, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const BookSlider = ({ books }: { books: { id: string; image: any }[] }) => {
+const BookSlider = ({ books, navigation, username }) => {
+  
+  const handleBookPress = (book) => {
+    navigation.navigate('BookDetails', { book, owner: username });
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -12,9 +17,14 @@ const BookSlider = ({ books }: { books: { id: string; image: any }[] }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
-          <View style={styles.bookContainer}>
-            <Image source={item.image} style={styles.bookImage} />
-          </View>
+          <TouchableOpacity onPress={() => handleBookPress(item)}>
+            <View style={styles.bookContainer}>
+              <Image 
+                source={{ uri: item.frontImage.replace('http', 'https') }} 
+                style={styles.bookImage} 
+              />
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>
