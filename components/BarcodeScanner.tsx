@@ -1,6 +1,6 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Image, } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image, Alert, } from 'react-native';
 import { createOffer } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -44,6 +44,14 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
       setPhotoMode('none');
     }
   };
+
+  const showAlert = () => {
+    Alert.alert(
+      'Dodaj zdjęcia',
+      'Musisz dodać zdjęcia przodu i tyłu książki, aby dodać ogłoszenie.',
+      [{ text: 'OK', style: 'default' }]
+    );
+  }
 
   async function takePicture() {
     if (cameraRef.current) {
@@ -92,6 +100,12 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
           </View>
         ) : (
           <View style={styles.cameraContainer}>
+            {photoMode == 'front' && (
+              <Text style={styles.scanningMessage}>Zrób zdjęcie przodu</Text>
+            )}
+            {photoMode == 'back' && (
+              <Text style={styles.scanningMessage}>Zrób zdjęcie tyłu</Text>
+            )}
             <CameraView
               ref={cameraRef}
               style={styles.camera}
@@ -107,6 +121,7 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
         )
       ) : (
         <View style={styles.resultContainer}>
+          <Text style={styles.addOfferTitle}>Dodaj ogłoszenie</Text>
           {frontPhoto && backPhoto && (
           <View style={styles.photoSection}>
             <View style={styles.photosRow}>
@@ -143,7 +158,7 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
               setCameraVisible(true);
             }}
           >
-            <Text style={styles.buttonText}>Dodaj zdjęcie przodu</Text>
+            <Text style={styles.buttonText}>Dodaj zdjęcie przodu</Text> 
           </TouchableOpacity>
           )}
 
@@ -175,7 +190,7 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
 
           <TouchableOpacity
             style={styles.button}
-            onPress={saveBook}
+            onPress={!frontPhoto || !backPhoto ? showAlert : saveBook}
           >
             <Text style={styles.buttonText}>Zapisz</Text>
           </TouchableOpacity>
@@ -279,6 +294,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  addOfferTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: -40,
   },
   scanningMessage: {
     marginTop: 20,

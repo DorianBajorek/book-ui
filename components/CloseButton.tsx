@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     right: 20,
     top: 10,
     zIndex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#e74c3c', // Czerwony kolor tła
     padding: 5,
     paddingLeft: 8,
     paddingRight: 8,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   closeIconText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fff',
     textAlign: 'center',
   },
 });

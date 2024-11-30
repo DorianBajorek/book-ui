@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, TextInput, Text, Image, ScrollView } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, View, TextInput, Text, ScrollView } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useUserData } from '../authentication/UserData';
-import { getOffersByQuery } from '../BooksService';
+import { getLastAddedOffers, getOffersByQuery } from '../BooksService';
+import OffersList from './OffersList';
 
 type NavigationProp = {
   navigate: (screen: string) => void;
@@ -10,12 +12,13 @@ type NavigationProp = {
 const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   const { token } = useUserData();
   const [searchQuery, setSearchQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const [searchedBooks, setSearchedBooks] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [lastAddedBooks, setLastAddedBooks] = useState([]);
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
-      setResults([]);
+      setSearchedBooks([]);
       return;
     }
     if (debounceTimeout) {
@@ -26,9 +29,9 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
       try {
         const data = await getOffersByQuery(token, searchQuery);
         if (data) {
-          setResults(data);
+          setSearchedBooks(data);
         } else {
-          setResults([])
+          setSearchedBooks([]);
         }
       } catch (error) {
       }
@@ -42,52 +45,58 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
     };
   }, [searchQuery, token]);
 
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        try {
+          const data = await getLastAddedOffers(token);
+          if (data) {
+            setLastAddedBooks(data);
+          }
+        } catch (error) {
+          console.error('Error fetching last added offers:', error);
+        }
+      };
+
+      fetchData();
+    }, [token])
+  );
+
   const handleBookPress = (book) => {
-    const owner = book.user;
+    const owner = book.username;
+    console.log("OWNER: " + owner)
     navigation.navigate('BookDetails', { book, owner });
   };
 
   return (
     <>
-    <View style={styles.headerContainer}>
+      <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>Wyszukiwarka</Text>
       </View>
-    <View style={styles.container}>
-      <Text style={styles.titleText}>Znajdź książkę po tytule</Text>
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Wyszukaj..."
-          placeholderTextColor="#999"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
+      <View style={styles.container}>
+        <Text style={styles.titleText}>Znajdź książkę po tytule</Text>
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Wyszukaj..."
+            placeholderTextColor="#999"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
+        <ScrollView contentContainerStyle={styles.resultsContainer}>
+          {searchedBooks.length > 0 && searchQuery.length > 0 ? (
+            <OffersList books={searchedBooks} onBookPress={handleBookPress} />
+          ) : searchedBooks.length == 0 && searchQuery.length > 0 ? (
+            <Text style={styles.noResultsText}>Brak wyników</Text>
+          ) : (
+            <>
+              <Text style={styles.titleText}>Ostatenio dodane książki</Text>
+              <OffersList books={lastAddedBooks} onBookPress={handleBookPress} />
+            </>
+          )}
+        </ScrollView>
       </View>
-      <ScrollView contentContainerStyle={styles.resultsContainer}>
-        {results.length > 0 ? (
-          results.map((item, index) => (
-            <TouchableOpacity key={index} style={styles.resultContainer} onPress={() => handleBookPress(item)}>
-              <Image
-                source={{
-                  uri: item.cover_book.replace('/media/', '/media/cover_images/').replace('http', 'https'),
-                }}
-                style={styles.bookImage}
-              />
-              <View style={styles.textContainer}>
-                <Text style={styles.bookTitle}>{item.title}</Text>
-                <Text style={styles.bookDescription}>
-                  Autor: {item.author ? item.author : 'Brak'}
-                </Text>
-                <Text style={styles.bookDescription}>Użytkownik: {item.user}</Text>
-                <Text style={styles.bookDescription}>Cena: {item.price + ",00 zł"}</Text>
-              </View>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <Text style={styles.noResultsText}>Brak wyników</Text>
-        )}
-      </ScrollView>
-    </View>
     </>
   );
 };
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f4f4f4',
-    paddingTop: 50,
+    paddingTop: 10,
     paddingHorizontal: 20,
   },
   headerContainer: {
@@ -131,50 +140,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: '#fff',
     fontSize: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   resultsContainer: {
     paddingTop: 20,
-  },
-  resultContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 15,
-    marginBottom: 15,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 4,
-    borderWidth: 1,
-    borderColor: '#f0f0f0',
-  },
-  bookImage: {
-    width: 90,
-    height: 130,
-    borderRadius: 10,
-    marginRight: 15,
-  },
-  textContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  bookTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
-  },
-  bookDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 4,
   },
   noResultsText: {
     fontSize: 16,

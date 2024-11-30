@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, SafeAreaView, Modal, Share, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useUserData } from '../authentication/UserData';
-import BooksList from './BooksList';
+import UserBooksList from './UserBooksList';
 import BarcodeScanner from './BarcodeScanner';
 import LoadingSpinner from './LoadingSpinner';
 import { getUserData } from '../BooksService';
@@ -100,7 +100,7 @@ const Profile = ({ route }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.separator} />
-        {profileName && <BooksList username={profileName} />}
+        {profileName && <UserBooksList username={profileName} />}
       </ScrollView>
 
       <Modal
@@ -111,9 +111,7 @@ const Profile = ({ route }) => {
       >
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
-            <TouchableOpacity onPress={toggleModal} style={styles.modalCloseIcon}>
-              <Text style={styles.closeIconText}>X</Text>
-            </TouchableOpacity>
+            <CloseButton onPress={toggleModal}/>
             <LoadingSpinner visible={isCreateOfferInProgress} />
             <BarcodeScanner toggleModal={toggleModal} />
           </View>
