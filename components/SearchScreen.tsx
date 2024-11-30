@@ -64,7 +64,6 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
 
   const handleBookPress = (book) => {
     const owner = book.username;
-    console.log("OWNER: " + owner)
     navigation.navigate('BookDetails', { book, owner });
   };
 
