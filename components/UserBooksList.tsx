@@ -4,7 +4,7 @@ import { getUserOffers } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
 import { useNavigation } from '@react-navigation/native';
 
-const BooksList = ({ username }) => {
+const UserBooksList = ({ username }) => {
   const { token, isCreateOfferInProgress, isDeleteOfferInProgress } = useUserData();
   const [books, setBooks] = useState([]);
   const navigation = useNavigation();
@@ -38,10 +38,12 @@ const BooksList = ({ username }) => {
           style={styles.bookContainer}
           activeOpacity={0.8}
         >
-          <Image 
-            source={{ uri: item.cover_book.replace("/media/", "/media/cover_images/").replace("http", "https") }}
+          {item.frontImage && (
+            <Image 
+            source={{ uri: item.frontImage.replace("http", "https") }}
             style={styles.bookImage} 
           />
+          )}
           <View style={styles.textContainer}>
             <Text style={styles.bookTitle}>{item.title}</Text>
             <Text style={styles.bookDescription}>Autor: {item.author || "Brak"}</Text>
@@ -98,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BooksList;
+export default UserBooksList;

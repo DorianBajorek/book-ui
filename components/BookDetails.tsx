@@ -7,6 +7,7 @@ import { deleteOffer } from '../BooksService';
 import LoadingSpinner from './LoadingSpinner';
 import { featureFlippersMessages } from './Constatns';
 import CloseButton from './CloseButton';
+import { Image } from 'react-native';
 
 const BookDetails = ({ route, navigation }) => {
   const { book, owner } = route.params;
@@ -14,7 +15,6 @@ const BookDetails = ({ route, navigation }) => {
   const [viewProfile, setViewProfile] = useState(false);
 
   const images = [
-    { id: '1', image: { uri: book.cover_book.replace("/media/", "/media/cover_images/").replace("http", "https") } },
     ...(book.frontImage ? [{ id: '2', image: { uri: book.frontImage.replace("http", "https") } }] : []),
     ...(book.backImage ? [{ id: '3', image: { uri: book.backImage.replace("http", "https") } }] : []),
   ];
@@ -60,7 +60,15 @@ const BookDetails = ({ route, navigation }) => {
       </View>
       <View style={styles.container}>
         <View style={styles.card}>
-          <BookSlider books={images} />
+        <View style={styles.imagesContainer}>
+          {images.map((img) => (
+            <Image
+              key={img.id}
+              source={img.image}
+              style={styles.image}
+            />
+          ))}
+        </View>
           <Text style={styles.bookTitle}>{book.title}</Text>
 
           <View style={styles.detailsContainer}>
@@ -166,6 +174,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
     color: '#666',
+  },
+  imagesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  image: {
+    width: 150,
+    height: 200,
+    marginHorizontal: 10,
+    borderRadius: 10,
   },
   detailsContainer: {
     alignItems: 'flex-start',
