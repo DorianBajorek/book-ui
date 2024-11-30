@@ -146,7 +146,6 @@ export const getOffersByQuery = async (token: string, searchQuery: string) => {
 }
 
 export const getLastAddedOffers = async (token: string) => {
-  console.log("SIEMA")
   try {
     const url = `https://drugaksiazka.pl/api/books/v1/get_last_added_offers`;
     const response = await axios.get(url)
