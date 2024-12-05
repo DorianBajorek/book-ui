@@ -52,12 +52,9 @@ const Register: React.FC<Props> = ({ navigation }) => {
         updateEmail(data.email);
         updatePhoneNumber(data?.phoneNumber)
         navigation.replace('Main');
-      } else {
-        showError('Użytkownik o takich danych już istnieje');
       }
-    } catch (error) {
-      const errorMessage = "Użytkownik o takich danych już istnieje."
-      showError(errorMessage);
+    } catch (error: any) {
+      showError(error.response.data.error[0]);
     }
   };
 

@@ -32,7 +32,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
         updatePhoneNumber(data?.phoneNumber)
         navigation.replace('Main');
       } else {
-        showError('Invalid Username or Password');
+        showError('Nieprawidłowy login lub hasło');
       }
     } catch (error) {
       showError('Login failed. Please try again.');
