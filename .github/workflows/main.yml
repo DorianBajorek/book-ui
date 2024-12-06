@@ -59,7 +59,7 @@ jobs:
     - name: Save APK locally
       run: mkdir -p $HOME/apk && cp android/app/build/outputs/apk/release/drugaksiazka.apk $HOME/apk/drugaksiazka.apk
 
-    # 9. Wysłanie APK na serwer
+    # 9. Wysłanie APK na serwerr
     - name: Install SSH keys
       run: |
         install -m 600 -D /dev/null ~/.ssh/id_rsa
