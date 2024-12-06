@@ -51,9 +51,26 @@ jobs:
         cd android
         ./gradlew assembleRelease
 
-    # 7. Przechowywanie artefaktów
-    - name: Upload APK
-      uses: actions/upload-artifact@v3
-      with:
-        name: release-apk
-        path: android/app/build/outputs/apk/release/app-release.apk
+    # 7. Zmiana nazwy pliku APK
+    - name: Rename APK
+      run: mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/drugaksiazka.apk
+
+    # 8. Przechowywanie artefaktów lokalnie
+    - name: Save APK locally
+      run: mkdir -p $HOME/apk && cp android/app/build/outputs/apk/release/drugaksiazka.apk $HOME/apk/drugaksiazka.apk
+
+    # 9. Wysłanie APK na serwer
+    - name: Install SSH keys
+      run: |
+        install -m 600 -D /dev/null ~/.ssh/id_rsa
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+
+    - name: Upload APK to server
+      run: |
+        scp $HOME/apk/drugaksiazka.apk ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/mobile_app/drugaksiazka.apk
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cp /home/ubuntu/mobile_app/drugaksiazka.apk /var/www/html/drugaksiazka.apk"
+
+    # 10. Cleanup
+    - name: Cleanup
+      run: rm -rf ~/.ssh
