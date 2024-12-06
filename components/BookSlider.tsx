@@ -13,7 +13,7 @@ const BookSlider = ({ books, navigation, username }) => {
     <View style={styles.container}>
       <FlatList
         data={books}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.offer_id.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
