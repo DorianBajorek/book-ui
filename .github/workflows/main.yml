@@ -68,7 +68,7 @@ jobs:
 
     - name: Upload APK to server
       run: |
-        scp $HOME/apk/drugaksiazka.apk ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/mobile_app/drugaksiazka.apk
+        scp $HOME/apk/drugaksiazka.apk ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/mobile_app/
         ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cp /home/ubuntu/mobile_app/drugaksiazka.apk /var/www/html/drugaksiazka.apk"
 
     # 10. Cleanup
