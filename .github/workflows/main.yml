@@ -3,7 +3,7 @@ name: Build React Native Android App
 on:
   push:
     branches:
-      - main
+      - main  # Uruchamia proces na push do gałęzi "main"
   pull_request:
     branches:
       - main
@@ -13,62 +13,74 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18  # Użyj wersji zgodnej z Twoim projektem
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Expo prebuild
-        run: npx expo prebuild --platform android
+    - name: Expo prebuild
+      run: npx expo prebuild --platform android
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: "zulu"
-          java-version: 17
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: 17  # Wersja Java zgodna z Android SDK
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-        with:
-          api-level: 33
-          target: android-33
-          build-tools: 33.0.2
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-level: 33          # API Level, zgodny z Twoim projektem
+        target: android-33     # Cel kompilacji
+        build-tools: 33.0.2    # Build Tools, zgodne z Twoim projektem
 
-      - name: Add app icon
-        run: |
-          cp img/logo.png android/app/src/main/res/mipmap-hdpi/ic_launcher.png
-          cp img/logo.png android/app/src/main/res/mipmap-mdpi/ic_launcher.png
-          cp img/logo.png android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
-          cp img/logo.png android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
-          cp img/logo.png android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+    # Dodawanie ikony
+    - name: Add app icon
+      run: |
+        cp img/logo.png android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+        cp img/logo.png android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+        cp img/logo.png android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+        cp img/logo.png android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+        cp img/logo.png android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
 
-      - name: Build Android APK
-        run: |
-          cd android
-          ./gradlew assembleRelease
+    # Zaktualizowanie manifestu
+    - name: Update AndroidManifest.xml
+      run: |
+        sed -i '' 's|android:icon="@mipmap/ic_launcher"|android:icon="@mipmap/ic_launcher"\n    <meta-data android:name="icon_path" android:value="img/logo.png"/>|' android/app/src/main/AndroidManifest.xml
 
-      - name: Rename APK
-        run: mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/drugaksiazka.apk
+    # Budowanie aplikacji Android
+    - name: Build Android APK
+      run: |
+        cd android
+        ./gradlew assembleRelease
 
-      - name: Save APK locally
-        run: mkdir -p $HOME/apk && cp android/app/build/outputs/apk/release/drugaksiazka.apk $HOME/apk/drugaksiazka.apk
+    # Zmiana nazwy pliku APK
+    - name: Rename APK
+      run: mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/drugaksiazka.apk
 
-      - name: Install SSH keys
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+    # Przechowywanie artefaktów lokalnie
+    - name: Save APK locally
+      run: mkdir -p $HOME/apk && cp android/app/build/outputs/apk/release/drugaksiazka.apk $HOME/apk/drugaksiazka.apk
 
-      - name: Upload APK to server
-        run: |
-          scp $HOME/apk/drugaksiazka.apk ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/mobile_app/
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cp /home/ubuntu/mobile_app/drugaksiazka.apk /var/www/html/drugaksiazka.apk"
+    # Instalacja kluczy SSH
+    - name: Install SSH keys
+      run: |
+        install -m 600 -D /dev/null ~/.ssh/id_rsa
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-      - name: Cleanup
-        run: rm -rf ~/.ssh
+    # Wysłanie APK na serwer
+    - name: Upload APK to server
+      run: |
+        scp $HOME/apk/drugaksiazka.apk ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/mobile_app/
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cp /home/ubuntu/mobile_app/drugaksiazka.apk /var/www/html/drugaksiazka.apk"
+
+    # Cleanup
+    - name: Cleanup
+      run: rm -rf ~/.ssh
