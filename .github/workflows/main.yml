@@ -45,23 +45,6 @@ jobs:
         target: android-33
         build-tools: 33.0.2
 
-    # 6. Kopiowanie ikony do odpowiednich folderów
-    - name: Add app icon
-      run: |
-        cp img/logo.png android/app/src/main/res/mipmap-hdpi/ic_launcher.png
-        cp img/logo.png android/app/src/main/res/mipmap-mdpi/ic_launcher.png
-        cp img/logo.png android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
-        cp img/logo.png android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
-        cp img/logo.png android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
-
-    # 7. Zaktualizowanie manifestu z ikoną
-    - name: Update AndroidManifest.xml with app icon path
-      run: |
-        MANIFEST_PATH="/android/app/src/main/AndroidManifest.xml"
-        ICON_META_DATA='<meta-data android:name="icon_path" android:value="img/logo.png"/>'
-        # Update the manifest with new icon path
-        sed -i '' 's|android:icon="@mipmap/ic_launcher"|"&\n    '"$ICON_META_DATA"'|' $MANIFEST_PATH
-
     # 8. Budowanie aplikacji Android
     - name: Build Android APK
       run: |
