@@ -59,14 +59,8 @@ jobs:
       run: |
         MANIFEST_PATH="/android/app/src/main/AndroidManifest.xml"
         ICON_META_DATA='<meta-data android:name="icon_path" android:value="img/logo.png"/>'
-
-        # Check if manifest file exists
-        if [ -f $MANIFEST_PATH ]; then
-          # Update the manifest with new icon path
-          sed -i '' 's|android:icon="@mipmap/ic_launcher"|"&\n    '"$ICON_META_DATA"'|' $MANIFEST_PATH
-        else
-          echo "Manifest file not found, skipping update."
-        fi
+        # Update the manifest with new icon path
+        sed -i '' 's|android:icon="@mipmap/ic_launcher"|"&\n    '"$ICON_META_DATA"'|' $MANIFEST_PATH
 
     # 8. Budowanie aplikacji Android
     - name: Build Android APK
