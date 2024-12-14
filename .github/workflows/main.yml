@@ -57,7 +57,7 @@ jobs:
     # 7. Zaktualizowanie manifestu z ikoną
     - name: Update AndroidManifest.xml with app icon path
       run: |
-        MANIFEST_PATH="android/app/src/main/AndroidManifest.xml"
+        MANIFEST_PATH="/android/app/src/main/AndroidManifest.xml"
         ICON_META_DATA='<meta-data android:name="icon_path" android:value="img/logo.png"/>'
 
         # Check if manifest file exists
