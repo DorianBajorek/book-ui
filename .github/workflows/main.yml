@@ -13,20 +13,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # 1. Checkout kodu
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    # 2. Instalacja Node.js i npm
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 18  # Użyj wersji zgodnej z Twoim projektem
 
+    # 3. Instalacja zależności
     - name: Install dependencies
       run: npm install
 
+    # 4. Prebuild dla Expo
     - name: Expo prebuild
       run: npx expo prebuild --platform android
 
+    # 5. Instalacja Java i Android SDK
     - name: Setup Java
       uses: actions/setup-java@v3
       with:
@@ -36,11 +41,11 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
       with:
-        api-level: 33          # API Level, zgodny z Twoim projektem
-        target: android-33     # Cel kompilacji
-        build-tools: 33.0.2    # Build Tools, zgodne z Twoim projektem
+        api-level: 33
+        target: android-33
+        build-tools: 33.0.2
 
-    # Dodawanie ikony
+    # 6. Kopiowanie ikony do odpowiednich folderów
     - name: Add app icon
       run: |
         cp img/logo.png android/app/src/main/res/mipmap-hdpi/ic_launcher.png
@@ -49,38 +54,46 @@ jobs:
         cp img/logo.png android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
         cp img/logo.png android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
 
-    # Zaktualizowanie manifestu
-    - name: Update AndroidManifest.xml
+    # 7. Zaktualizowanie manifestu z ikoną
+    - name: Update AndroidManifest.xml with app icon path
       run: |
-        sed -i '' 's|android:icon="@mipmap/ic_launcher"|android:icon="@mipmap/ic_launcher"\n    <meta-data android:name="icon_path" android:value="img/logo.png"/>|' android/app/src/main/AndroidManifest.xml
+        MANIFEST_PATH="android/app/src/main/AndroidManifest.xml"
+        ICON_META_DATA='<meta-data android:name="icon_path" android:value="img/logo.png"/>'
 
-    # Budowanie aplikacji Android
+        # Check if manifest file exists
+        if [ -f $MANIFEST_PATH ]; then
+          # Update the manifest with new icon path
+          sed -i '' 's|android:icon="@mipmap/ic_launcher"|"&\n    '"$ICON_META_DATA"'|' $MANIFEST_PATH
+        else
+          echo "Manifest file not found, skipping update."
+        fi
+
+    # 8. Budowanie aplikacji Android
     - name: Build Android APK
       run: |
         cd android
         ./gradlew assembleRelease
 
-    # Zmiana nazwy pliku APK
+    # 9. Zmiana nazwy pliku APK
     - name: Rename APK
       run: mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/drugaksiazka.apk
 
-    # Przechowywanie artefaktów lokalnie
+    # 10. Przechowywanie artefaktów lokalnie
     - name: Save APK locally
       run: mkdir -p $HOME/apk && cp android/app/build/outputs/apk/release/drugaksiazka.apk $HOME/apk/drugaksiazka.apk
 
-    # Instalacja kluczy SSH
+    # 11. Wysłanie APK na serwerr
     - name: Install SSH keys
       run: |
         install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-    # Wysłanie APK na serwer
     - name: Upload APK to server
       run: |
         scp $HOME/apk/drugaksiazka.apk ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/mobile_app/
         ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cp /home/ubuntu/mobile_app/drugaksiazka.apk /var/www/html/drugaksiazka.apk"
 
-    # Cleanup
+    # 12. Cleanup
     - name: Cleanup
       run: rm -rf ~/.ssh
