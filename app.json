@@ -36,7 +36,9 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
         }
-      ]
+      ],
+      "@react-native-google-signin/google-signin"
     ]
+
   }
 }

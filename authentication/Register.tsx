@@ -4,6 +4,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { registerUser } from '../BooksService';
 import { useUserData } from './UserData';
 import ErrorBanner from '../components/Banners/ErrorBanner';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from "@react-native-google-signin/google-signin"
 
 type RootStackParamList = {
   Main: undefined;
@@ -17,6 +22,13 @@ type Props = {
 };
 
 const Register: React.FC<Props> = ({ navigation }) => {
+
+  GoogleSignin.configure({
+    webClientId: '894874389822-vus90gg05gp7p6n8g5roor2nibcsli3b.apps.googleusercontent.com', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
+    scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+  });
+
+
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -57,6 +69,20 @@ const Register: React.FC<Props> = ({ navigation }) => {
       showError(error.response.data.error[0]);
     }
   };
+
+  const signIn = async () => {
+    try {
+      console.log("JAZDA")
+      const isSignedIn = await GoogleSignin.signOut();
+      if (isSignedIn) {
+        await GoogleSignin.signOut();
+      }
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      console.log(JSON.stringify(response, null, 2))
+    } catch (error) {
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -124,6 +150,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Zarejestruj</Text>
         </TouchableOpacity>
+        <GoogleSigninButton size={GoogleSigninButton.Size.Wide} color={GoogleSigninButton.Color.Dark} onPress={signIn} />
       </View>
 
       <Modal
