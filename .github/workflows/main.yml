@@ -3,7 +3,7 @@ name: Build React Native Android App
 on:
   push:
     branches:
-      - main
+      - main # Uruchamia proces na push do gałęzi "main"
   pull_request:
     branches:
       - main
@@ -21,18 +21,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18 # Użyj wersji zgodnej z Twoim projektem
 
       # 3. Instalacja zależności
       - name: Install dependencies
         run: npm install
 
-      # 4. Instalacja Java i Android SDK
+      # # 4. Prebuild dla Expo
+      # - name: Expo prebuild
+      #   run: npx expo prebuild --platform android
+
+      # 5. Instalacja Java i Android SDK
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: "zulu"
-          java-version: 17
+          java-version: 17 # Wersja Java zgodna z Android SDK
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
@@ -41,21 +45,21 @@ jobs:
           target: android-33
           build-tools: 33.0.2
 
-      # 5. Budowanie aplikacji Android
+      # 8. Budowanie aplikacji Android
       - name: Build Android APK
         run: |
           cd android
           ./gradlew assembleRelease
 
-      # 6. Zmiana nazwy pliku APK
+      # 9. Zmiana nazwy pliku APK
       - name: Rename APK
         run: mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/drugaksiazka.apk
 
-      # 7. Przechowywanie artefaktów lokalnie
+      # 10. Przechowywanie artefaktów lokalnie
       - name: Save APK locally
         run: mkdir -p $HOME/apk && cp android/app/build/outputs/apk/release/drugaksiazka.apk $HOME/apk/drugaksiazka.apk
 
-      # 8. Wysłanie APK na serwer
+      # 11. Wysłanie APK na serwerr
       - name: Install SSH keys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
@@ -67,6 +71,6 @@ jobs:
           scp $HOME/apk/drugaksiazka.apk ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/mobile_app/
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cp /home/ubuntu/mobile_app/drugaksiazka.apk /var/www/html/drugaksiazka.apk"
 
-      # 9. Cleanup
+      # 12. Cleanup
       - name: Cleanup
         run: rm -rf ~/.ssh
