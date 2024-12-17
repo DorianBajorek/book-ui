@@ -201,3 +201,42 @@ export const readMessage = async (token: string, recipant: string) => {
     return null;
   }
 };
+
+export const updateUserPhoneNumber = async (phoneNumber: string, token: string) => {
+  try {
+    const payload = {
+      phoneNumber: phoneNumber,
+    };
+    const response = await axios.patch(
+      'https://drugaksiazka.pl/api/auth/v1/update_user_phone_number/',
+      payload,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating phone number:", error);
+    return null;
+  }
+};
+
+export const deleteUser = async (token: string) => {
+  try {
+    const response = await axios.patch(
+      'https://drugaksiazka.pl/api/auth/v1/delete_user/',
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return null;
+  }
+};
