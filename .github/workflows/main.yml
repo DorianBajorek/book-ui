@@ -46,6 +46,8 @@ jobs:
           build-tools: 33.0.2
 
       # 8. Budowanie aplikacji Android
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
       - name: Build Android APK
         run: |
           cd android
