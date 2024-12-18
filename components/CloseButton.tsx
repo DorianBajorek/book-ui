@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     right: 20,
     top: 10,
     zIndex: 1,
-    backgroundColor: '#e74c3c', // Czerwony kolor tła
+    backgroundColor: '#e74c3c',
     padding: 5,
     paddingLeft: 8,
     paddingRight: 8,

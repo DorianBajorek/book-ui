@@ -8,14 +8,17 @@ import LoadingSpinner from './LoadingSpinner';
 import { getUserData } from '../BooksService';
 import { useFocusEffect } from '@react-navigation/native';
 import CloseButton from './CloseButton';
+import EditProfileModal from './EditProfileModal';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Profile = ({ route }) => {
   const navigation = useNavigation();
-  const { userName, isCreateOfferInProgress, token } = useUserData();
+  const { userName, isCreateOfferInProgress, token, isEditProfileInProgress } = useUserData();
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [profileName, setProfileName] = useState('');
   const [isModalScanner, setIsModalScanner] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const { owner } = route.params;
 
   useFocusEffect(
@@ -31,7 +34,7 @@ const Profile = ({ route }) => {
       };
   
       fetchData();
-    }, [token, profileName])
+    }, [token, profileName, isEditProfileInProgress])
   );
 
   useEffect(() => {
@@ -58,8 +61,19 @@ const Profile = ({ route }) => {
     }
   };
 
+  const openSettingsModal = () => {
+    setIsSettingsModalOpen(true);
+  }
+
+  const closeSettingsModal = () => {
+    setIsSettingsModalOpen(false);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
+      {isSettingsModalOpen && (
+        <EditProfileModal visible={true} onClose={closeSettingsModal} />
+      )}
       <View style={styles.headerContainer}>
         {owner !== userName && (
            <CloseButton onPress={() => navigation.goBack()} />
@@ -69,6 +83,9 @@ const Profile = ({ route }) => {
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.profileContainer}>
+          <TouchableOpacity style={styles.settingsButton} onPress={openSettingsModal}>
+            <Ionicons name="settings-outline" size={24} color="#333" />
+          </TouchableOpacity>
           <Image source={require('../img/avatar.png')} style={styles.avatar} />
 
           <View style={styles.infoRow}>
@@ -112,7 +129,7 @@ const Profile = ({ route }) => {
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
             <CloseButton onPress={toggleModal}/>
-            <LoadingSpinner visible={isCreateOfferInProgress} />
+            <LoadingSpinner visible={isCreateOfferInProgress || isEditProfileInProgress} />
             <BarcodeScanner toggleModal={toggleModal} />
           </View>
         </View>
@@ -164,10 +181,10 @@ const styles = StyleSheet.create({
     right: 20,
     top: 10,
   },
-  closeIconText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+  settingsButton: {
+    position: 'absolute',
+    right: 20,
+    top: 10,
   },
   scrollContainer: {
     flexGrow: 1,

@@ -28,6 +28,9 @@ const UserContext = createContext({
   setIsCreateOfferInProgress: (inProgress: boolean) => {},
   isDeleteOfferInProgress: false,
   setIsDeleteOfferInProgress: (inProgress: boolean) => {},
+  isEditProfileInProgress: false,
+  setIsEditProfileInProgress: (inProgress: boolean) => {},
+  deleteUserStorageData:() => {},
   conversations: [] as Conversation[]
 });
 
@@ -39,6 +42,7 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [isCreateOfferInProgress, setIsCreateOfferInProgress] = useState(false);
   const [isDeleteOfferInProgress, setIsDeleteOfferInProgress] = useState(false);
+  const [isEditProfileInProgress, setIsEditProfileInProgress] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
 
   const loadData = async () => {
@@ -53,6 +57,17 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
     if (savedEmail) setEmail(savedEmail);
     if (savedPassword) setPassword(savedPassword);
     if (savedPhoneNumber) setPhoneNumber(savedPhoneNumber);
+  };
+
+  const deleteUserStorageData = async () => {
+    setToken('');
+    setUserName('');
+    setEmail('');
+    setPassword('');
+    setPhoneNumber('');
+    setConversations([]);
+  
+    await AsyncStorage.multiRemove(['token', 'userName', 'email', 'password', 'phoneNumber']);
   };
 
   const updateConversations = async () => {
@@ -136,6 +151,9 @@ export const UserData: React.FC<{ children: React.ReactNode }> = ({ children }) 
         setIsCreateOfferInProgress,
         isDeleteOfferInProgress,
         setIsDeleteOfferInProgress,
+        isEditProfileInProgress,
+        setIsEditProfileInProgress,
+        deleteUserStorageData,
         conversations
       }}
     >
