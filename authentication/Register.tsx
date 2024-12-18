@@ -72,7 +72,6 @@ const Register: React.FC<Props> = ({ navigation }) => {
 
   const signIn = async () => {
     try {
-      console.log("JAZDA")
       const isSignedIn = await GoogleSignin.signOut();
       if (isSignedIn) {
         await GoogleSignin.signOut();

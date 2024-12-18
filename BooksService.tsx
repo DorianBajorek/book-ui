@@ -226,7 +226,7 @@ export const updateUserPhoneNumber = async (phoneNumber: string, token: string) 
 
 export const deleteUser = async (token: string) => {
   try {
-    const response = await axios.patch(
+    const response = await axios.delete(
       'https://drugaksiazka.pl/api/auth/v1/delete_user/',
       {
         headers: {
@@ -235,6 +235,7 @@ export const deleteUser = async (token: string) => {
         },
       }
     );
+    console.log(response)
     return response.data;
   } catch (error) {
     return null;

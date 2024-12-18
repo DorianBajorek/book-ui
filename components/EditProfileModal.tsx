@@ -35,7 +35,6 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ visible, onClose })
   };
 
   const toggleDeleteConfirm = () => {
-    console.log("XD")
     setDeleteConfirmVisible(!isDeleteConfirmVisible);
   };
 
