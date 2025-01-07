@@ -9,9 +9,10 @@ import CloseButton from './CloseButton';
 type EditProfileModalProps = {
   visible: boolean;
   onClose: () => void;
+  showError: (message: string) => void;
 };
 
-const EditProfileModal: React.FC<EditProfileModalProps> = ({ visible, onClose }) => {
+const EditProfileModal: React.FC<EditProfileModalProps> = ({ visible, onClose, showError }) => {
   const [newPhone, setNewPhone] = useState('');
   const { userName, email, token, updatePhoneNumber, setIsEditProfileInProgress, deleteUserStorageData } = useUserData();
   const [isDeleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
@@ -20,11 +21,12 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ visible, onClose })
     try {
       setIsEditProfileInProgress(true);
       await updateUserPhoneNumber(newPhone, token);
-      setIsEditProfileInProgress(false);
       updatePhoneNumber(newPhone);
-      onClose();
     } catch (error) {
-      console.error(error); 
+      showError("Nieprawidłowy numer telefonu")
+    } finally {
+      setIsEditProfileInProgress(false);
+      onClose();
     }
   };
 
