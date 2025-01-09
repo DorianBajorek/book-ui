@@ -66,7 +66,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
         navigation.replace('Main');
       }
     } catch (error: any) {
-      showError(error.response.data.error[0]);
+      showError(error.response.data.error[0] ?? "");
     }
   };
 
