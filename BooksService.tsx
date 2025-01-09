@@ -29,41 +29,38 @@ export const loginUser = async (username: string, password: string) => {
 };
 
 export const createOffer = async (isbn: string, token: string, frontImage: string, backImage: string, price: string) => {
-  try {
-    const formData = new FormData();
-    formData.append('isbn', isbn);
-    formData.append('price', price);
+  const formData = new FormData();
+  formData.append('isbn', isbn);
+  formData.append('price', price);
 
-    if (frontImage) {
-      formData.append('frontImage', {
-        uri: frontImage,
-        name: 'front_image.jpg',
-        type: 'image/jpeg',
-      });
-    }
-
-    if (backImage) {
-      formData.append('backImage', {
-        uri: backImage,
-        name: 'back_image.jpg',
-        type: 'image/jpeg',
-      });
-    }
-
-    const response = await axios.post(
-      `https://drugaksiazka.pl/api/books/v1/create_offer/`,
-      formData,
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
-
-    return response.data;
-  } catch (error) {
+  if (frontImage) {
+    formData.append('frontImage', {
+      uri: frontImage,
+      name: 'front_image.jpg',
+      type: 'image/jpeg',
+    });
   }
+
+  if (backImage) {
+    formData.append('backImage', {
+      uri: backImage,
+      name: 'back_image.jpg',
+      type: 'image/jpeg',
+    });
+  }
+
+  const response = await axios.post(
+    `https://drugaksiazka.pl/api/books/v1/create_offer/`,
+    formData,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
+
+  return response.data;
 };
 
 export const securedEndpoint = async (token: string) => {
@@ -203,25 +200,20 @@ export const readMessage = async (token: string, recipant: string) => {
 };
 
 export const updateUserPhoneNumber = async (phoneNumber: string, token: string) => {
-  try {
-    const payload = {
-      phoneNumber: phoneNumber,
-    };
-    const response = await axios.patch(
-      'https://drugaksiazka.pl/api/auth/v1/update_user_phone_number/',
-      payload,
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error updating phone number:", error);
-    return null;
-  }
+  const payload = {
+    phoneNumber: phoneNumber,
+  };
+  const response = await axios.patch(
+    'https://drugaksiazka.pl/api/auth/v1/update_user_phone_number/',
+    payload,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  return response.data;
 };
 
 export const deleteUser = async (token: string) => {
@@ -235,9 +227,26 @@ export const deleteUser = async (token: string) => {
         },
       }
     );
-    console.log(response)
     return response.data;
   } catch (error) {
     return null;
+  }
+};
+
+export const checkIsbn = async (isbn: string, token: string) => {
+  try {
+    const url = `https://drugaksiazka.pl/api/books/v1/check_isbn?isbn=${encodeURIComponent(isbn)}`;
+    await axios.get(
+      url,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return true;
+  } catch (error) {
+    return false;
   }
 };

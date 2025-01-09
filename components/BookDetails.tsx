@@ -74,12 +74,19 @@ const BookDetails = ({ route, navigation }) => {
           <View style={styles.detailsContainer}>
             <Text style={styles.bookDetail}>
               <Text style={styles.label}>Użytkownik: </Text>
-              <Text
-                style={{ color: '#007bff', textDecorationLine: 'underline' }}
-                onPress={handleViewProfile}
-              >
-                {owner}
-              </Text>
+              {userName != owner ? (
+                <Text
+                  style={{ color: '#007bff', textDecorationLine: 'underline' }}
+                  onPress={handleViewProfile}
+                >
+                  {owner}
+                </Text>
+              ) : (
+                <Text>
+                  {owner}
+                </Text>
+              )}
+
             </Text>
             <Text style={styles.bookDetail}>
               <Text style={styles.label}>Cena: </Text>{book.price + ",00 zł"}

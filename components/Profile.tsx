@@ -5,11 +5,12 @@ import { useUserData } from '../authentication/UserData';
 import UserBooksList from './UserBooksList';
 import BarcodeScanner from './BarcodeScanner';
 import LoadingSpinner from './LoadingSpinner';
-import { getUserData } from '../BooksService';
+import { checkIsbn, getUserData } from '../BooksService';
 import { useFocusEffect } from '@react-navigation/native';
 import CloseButton from './CloseButton';
 import EditProfileModal from './EditProfileModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ErrorBanner from './Banners/ErrorBanner';
 
 const Profile = ({ route }) => {
   const navigation = useNavigation();
@@ -19,6 +20,7 @@ const Profile = ({ route }) => {
   const [profileName, setProfileName] = useState('');
   const [isModalScanner, setIsModalScanner] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [offerError, setOfferError] = useState<string | null>(null);
   const { owner } = route.params;
 
   useFocusEffect(
@@ -51,7 +53,7 @@ const Profile = ({ route }) => {
 
   const shareProfile = async () => {
     try {
-      const result = await Share.share({
+      await Share.share({
         message: 'Odwiedź profil użytkownika: https://www.drugaksiazka.pl/profile/' + profileName,
         url: 'https://www.drugaksiazka.pl/profile/' + profileName,
         title: 'Profil użytkownika',
@@ -69,10 +71,33 @@ const Profile = ({ route }) => {
     setIsSettingsModalOpen(false);
   }
 
+  const checkOffer = async (isbn: string): Promise<boolean> => {
+    const result = await checkIsbn(isbn, token);
+
+    if (!result) {
+      showError("Nie udało się dodać ogłoszenia. Spróbuj dodać inne.");
+      return false;
+    }
+    
+    return true;
+  };
+
+  const showError = (message: string) => {
+    setOfferError(message);
+    setTimeout(() => {
+      setOfferError(null);
+    }, 3000);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+        {offerError && 
+          <View style={{ marginTop: 20, zIndex:1000 }}>
+            <ErrorBanner message={offerError} />
+          </View>
+        }
       {isSettingsModalOpen && (
-        <EditProfileModal visible={true} onClose={closeSettingsModal} />
+        <EditProfileModal visible={true} onClose={closeSettingsModal} showError={showError}/>
       )}
       <View style={styles.headerContainer}>
         {owner !== userName && (
@@ -84,7 +109,9 @@ const Profile = ({ route }) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.profileContainer}>
           <TouchableOpacity style={styles.settingsButton} onPress={openSettingsModal}>
-            <Ionicons name="settings-outline" size={24} color="#333" />
+            {owner === userName && (
+              <Ionicons name="settings-outline" size={24} color="#333" />
+            )}
           </TouchableOpacity>
           <Image source={require('../img/avatar.png')} style={styles.avatar} />
 
@@ -109,7 +136,7 @@ const Profile = ({ route }) => {
         <View style={styles.buttonContainer}>
           {owner === userName && (
             <TouchableOpacity style={styles.button} onPress={toggleModal}>
-              <Text style={styles.buttonText}>Dodaj książkę</Text>
+              <Text style={styles.buttonText}>Dodaj ogłoszenie</Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styles.button} onPress={shareProfile}>
@@ -130,7 +157,7 @@ const Profile = ({ route }) => {
           <View style={styles.modalContainer}>
             <CloseButton onPress={toggleModal}/>
             <LoadingSpinner visible={isCreateOfferInProgress || isEditProfileInProgress} />
-            <BarcodeScanner toggleModal={toggleModal} />
+            <BarcodeScanner toggleModal={toggleModal} checkOffer={checkOffer}/>
           </View>
         </View>
       </Modal>

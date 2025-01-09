@@ -9,9 +9,10 @@ import Slider from '@react-native-community/slider';
 
 type BarcodeScannerProps = {
   toggleModal: () => void;
+  checkOffer: (isbn: string) => Promise<boolean> ;
 };
 
-export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
+export default function BarcodeScanner({ toggleModal , checkOffer}: BarcodeScannerProps) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [isbnCode, setIsbnCode] = useState('');
@@ -36,13 +37,18 @@ export default function BarcodeScanner({ toggleModal }: BarcodeScannerProps) {
     );
   }
 
-  const handleBarcodeScanned = ({ type, data }) => {
+  const handleBarcodeScanned = async ({ type, data }) => {
     if (type === 'ean13') {
-      setIsbnCode(data);
-      setCameraVisible(false);
-      setFacing('back');
-      setPhotoMode('none');
-    }
+        const isOfferValid = await checkOffer(data);
+        if(isOfferValid) {
+          setIsbnCode(data);
+          setCameraVisible(false);
+          setFacing('back');
+          setPhotoMode('none');
+        } else {
+          toggleModal()
+        }
+      }
   };
 
   const showAlert = () => {
