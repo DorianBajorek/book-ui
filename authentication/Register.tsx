@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, TouchableOpacity, Text, KeyboardAvoidingView, Platform, Modal, Pressable } from 'react-native';
+import { StyleSheet, TextInput, View, TouchableOpacity, Text, KeyboardAvoidingView, Platform, Modal, Pressable, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { registerUser } from '../BooksService';
+import { registerGoogle, registerUser } from '../BooksService';
 import { useUserData } from './UserData';
 import ErrorBanner from '../components/Banners/ErrorBanner';
+import simpleLogo from '../img/googleLogo.png';
 import {
   GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
 } from "@react-native-google-signin/google-signin"
+import LoadingSpinner from '../components/LoadingSpinner';
 
 type RootStackParamList = {
   Main: undefined;
@@ -25,7 +25,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
 
   GoogleSignin.configure({
     webClientId: '894874389822-vus90gg05gp7p6n8g5roor2nibcsli3b.apps.googleusercontent.com', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
-    scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
   });
 
 
@@ -36,6 +36,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [registerError, setRegisterError] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isRegisterInProgress, setIsRegisterInProgress] = useState(false);
   const { updateToken, updateUserName, updateEmail, updatePhoneNumber } = useUserData();
 
   const showError = (message: string) => {
@@ -47,7 +48,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
 
   const handleRegister = async () => {
     if (!email || !username || !password || !confirmPassword) {
-      showError('Wszystkie pola są wymagane.');
+      showError('Uzupełnij obowiązkowe pola.');
       return;
     }
 
@@ -57,16 +58,18 @@ const Register: React.FC<Props> = ({ navigation }) => {
     }
 
     try {
+      setIsRegisterInProgress(true)
       const data = await registerUser(email, username, password, phoneNumber);
+      setIsRegisterInProgress(false);
       if (data) {
         updateToken(data.token);
         updateUserName(data.username);
         updateEmail(data.email);
-        updatePhoneNumber(data?.phoneNumber)
-        navigation.replace('Main');
+        updatePhoneNumber(data?.phoneNumber);
       }
     } catch (error: any) {
       showError(error.response.data.error[0] ?? "");
+      setIsRegisterInProgress(false);
     }
   };
 
@@ -78,10 +81,31 @@ const Register: React.FC<Props> = ({ navigation }) => {
       }
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
-      console.log(JSON.stringify(response, null, 2))
+      const idToken = response.data?.idToken
+      if(idToken) {
+        setIsRegisterInProgress(true);
+        await handleGoogleLogin(idToken)
+      }
     } catch (error) {
+      showError("Nieprawidłowe logowanie, spróbuj ponownie.")
+      setIsRegisterInProgress(false);
     }
   }
+
+  const handleGoogleLogin = async (code: string) => {
+    try {
+      const data = await registerGoogle(code);
+      if (data) {
+        updateToken(data.token);
+        updateUserName(data.username);
+        updateEmail(data.email);
+        navigation.replace('Main');
+      }
+    } catch (error) {
+      showError("Nieprawidłowe logowanie, spróbuj ponownie.")
+    }
+  };
+
 
   return (
     <KeyboardAvoidingView
@@ -89,6 +113,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
     >
+      <LoadingSpinner visible={isRegisterInProgress} />
       {registerError && <ErrorBanner message={registerError} />}
 
       <View style={styles.formContainer}>
@@ -147,9 +172,15 @@ const Register: React.FC<Props> = ({ navigation }) => {
         />
 
         <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Zarejestruj</Text>
+          <Text style={styles.buttonText}>Zarejestruj się</Text>
         </TouchableOpacity>
-        <GoogleSigninButton size={GoogleSigninButton.Size.Wide} color={GoogleSigninButton.Color.Dark} onPress={signIn} />
+        <TouchableOpacity style={styles.googleButton} onPress={signIn}>
+          <Image
+            source={simpleLogo}
+            style={styles.googleIcon}
+          />
+          <Text style={styles.googleButtonText}>Zarejestruj się przez Google</Text>
+        </TouchableOpacity>
       </View>
 
       <Modal
@@ -259,6 +290,35 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
+  googleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  
+  googleIcon: {
+    position: 'absolute',
+    left: 15,
+    width: 35,
+    height: 35
+  },
+  
+  googleButtonText: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '500',
+  },  
 });
 
 export default Register;

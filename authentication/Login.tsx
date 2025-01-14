@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { StyleSheet, TextInput, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { loginUser } from '../BooksService';
+import { loginUser, registerGoogle } from '../BooksService';
 import { useUserData } from './UserData';
 import ErrorBanner from '../components/Banners/ErrorBanner';
+import simpleLogo from '../img/googleLogo.png';
+import {
+  GoogleSignin,
+} from "@react-native-google-signin/google-signin"
+import LoadingSpinner from '../components/LoadingSpinner';
 
 type RootStackParamList = {
   Main: undefined;
@@ -17,13 +22,25 @@ type Props = {
 };
 
 const Login: React.FC<Props> = ({ navigation }) => {
+
+    GoogleSignin.configure({
+      webClientId: '894874389822-vus90gg05gp7p6n8g5roor2nibcsli3b.apps.googleusercontent.com', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
+      scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+    });
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [isLoginInProgress, setIsLoginInProgress] = useState(false);
   const { updateToken, updateUserName, updateEmail, updatePhoneNumber } = useUserData();
-
+  
   const handleLogin = async () => {
+    if(username == '' || password == '') {
+      showError('Uzupełnij obowiązkowe pola.');
+      return;
+    }
     try {
+      setIsLoginInProgress(true)
       const data = await loginUser(username, password);
       if (data) {
         updateToken(data.token);
@@ -31,11 +48,13 @@ const Login: React.FC<Props> = ({ navigation }) => {
         updateEmail(data.email);
         updatePhoneNumber(data?.phoneNumber)
         navigation.replace('Main');
+        setIsLoginInProgress(false)
       } else {
         showError('Nieprawidłowy login lub hasło');
       }
     } catch (error) {
       showError('Login failed. Please try again.');
+      setIsLoginInProgress(false)
     }
   };
 
@@ -46,19 +65,58 @@ const Login: React.FC<Props> = ({ navigation }) => {
     }, 3000);
   };
 
+  
+    const signIn = async () => {
+      try {
+        const isSignedIn = await GoogleSignin.signOut();
+        if (isSignedIn) {
+          await GoogleSignin.signOut();
+        }
+        await GoogleSignin.hasPlayServices();
+        const response = await GoogleSignin.signIn();
+        const idToken = response.data?.idToken
+        if(idToken) {
+          setIsLoginInProgress(true)
+          await handleGoogleLogin(idToken)
+        }
+      } catch (error) {
+        showError("Nieprawidłowe logowanie, spróbuj ponownie.")
+        setIsLoginInProgress(false)
+      }
+    }
+  
+    const handleGoogleLogin = async (code: string) => {
+      try {
+        const data = await registerGoogle(code);
+        if (data) {
+          updateToken(data.token);
+          updateUserName(data.username);
+          updateEmail(data.email);
+          setIsLoginInProgress(false)
+          navigation.replace('Main');
+        }
+      } catch (error) {
+        showError("Nieprawidłowe logowanie, spróbuj ponownie.")
+      } finally {
+        setIsLoginInProgress(false)
+      }
+    };
+  
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
     >
+      <LoadingSpinner visible={isLoginInProgress} />
       {loginError && <ErrorBanner message={loginError} />}
       
       <View style={styles.formContainer}>
         <Text style={styles.label}>Nazwa użytkownika:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Username"
+          placeholder="Nazwa użytkownika"
           placeholderTextColor="#888"
           value={username}
           onChangeText={setUsername}
@@ -67,7 +125,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.label}>Hasło:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="Hasło"
           placeholderTextColor="#888"
           value={password}
           onChangeText={setPassword}
@@ -75,7 +133,14 @@ const Login: React.FC<Props> = ({ navigation }) => {
         />
 
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>Zaloguj się</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.googleButton} onPress={signIn}>
+          <Image
+            source={simpleLogo}
+            style={styles.googleIcon}
+          />
+          <Text style={styles.googleButtonText}>Zaloguj się przez Google</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -134,6 +199,35 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  googleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  
+  googleIcon: {
+    position: 'absolute',
+    left: 20,
+    width: 35,
+    height: 35
+  },
+  
+  googleButtonText: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '500',
+  }, 
 });
 
 export default Login;
