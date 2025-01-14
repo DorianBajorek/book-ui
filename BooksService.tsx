@@ -15,6 +15,19 @@ export const registerUser = async (email: string, username: string, password: st
     }
   };
   
+  export const registerGoogle = async (id_token: string) => {
+    try {
+      const payload = {
+        type: "mobile",
+        id_token: id_token,
+      };
+      const response = await axios.post('https://drugaksiazka.pl/api/auth/v1/google_register/', payload);
+      return response.data
+    } catch (error: any) {
+      throw error;
+    }
+  };
+  
 export const loginUser = async (username: string, password: string) => {
   try {
     const payload = {
