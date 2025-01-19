@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View, TouchableOpacity, Text, KeyboardAvoidingView, Platform, Modal, Pressable, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { registerGoogle, registerUser } from '../BooksService';
@@ -24,7 +24,7 @@ type Props = {
 const Register: React.FC<Props> = ({ navigation }) => {
 
   GoogleSignin.configure({
-    webClientId: '894874389822-vus90gg05gp7p6n8g5roor2nibcsli3b.apps.googleusercontent.com', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
+    webClientId: '894874389822-vus90gg05gp7p6n8g5roor2nibcsli3b.apps.googleusercontent.com',
     scopes: ['https://www.googleapis.com/auth/drive.readonly'],
   });
 
@@ -38,6 +38,17 @@ const Register: React.FC<Props> = ({ navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isRegisterInProgress, setIsRegisterInProgress] = useState(false);
   const { updateToken, updateUserName, updateEmail, updatePhoneNumber } = useUserData();
+
+  useEffect(() => {
+      navigation.setOptions({
+        title: 'Rejestracja',
+        headerTitleStyle: {
+          fontSize: 20,
+          fontWeight: 'bold',
+          color: '#2773A5',
+        },
+      });
+    }, [navigation]);
 
   const showError = (message: string) => {
     setRegisterError(message);
@@ -66,6 +77,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
         updateUserName(data.username);
         updateEmail(data.email);
         updatePhoneNumber(data?.phoneNumber);
+        navigation.replace('Main');
       }
     } catch (error: any) {
       showError(error.response.data.error[0] ?? "");
@@ -121,7 +133,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="E-mail"
-          placeholderTextColor="#888"
+          placeholderTextColor="#333"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -131,7 +143,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Nazwa użytkownika"
-          placeholderTextColor="#888"
+          placeholderTextColor="#333"
           value={username}
           onChangeText={setUsername}
         />
@@ -140,7 +152,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Hasło"
-          placeholderTextColor="#888"
+          placeholderTextColor="#333"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -150,7 +162,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Powtórz hasło"
-          placeholderTextColor="#888"
+          placeholderTextColor="#333"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
@@ -165,7 +177,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Numer telefonu"
-          placeholderTextColor="#888"
+          placeholderTextColor="#333"
           value={phoneNumber}
           onChangeText={setPhoneNumber}
           keyboardType="phone-pad"
@@ -229,7 +241,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    height: 45,
+    height: 50,
     borderColor: '#e0e0e0',
     borderWidth: 1,
     borderRadius: 10,
@@ -239,7 +251,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   button: {
-    backgroundColor: '#4682B4',
+    backgroundColor: '#3C709A',
     paddingVertical: 14,
     borderRadius: 25,
     alignItems: 'center',

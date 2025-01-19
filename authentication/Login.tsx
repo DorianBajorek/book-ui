@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { loginUser, registerGoogle } from '../BooksService';
@@ -24,8 +24,8 @@ type Props = {
 const Login: React.FC<Props> = ({ navigation }) => {
 
     GoogleSignin.configure({
-      webClientId: '894874389822-vus90gg05gp7p6n8g5roor2nibcsli3b.apps.googleusercontent.com', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
-      scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+      webClientId: '894874389822-vus90gg05gp7p6n8g5roor2nibcsli3b.apps.googleusercontent.com',
+      scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     });
   
   const [username, setUsername] = useState('');
@@ -33,7 +33,18 @@ const Login: React.FC<Props> = ({ navigation }) => {
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoginInProgress, setIsLoginInProgress] = useState(false);
   const { updateToken, updateUserName, updateEmail, updatePhoneNumber } = useUserData();
-  
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: 'Logowanie',
+      headerTitleStyle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#2773A5',
+      },
+    });
+  }, [navigation]);
+
   const handleLogin = async () => {
     if(username == '' || password == '') {
       showError('Uzupełnij obowiązkowe pola.');
@@ -49,11 +60,9 @@ const Login: React.FC<Props> = ({ navigation }) => {
         updatePhoneNumber(data?.phoneNumber)
         navigation.replace('Main');
         setIsLoginInProgress(false)
-      } else {
-        showError('Nieprawidłowy login lub hasło');
       }
     } catch (error) {
-      showError('Login failed. Please try again.');
+      showError('Nieprawidłowa nazwa użytknika lub hasła');
       setIsLoginInProgress(false)
     }
   };
@@ -97,7 +106,6 @@ const Login: React.FC<Props> = ({ navigation }) => {
         }
       } catch (error) {
         showError("Nieprawidłowe logowanie, spróbuj ponownie.")
-      } finally {
         setIsLoginInProgress(false)
       }
     };
@@ -117,7 +125,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Nazwa użytkownika"
-          placeholderTextColor="#888"
+          placeholderTextColor="#333"
           value={username}
           onChangeText={setUsername}
         />
@@ -126,7 +134,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Hasło"
-          placeholderTextColor="#888"
+          placeholderTextColor="#333"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -173,7 +181,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    height: 45,
+    height: 50,
     borderColor: '#e0e0e0',
     borderWidth: 1,
     borderRadius: 10,
@@ -183,7 +191,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   button: {
-    backgroundColor: '#4682B4',
+    backgroundColor: '#3C709A',
     paddingVertical: 14,
     borderRadius: 25,
     alignItems: 'center',
