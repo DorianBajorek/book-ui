@@ -37,7 +37,7 @@ export const loginUser = async (username: string, password: string) => {
     const response = await axios.post("https://drugaksiazka.pl/api/auth/v1/login/", payload);
     return response.data;
   } catch (error) {
-    return null;
+    throw error
   }
 };
 

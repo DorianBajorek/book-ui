@@ -15,8 +15,8 @@ const ErrorBanner: React.FC<ErrorBannerProps> = ({ message }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffe6e6',
-    borderColor: '#ed4c40',
+    backgroundColor: '#FFF0F0',
+    borderColor: '#BD1B0F',
     borderWidth: 2,
     padding: 10,
     marginBottom: 15,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   text: {
-    color: '#ed4c40',
+    color: '#BD1B0F',
     fontWeight: 'bold',
     fontSize: 16,
   },

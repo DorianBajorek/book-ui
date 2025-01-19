@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    height: 45,
+    height: 50,
     borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 10,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   noResultsText: {
     fontSize: 16,
-    color: '#888',
+    color: '#666',
     textAlign: 'center',
     marginTop: 30,
   },

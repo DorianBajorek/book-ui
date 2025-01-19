@@ -115,8 +115,8 @@ const styles = StyleSheet.create({
     height: 100,
   },
   description: {
-    fontSize: 16,
-    color: '#6E7C7C',
+    fontSize: 17,
+    color: '#545F5F',
     textAlign: 'center',
     marginBottom: 30,
     paddingHorizontal: 20,
@@ -132,11 +132,11 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   button: {
-    backgroundColor: '#4682B4',
-    paddingVertical: 12,
+    backgroundColor: '#3C709A',
+    paddingVertical: 18,
     borderRadius: 8,
     alignItems: 'center',
-    width: 150,
+    width: 170,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   infoContainer: {
@@ -179,8 +179,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   howItWorksStep: {
-    fontSize: 16,
-    color: '#6E7C7C',
+    fontSize: 17,
+    color: '#545F5F',
     textAlign: 'left',
     marginVertical: 5,
     lineHeight: 22,

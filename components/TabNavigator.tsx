@@ -21,7 +21,14 @@ const TabNavigator = () => {
   const { token, userName } = useUserData();
 
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator 
+      screenOptions={{
+        headerShown: false,
+        tabBarLabelStyle: { fontSize: 13, fontWeight: 'bold' },
+        tabBarInactiveTintColor: '#626F6F',
+        tabBarActiveTintColor: '#3C709A',
+      }}
+    >
       {token && userName ? (
         <>
           <Tab.Screen 
@@ -57,12 +64,12 @@ const TabNavigator = () => {
           )}
           {featureFlippersSettings && (
             <Tab.Screen 
-            name="Ustawienia" 
-            component={SettingsScreen} 
-            options={{ 
-              tabBarIcon: ({ color }) => <Ionicons name="settings" size={24} color={color} />
-            }} 
-          />
+              name="Ustawienia" 
+              component={SettingsScreen} 
+              options={{ 
+                tabBarIcon: ({ color }) => <Ionicons name="settings" size={24} color={color} />
+              }} 
+            />
           )}
         </>
       ) : (
