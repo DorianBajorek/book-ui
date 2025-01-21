@@ -37,6 +37,9 @@ const Register: React.FC<Props> = ({ navigation }) => {
   const [registerError, setRegisterError] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isRegisterInProgress, setIsRegisterInProgress] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  const [showPasswordDetailsModal, setShowPasswordDetailsModal] = useState(false);
   const { updateToken, updateUserName, updateEmail, updatePhoneNumber } = useUserData();
 
   useEffect(() => {
@@ -118,7 +121,6 @@ const Register: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -148,25 +150,45 @@ const Register: React.FC<Props> = ({ navigation }) => {
           onChangeText={setUsername}
         />
 
-        <Text style={styles.label}>Hasło:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Hasło"
-          placeholderTextColor="#333"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        <Text style={styles.label}>Hasło:
+        <Text style={styles.infoIcon} onPress={() => setShowPasswordDetailsModal(true)}>
+            ℹ️
+          </Text>
+        </Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Hasło"
+            placeholderTextColor="#333"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!isPasswordVisible}
+          />
+          <TouchableOpacity
+            onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+            style={styles.showPasswordButton}
+          >
+            <Text style={styles.showPasswordText}>{isPasswordVisible ? 'Ukryj' : 'Pokaż'}</Text>
+          </TouchableOpacity>
+        </View>
 
         <Text style={styles.label}>Powtórz hasło:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Powtórz hasło"
-          placeholderTextColor="#333"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Powtórz hasło"
+            placeholderTextColor="#333"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={!isConfirmPasswordVisible}
+          />
+          <TouchableOpacity
+            onPress={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
+            style={styles.showPasswordButton}
+          >
+            <Text style={styles.showPasswordText}>{isConfirmPasswordVisible ? 'Ukryj' : 'Pokaż'}</Text>
+          </TouchableOpacity>
+        </View>
 
         <Text style={styles.label}>
           Numer telefonu (opcjonalne):{' '}
@@ -211,6 +233,31 @@ const Register: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
       </Modal>
+
+      <Modal
+      transparent={true}
+      visible={showPasswordDetailsModal}
+      animationType="fade"
+      onRequestClose={() => setShowPasswordDetailsModal(false)}
+    >
+      <View style={styles.modalBackground}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalText}>
+            Hasło powinno spełniać następujące wymagania:
+            {'\n'}- Minimum 8 znaków.{"\n"}
+            - Co najmniej 1 wielka litera.{"\n"}
+            - Co najmniej 1 znak specjalny (np. !@#$%^&*()).{"\n"}
+            - Co najmniej 1 cyfra.
+          </Text>
+          <Pressable
+            style={styles.closeButton}
+            onPress={() => setShowPasswordDetailsModal(false)}
+          >
+            <Text style={styles.closeButtonText}>Zamknij</Text>
+          </Pressable>
+        </View>
+      </View>
+    </Modal>
     </KeyboardAvoidingView>
   );
 };
@@ -331,6 +378,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },  
+
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+  },
+
+  showPasswordButton: {
+    position: 'absolute',
+    right: 12,
+    top: 5,
+    padding: 10,
+  },
+  showPasswordText: {
+    fontSize: 14,
+    color: '#4682B4',
+    fontWeight: '600',
+  },
 });
 
 export default Register;

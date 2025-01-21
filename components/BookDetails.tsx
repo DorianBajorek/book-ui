@@ -13,10 +13,9 @@ const BookDetails = ({ route, navigation }) => {
   const { book, owner } = route.params;
   const { userName, token, setIsDeleteOfferInProgress, isDeleteOfferInProgress } = useUserData();
   const [viewProfile, setViewProfile] = useState(false);
-
   const images = [
-    ...(book.frontImage ? [{ id: '2', image: { uri: book.frontImage.replace("http", "https") } }] : []),
-    ...(book.backImage ? [{ id: '3', image: { uri: book.backImage.replace("http", "https") } }] : []),
+    ...(book.frontImage ? [{ id: '1', image: { uri: book.frontImage.replace("http", "https") } }] : []),
+    ...(book.backImage ? [{ id: '2', image: { uri: book.backImage.replace("http", "https") } }] : []),
   ];
 
   const handleDeleteOffer = async () => {

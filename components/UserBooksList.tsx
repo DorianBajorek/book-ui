@@ -23,7 +23,8 @@ const UserBooksList = ({ username }) => {
   }, [username, isCreateOfferInProgress, isDeleteOfferInProgress]);
 
   const handleBookPress = (book: any) => {
-    navigation.navigate('BookDetails', { book, owner: username });
+    const owner = book.username;
+    navigation.navigate('BookDetails', { book, owner });
   };
 
   return (

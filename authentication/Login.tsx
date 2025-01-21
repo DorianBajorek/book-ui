@@ -30,6 +30,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Stan widoczności hasła
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoginInProgress, setIsLoginInProgress] = useState(false);
   const { updateToken, updateUserName, updateEmail, updatePhoneNumber } = useUserData();
@@ -74,42 +75,40 @@ const Login: React.FC<Props> = ({ navigation }) => {
     }, 3000);
   };
 
-  
-    const signIn = async () => {
-      try {
-        const isSignedIn = await GoogleSignin.signOut();
-        if (isSignedIn) {
-          await GoogleSignin.signOut();
-        }
-        await GoogleSignin.hasPlayServices();
-        const response = await GoogleSignin.signIn();
-        const idToken = response.data?.idToken
-        if(idToken) {
-          setIsLoginInProgress(true)
-          await handleGoogleLogin(idToken)
-        }
-      } catch (error) {
-        showError("Nieprawidłowe logowanie, spróbuj ponownie.")
-        setIsLoginInProgress(false)
+  const signIn = async () => {
+    try {
+      const isSignedIn = await GoogleSignin.signOut();
+      if (isSignedIn) {
+        await GoogleSignin.signOut();
       }
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      const idToken = response.data?.idToken
+      if(idToken) {
+        setIsLoginInProgress(true)
+        await handleGoogleLogin(idToken)
+      }
+    } catch (error) {
+      showError("Nieprawidłowe logowanie, spróbuj ponownie.")
+      setIsLoginInProgress(false)
     }
-  
-    const handleGoogleLogin = async (code: string) => {
-      try {
-        const data = await registerGoogle(code);
-        if (data) {
-          updateToken(data.token);
-          updateUserName(data.username);
-          updateEmail(data.email);
-          setIsLoginInProgress(false)
-          navigation.replace('Main');
-        }
-      } catch (error) {
-        showError("Nieprawidłowe logowanie, spróbuj ponownie.")
+  }
+
+  const handleGoogleLogin = async (code: string) => {
+    try {
+      const data = await registerGoogle(code);
+      if (data) {
+        updateToken(data.token);
+        updateUserName(data.username);
+        updateEmail(data.email);
         setIsLoginInProgress(false)
+        navigation.replace('Main');
       }
-    };
-  
+    } catch (error) {
+      showError("Nieprawidłowe logowanie, spróbuj ponownie.")
+      setIsLoginInProgress(false)
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -131,14 +130,22 @@ const Login: React.FC<Props> = ({ navigation }) => {
         />
 
         <Text style={styles.label}>Hasło:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Hasło"
-          placeholderTextColor="#333"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Hasło"
+            placeholderTextColor="#333"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!isPasswordVisible}
+          />
+          <TouchableOpacity
+            onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+            style={styles.showPasswordButton}
+          >
+            <Text style={styles.showPasswordText}>{isPasswordVisible ? 'Ukryj' : 'Pokaż'}</Text>
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Zaloguj się</Text>
@@ -235,7 +242,23 @@ const styles = StyleSheet.create({
     color: '#333',
     fontSize: 16,
     fontWeight: '500',
-  }, 
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  showPasswordButton: {
+    position: 'absolute',
+    right: 12,
+    top: 5,
+    padding: 10,
+  },
+  showPasswordText: {
+    fontSize: 14,
+    color: '#4682B4',
+    fontWeight: '600',
+  },
 });
 
 export default Login;
