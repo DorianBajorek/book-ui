@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, View, TextInput, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, TextInput, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUserData } from '../authentication/UserData';
 import { getLastAddedOffers, getOffersByQuery } from '../BooksService';
@@ -15,12 +15,15 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
   const [lastAddedBooks, setLastAddedBooks] = useState([]);
+  const [hasNoResults, setHasNoResults] = useState(false); 
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
       setSearchedBooks([]);
+      setHasNoResults(false);
       return;
     }
+
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
     }
@@ -28,12 +31,16 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
     const newTimeout = setTimeout(async () => {
       try {
         const data = await getOffersByQuery(token, searchQuery);
-        if (data) {
+        if (data && data.length > 0) {
           setSearchedBooks(data);
+          setHasNoResults(false);
         } else {
           setSearchedBooks([]);
+          setHasNoResults(true);
         }
       } catch (error) {
+        setSearchedBooks([]);
+        setHasNoResults(true);
       }
     }, 500);
     setDebounceTimeout(newTimeout);
@@ -67,6 +74,12 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
     navigation.navigate('BookDetails', { book, owner });
   };
 
+  const clearSearch = () => {
+    setSearchQuery('');
+    setSearchedBooks([]);
+    setHasNoResults(false);
+  };
+
   return (
     <>
       <View style={styles.headerContainer}>
@@ -82,11 +95,16 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity style={styles.clearButton} onPress={clearSearch}>
+              <Text style={styles.clearText}>X</Text>
+            </TouchableOpacity>
+          )}
         </View>
         <ScrollView contentContainerStyle={styles.resultsContainer}>
           {searchedBooks.length > 0 && searchQuery.length > 0 ? (
             <OffersList books={searchedBooks} onBookPress={handleBookPress} />
-          ) : searchedBooks.length == 0 && searchQuery.length > 0 ? (
+          ) : hasNoResults ? (
             <Text style={styles.noResultsText}>Brak wyników</Text>
           ) : (
             <>
@@ -139,6 +157,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: '#fff',
     fontSize: 16,
+  },
+  clearButton: {
+    position: 'absolute',
+    right: 15,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  clearText: {
+    fontSize: 18,
+    color: '#999',
   },
   resultsContainer: {
     paddingTop: 20,

@@ -111,7 +111,6 @@ const BookDetails = ({ route, navigation }) => {
         </View>
       </ScrollView>
 
-      {/* Modal z powiększonym obrazem */}
       <Modal
         visible={modalVisible}
         animationType="fade"
