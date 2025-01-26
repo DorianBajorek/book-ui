@@ -90,7 +90,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
             <Text style={styles.noResultsText}>Brak wyników</Text>
           ) : (
             <>
-              <Text style={styles.titleText}>Ostatenio dodane książki</Text>
+              <Text style={styles.titleText}>Ostatnio dodane książki</Text>
               <OffersList books={lastAddedBooks} onBookPress={handleBookPress} />
             </>
           )}
