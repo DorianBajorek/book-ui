@@ -9,6 +9,7 @@ import { UserData } from './authentication/UserData';
 import TabNavigator from './components/TabNavigator';
 import BookDetails from './components/BookDetails';
 import ChatScreen from './components/ChatScreen';
+import Profile from './components/Profile';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,7 @@ export default function App() {
           <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="BookDetails" component={BookDetails} options={{ headerShown: false }} />
           <Stack.Screen name="Chat" component={ChatScreen} />
         </Stack.Navigator>
