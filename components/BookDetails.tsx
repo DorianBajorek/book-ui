@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Modal, Image } from 'react-native';
 import { useUserData } from '../authentication/UserData';
-import BookSlider from './BookSlider';
-import Profile from './Profile';
 import { deleteOffer } from '../BooksService';
 import LoadingSpinner from './LoadingSpinner';
-import { featureFlippersMessages } from './Constatns';
 import CloseButton from './CloseButton';
-import { Image } from 'react-native';
+import { featureFlippersMessages } from './Constatns';
 
 const BookDetails = ({ route, navigation }) => {
   const { book, owner } = route.params;
   const { userName, token, setIsDeleteOfferInProgress, isDeleteOfferInProgress } = useUserData();
-  const [viewProfile, setViewProfile] = useState(false);
+
   const images = [
     ...(book.frontImage ? [{ id: '1', image: { uri: book.frontImage.replace("http", "https") } }] : []),
     ...(book.backImage ? [{ id: '2', image: { uri: book.backImage.replace("http", "https") } }] : []),
   ];
+
+  // Stan do zarządzania modalem
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImagePress = (image) => {
+    setSelectedImage(image);
+    setModalVisible(true);
+  };
 
   const handleDeleteOffer = async () => {
     Alert.alert(
@@ -42,72 +48,86 @@ const BookDetails = ({ route, navigation }) => {
   };
 
   const handleViewProfile = () => {
-    setViewProfile(true);
+    navigation.navigate('Profile', { owner });
   };
-
-  if (viewProfile) {
-    return <Profile route={{ params: { owner } }} />;
-  }
 
   return (
     <>
-    <LoadingSpinner visible={isDeleteOfferInProgress} />
-    <ScrollView style={styles.scrollView}>
-      <View style={styles.headerContainer}>
-        <CloseButton onPress={() => navigation.goBack()} />
-        <Text style={styles.headerTitle}>Oferta</Text>
-      </View>
-      <View style={styles.container}>
-        <View style={styles.card}>
-        <View style={styles.imagesContainer}>
-          {images.map((img) => (
-            <Image
-              key={img.id}
-              source={img.image}
-              style={styles.image}
-            />
-          ))}
+      <LoadingSpinner visible={isDeleteOfferInProgress} />
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.headerContainer}>
+          <CloseButton onPress={() => navigation.goBack()} />
+          <Text style={styles.headerTitle}>Oferta</Text>
         </View>
-          <Text style={styles.bookTitle}>{book.title}</Text>
+        <View style={styles.container}>
+          <View style={styles.card}>
+            <View style={styles.imagesContainer}>
+              {images.map((img) => (
+                <TouchableOpacity key={img.id} onPress={() => handleImagePress(img.image)}>
+                  <Image
+                    source={img.image}
+                    style={styles.image}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+            <Text style={styles.bookTitle}>{book.title}</Text>
 
-          <View style={styles.detailsContainer}>
-            <Text style={styles.bookDetail}>
-              <Text style={styles.label}>Użytkownik: </Text>
-              {userName != owner ? (
-                <Text
-                  style={{ color: '#007bff', textDecorationLine: 'underline' }}
-                  onPress={handleViewProfile}
-                >
-                  {owner}
-                </Text>
-              ) : (
-                <Text>
-                  {owner}
-                </Text>
-              )}
+            <View style={styles.detailsContainer}>
+              <Text style={styles.bookDetail}>
+                <Text style={styles.label}>Użytkownik: </Text>
+                {userName !== owner ? (
+                  <Text
+                    style={{ color: '#007bff', textDecorationLine: 'underline' }}
+                    onPress={handleViewProfile}
+                  >
+                    {owner}
+                  </Text>
+                ) : (
+                  <Text>
+                    {owner}
+                  </Text>
+                )}
+              </Text>
+              <Text style={styles.bookDetail}>
+                <Text style={styles.label}>Cena: </Text>{book.price + ",00 zł"}
+              </Text>
+            </View>
+          </View>
 
-            </Text>
-            <Text style={styles.bookDetail}>
-              <Text style={styles.label}>Cena: </Text>{book.price + ",00 zł"}
-            </Text>
+          <View style={styles.buttonContainer}>
+            {userName !== owner ? (
+              featureFlippersMessages ? (
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chat', { recipient: owner })}>
+                  <Text style={styles.buttonText}>Napisz wiadomość do właściciela</Text>
+                </TouchableOpacity>
+              ) : null
+            ) : (
+              <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleDeleteOffer}>
+                <Text style={styles.buttonText}>Usuń ofertę</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
+      </ScrollView>
 
-        <View style={styles.buttonContainer}>
-          {userName !== owner ? (
-            featureFlippersMessages ? (
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chat', { recipient: owner })}>
-                <Text style={styles.buttonText}>Napisz wiadomość do właściciela</Text>
-              </TouchableOpacity>
-            ) : null
-          ) : (
-            <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleDeleteOffer}>
-              <Text style={styles.buttonText}>Usuń ofertę</Text>
-            </TouchableOpacity>
-          )}
+      {/* Modal z powiększonym obrazem */}
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <TouchableOpacity style={styles.modalCloseButton} onPress={() => setModalVisible(false)}>
+            <Text style={styles.modalCloseButtonText}>X</Text>
+          </TouchableOpacity>
+          <Image
+            source={selectedImage}
+            style={styles.modalImage}
+          />
         </View>
-      </View>
-    </ScrollView>
+      </Modal>
     </>
   );
 };
@@ -121,28 +141,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     alignItems: 'center',
-  },
-  closeIcon: {
-    position: 'absolute',
-    right: 20,
-    top: 10,
-    zIndex: 1,
-    backgroundColor: '#fff',
-    padding: 5,
-    paddingLeft: 8,
-    paddingRight: 8,
-    borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 10,
-  },
-  closeIconText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
   },
   headerContainer: {
     paddingHorizontal: 30,
@@ -174,12 +172,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     color: '#333',
-  },
-  bookDescription: {
-    fontSize: 16,
-    marginBottom: 15,
-    textAlign: 'center',
-    color: '#666',
   },
   imagesContainer: {
     flexDirection: 'row',
@@ -225,6 +217,30 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: 'red',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  modalCloseButton: {
+    position: 'absolute',
+    top: 30,
+    right: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    borderRadius: 20,
+    padding: 10,
+  },
+  modalCloseButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  modalImage: {
+    width: '80%',
+    height: '80%',
+    resizeMode: 'contain',
   },
 });
 
