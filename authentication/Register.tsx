@@ -96,7 +96,6 @@ const Register: React.FC<Props> = ({ navigation }) => {
       }
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
-      console.log("XD: " + JSON.stringify(response, null, 2))
       const idToken = response.data?.idToken
       if(idToken) {
         setIsRegisterInProgress(true);
