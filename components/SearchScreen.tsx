@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, View, TextInput, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { StyleSheet, View, TextInput, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useUserData } from '../authentication/UserData';
 import { getLastAddedOffers, getOffersByQuery } from '../BooksService';
 import OffersList from './OffersList';
@@ -9,13 +8,41 @@ type NavigationProp = {
   navigate: (screen: string) => void;
 };
 
+const PAGE_SIZE = 10;
+
 const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   const { token } = useUserData();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
   const [lastAddedBooks, setLastAddedBooks] = useState([]);
-  const [hasNoResults, setHasNoResults] = useState(false); 
+  const [page, setPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMoreData, setHasMoreData] = useState(true);
+  const [hasNoResults, setHasNoResults] = useState(false);
+
+  const loadLastAddedOffers = async (pageNumber: number) => {
+    setIsLoading(true);
+    try {
+      const data = await getLastAddedOffers(token, PAGE_SIZE.toString(), pageNumber.toString());
+      if (data && data.length > 0) {
+        setLastAddedBooks((prevBooks) => [...prevBooks, ...data]);
+        if (data.length < PAGE_SIZE) {
+          setHasMoreData(false);
+        }
+      } else {
+        setHasMoreData(false);
+      }
+    } catch (error) {
+      console.error('Error fetching last added offers:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadLastAddedOffers(0);
+  }, [token]);
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
@@ -52,22 +79,15 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
     };
   }, [searchQuery, token]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const fetchData = async () => {
-        try {
-          const data = await getLastAddedOffers(token);
-          if (data) {
-            setLastAddedBooks(data);
-          }
-        } catch (error) {
-          console.error('Error fetching last added offers:', error);
-        }
-      };
-
-      fetchData();
-    }, [token])
-  );
+  const handleLoadMore = () => {
+    if (hasMoreData && !isLoading) {
+      setPage((prevPage) => {
+        const nextPage = prevPage + 1;
+        loadLastAddedOffers(nextPage);
+        return nextPage;
+      });
+    }
+  };
 
   const handleBookPress = (book) => {
     const owner = book.username;
@@ -101,18 +121,26 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
             </TouchableOpacity>
           )}
         </View>
-        <ScrollView contentContainerStyle={styles.resultsContainer}>
-          {searchedBooks.length > 0 && searchQuery.length > 0 ? (
-            <OffersList books={searchedBooks} onBookPress={handleBookPress} />
-          ) : hasNoResults ? (
-            <Text style={styles.noResultsText}>Brak wyników</Text>
-          ) : (
-            <>
-              <Text style={styles.titleText}>Ostatnio dodane książki</Text>
-              <OffersList books={lastAddedBooks} onBookPress={handleBookPress} />
-            </>
-          )}
-        </ScrollView>
+        {searchQuery.length > 0 && searchedBooks.length > 0 ? (
+          <OffersList books={searchedBooks} onBookPress={handleBookPress} />
+        ) : hasNoResults ? (
+          <Text style={styles.noResultsText}>Brak wyników</Text>
+        ) : (
+          <FlatList
+            data={lastAddedBooks}
+            keyExtractor={(item, index) => `${item.id}-${index}`}
+            renderItem={({ item }) => (
+              <OffersList books={[item]} onBookPress={handleBookPress} />
+            )}
+            ListFooterComponent={
+              isLoading ? (
+                <ActivityIndicator size="large" color="#333" />
+              ) : null
+            }
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+          />
+        )}
       </View>
     </>
   );
@@ -168,9 +196,6 @@ const styles = StyleSheet.create({
   clearText: {
     fontSize: 18,
     color: '#999',
-  },
-  resultsContainer: {
-    paddingTop: 20,
   },
   noResultsText: {
     fontSize: 16,
