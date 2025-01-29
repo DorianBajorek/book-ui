@@ -15,7 +15,6 @@ const BookDetails = ({ route, navigation }) => {
     ...(book.backImage ? [{ id: '2', image: { uri: book.backImage.replace("http", "https") } }] : []),
   ];
 
-  // Stan do zarządzania modalem
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
