@@ -25,7 +25,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
 
   GoogleSignin.configure({
     webClientId: '894874389822-vus90gg05gp7p6n8g5roor2nibcsli3b.apps.googleusercontent.com',
-    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+    scopes: [],
   });
 
 

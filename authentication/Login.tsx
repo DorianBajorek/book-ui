@@ -30,7 +30,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Stan widoczności hasła
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoginInProgress, setIsLoginInProgress] = useState(false);
   const { updateToken, updateUserName, updateEmail, updatePhoneNumber } = useUserData();
