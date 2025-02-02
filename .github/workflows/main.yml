@@ -52,14 +52,20 @@ jobs:
         run: |
           cd android
           ./gradlew assembleRelease
+          ./gradlew bundleRelease
 
       # 9. Zmiana nazwy pliku APK
       - name: Rename APK
-        run: mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/drugaksiazka.apk
+        run: | 
+              mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/drugaksiazka.apk  
+              mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/apk/release/drugaksiazka.aab
+        
 
       # 10. Przechowywanie artefaktów lokalnie
       - name: Save APK locally
-        run: mkdir -p $HOME/apk && cp android/app/build/outputs/apk/release/drugaksiazka.apk $HOME/apk/drugaksiazka.apk
+        run: | 
+              mkdir -p $HOME/apk && cp android/app/build/outputs/apk/release/drugaksiazka.apk $HOME/apk/drugaksiazka.apk
+              mkdir -p $HOME/aab && cp android/app/build/outputs/apk/release/drugaksiazka.aab $HOME/aab/drugaksiazka.aab
 
       # 11. Wysłanie APK na serwerr
       - name: Install SSH keys
@@ -71,6 +77,7 @@ jobs:
       - name: Upload APK to server
         run: |
           scp $HOME/apk/drugaksiazka.apk ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/mobile_app/
+          scp $HOME/aab/drugaksiazka.aab ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/mobile_app/
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cp /home/ubuntu/mobile_app/drugaksiazka.apk /var/www/html/drugaksiazka.apk"
 
       # 12. Cleanup
