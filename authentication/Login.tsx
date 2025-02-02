@@ -25,7 +25,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
 
     GoogleSignin.configure({
       webClientId: '894874389822-vus90gg05gp7p6n8g5roor2nibcsli3b.apps.googleusercontent.com',
-      scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+      scopes: ['openid', 'profile', 'email'],
     });
   
   const [username, setUsername] = useState('');
@@ -83,16 +83,17 @@ const Login: React.FC<Props> = ({ navigation }) => {
       }
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
-      const idToken = response.data?.idToken
-      if(idToken) {
-        setIsLoginInProgress(true)
-        await handleGoogleLogin(idToken)
+      const idToken = response.data?.idToken;
+      if (idToken) {
+        setIsLoginInProgress(true);
+        await handleGoogleLogin(idToken);
       }
     } catch (error) {
-      showError("Nieprawidłowe logowanie, spróbuj ponownie.")
-      setIsLoginInProgress(false)
+      console.error("Pełny obiekt błędu:", error); // Logowanie pełnego obiektu błędu
+      showError(`Błąd podczas logowania: ${error.code} - ${error.message}`); // Wyświetlenie kodu błędu i wiadomości
+      setIsLoginInProgress(false);
     }
-  }
+  };
 
   const handleGoogleLogin = async (code: string) => {
     try {
