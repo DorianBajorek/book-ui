@@ -23,7 +23,13 @@
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.dorianbajorek.bookui"
+      "package": "com.dorianbajorek.bookui",
+      "config": {
+      "googleSignIn": {
+        "apiKey": "894874389822-ge6knv9ifv3stgtvejmjbpefus3j5h51.apps.googleusercontent.com",
+        "certificateHash": "0B:93:FE:DF:72:37:D8:AC:0A:DA:5F:AD:26:6C:E4:67:B9:20:B6:F0"
+      }
+  }
     },
     "web": {
       "favicon": "./assets/favicon.png"
