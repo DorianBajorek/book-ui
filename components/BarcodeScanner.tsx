@@ -1,5 +1,5 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image, Alert, } from 'react-native';
 import { createOffer } from '../BooksService';
 import { useUserData } from '../authentication/UserData';
@@ -10,9 +10,10 @@ import Slider from '@react-native-community/slider';
 type BarcodeScannerProps = {
   toggleModal: () => void;
   checkOffer: (isbn: string) => Promise<boolean> ;
+  setScannerError: (error: string) => void;
 };
 
-export default function BarcodeScanner({ toggleModal , checkOffer}: BarcodeScannerProps) {
+export default function BarcodeScanner({ toggleModal , checkOffer, setScannerError}: BarcodeScannerProps) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [isbnCode, setIsbnCode] = useState('');
@@ -36,7 +37,7 @@ export default function BarcodeScanner({ toggleModal , checkOffer}: BarcodeScann
       </View>
     );
   }
-
+  
   const handleBarcodeScanned = async ({ type, data }) => {
     if (type === 'ean13') {
         const isOfferValid = await checkOffer(data);
@@ -84,9 +85,14 @@ export default function BarcodeScanner({ toggleModal , checkOffer}: BarcodeScann
 
   const saveBook = async () => {
     setIsCreateOfferInProgress(true);
-    await createOffer(isbnCode, token, frontPhoto || "", backPhoto || "", amount.toString());
-    setIsCreateOfferInProgress(false);
-    toggleModal()
+    try {
+      await createOffer(isbnCode, token, frontPhoto || "", backPhoto || "", amount.toString());
+    } catch (error) {
+      setScannerError("Błąd podczas dodawania ogłoszenia.");
+    } finally {
+      setIsCreateOfferInProgress(false);
+      toggleModal()
+    }
   };
 
   return (

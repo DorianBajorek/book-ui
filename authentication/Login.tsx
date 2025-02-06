@@ -89,8 +89,8 @@ const Login: React.FC<Props> = ({ navigation }) => {
         await handleGoogleLogin(idToken);
       }
     } catch (error) {
-      console.error("Pełny obiekt błędu:", error); // Logowanie pełnego obiektu błędu
-      showError(`Błąd podczas logowania: ${error.code} - ${error.message}`); // Wyświetlenie kodu błędu i wiadomości
+      console.error("Pełny obiekt błędu:", error);
+      showError(`Błąd podczas logowania: ${error.code} - ${error.message}`);
       setIsLoginInProgress(false);
     }
   };

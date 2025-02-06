@@ -62,18 +62,21 @@ export const createOffer = async (isbn: string, token: string, frontImage: strin
     });
   }
 
-  const response = await axios.post(
-    `https://drugaksiazka.pl/api/books/v1/create_offer/`,
-    formData,
-    {
-      headers: {
-        Authorization: `Token ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-  );
-
-  return response.data;
+  try {
+    const response = await axios.post(
+      `https://drugaksiazka.pl/api/books/v1/create_offer/`,
+      formData,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Something wrong") 
+  }
 };
 
 export const securedEndpoint = async (token: string) => {

@@ -21,6 +21,7 @@ const Profile = ({ route }) => {
   const [isModalScanner, setIsModalScanner] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [offerError, setOfferError] = useState<string | null>(null);
+  const [scannerError, setScannerError] = useState<string | null>(null);
   const { owner } = route.params;
 
   useFocusEffect(
@@ -46,6 +47,16 @@ const Profile = ({ route }) => {
       setProfileName(userName);
     }
   }, [owner, userName]);
+
+  useEffect(() => {
+    if (scannerError) {
+      const timer = setTimeout(() => {
+        setScannerError(null);
+      }, 5000);
+  
+      return () => clearTimeout(timer);
+    }
+  }, [scannerError]);
 
   const toggleModal = () => {
     setIsModalScanner(!isModalScanner);
@@ -91,6 +102,11 @@ const Profile = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+        {scannerError &&
+          <View style={{ marginTop: 20, zIndex:1000, marginLeft: 20 }}>
+            <ErrorBanner message={"Brak książki w bazie. Dodaj inne ogłoszenie"} />
+          </View>
+        }
         {offerError && 
           <View style={{ marginTop: 20, zIndex:1000 }}>
             <ErrorBanner message={offerError} />
@@ -157,7 +173,7 @@ const Profile = ({ route }) => {
           <View style={styles.modalContainer}>
             <CloseButton onPress={toggleModal}/>
             <LoadingSpinner visible={isCreateOfferInProgress || isEditProfileInProgress} />
-            <BarcodeScanner toggleModal={toggleModal} checkOffer={checkOffer}/>
+            <BarcodeScanner toggleModal={toggleModal} checkOffer={checkOffer} setScannerError={setScannerError} />
           </View>
         </View>
       </Modal>
