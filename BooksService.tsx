@@ -41,6 +41,7 @@ export const loginUser = async (username: string, password: string) => {
   }
 };
 
+
 export const createOffer = async (isbn: string, token: string, frontImage: string, backImage: string, price: string) => {
   const formData = new FormData();
   formData.append('isbn', isbn);
@@ -252,7 +253,7 @@ export const deleteUser = async (token: string) => {
 export const checkIsbn = async (isbn: string, token: string) => {
   try {
     const url = `https://drugaksiazka.pl/api/books/v1/check_isbn?isbn=${encodeURIComponent(isbn)}`;
-    await axios.get(
+    const result = await axios.get(
       url,
       {
         headers: {
@@ -261,8 +262,8 @@ export const checkIsbn = async (isbn: string, token: string) => {
         },
       }
     );
-    return true;
+    return result;
   } catch (error) {
-    return false;
+    return null;
   }
 };

@@ -82,15 +82,13 @@ const Profile = ({ route }) => {
     setIsSettingsModalOpen(false);
   }
 
-  const checkOffer = async (isbn: string): Promise<boolean> => {
-    const result = await checkIsbn(isbn, token);
-
-    if (!result) {
+  const checkOffer = async (isbn: string): Promise<any> => {
+    const response = await checkIsbn(isbn, token);
+    if (!response) { 
       showError("Nie udało się dodać ogłoszenia. Spróbuj dodać inne.");
-      return false;
+      return null;
     }
-    
-    return true;
+    return response.data;
   };
 
   const showError = (message: string) => {

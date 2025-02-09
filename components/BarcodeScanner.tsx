@@ -6,6 +6,7 @@ import { useUserData } from '../authentication/UserData';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import Slider from '@react-native-community/slider';
+import LoadingSpinner from './LoadingSpinner';
 
 type BarcodeScannerProps = {
   toggleModal: () => void;
@@ -20,9 +21,12 @@ export default function BarcodeScanner({ toggleModal , checkOffer, setScannerErr
   const [cameraVisible, setCameraVisible] = useState(true);
   const [frontPhoto, setFrontPhoto] = useState<string | null>(null);
   const [backPhoto, setBackPhoto] = useState<string | null>(null);
+  const [titleFromIsbn, setTitleFromIsbn] = useState("");
+  const [authorFromIsbn, setAuthorFromIsbn] = useState("");
   const [photoMode, setPhotoMode] = useState<'none' | 'front' | 'back'>('none');
   const [amount, setAmount] = useState(10);
   const cameraRef = useRef<CameraView>(null);
+  const [checkingISNB, setCheckingISBN] = useState(false);
   const { token, setIsCreateOfferInProgress } = useUserData();
 
   if (!permission) {
@@ -39,17 +43,21 @@ export default function BarcodeScanner({ toggleModal , checkOffer, setScannerErr
   }
   
   const handleBarcodeScanned = async ({ type, data }) => {
-    if (type === 'ean13') {
-        const isOfferValid = await checkOffer(data);
-        if(isOfferValid) {
-          setIsbnCode(data);
-          setCameraVisible(false);
-          setFacing('back');
-          setPhotoMode('none');
-        } else {
-          toggleModal()
-        }
+    if ((type === 'ean13' || type === 32) && (!checkingISNB)) {
+      setCheckingISBN(true);
+      const response = await checkOffer(data);
+      setCheckingISBN(false);
+      setAuthorFromIsbn(response?.author);
+      setTitleFromIsbn(response?.title);
+      if(response) {
+        setIsbnCode(data);
+        setCameraVisible(false);
+        setFacing('back');
+        setPhotoMode('none');
+      } else {
+        toggleModal()
       }
+    }
   };
 
   const showAlert = () => {
@@ -100,6 +108,7 @@ export default function BarcodeScanner({ toggleModal , checkOffer, setScannerErr
       {cameraVisible ? (
         photoMode === 'none' ? (
           <View style={styles.cameraContainer}>
+            <LoadingSpinner visible={checkingISNB} />
             <Text style={styles.scanningMessage}>Zeskanuj kod książki</Text>
             <CameraView
               style={styles.scanner}
@@ -133,6 +142,8 @@ export default function BarcodeScanner({ toggleModal , checkOffer, setScannerErr
         )
       ) : (
         <View style={styles.resultContainer}>
+          <Text style={styles.scannedText}>{titleFromIsbn}</Text>
+          <Text style={styles.scannedText}>{authorFromIsbn}</Text>
           <Text style={styles.addOfferTitle}>Dodaj ogłoszenie</Text>
           {frontPhoto && backPhoto && (
           <View style={styles.photoSection}>
@@ -250,10 +261,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scannedText: {
-    fontSize: 24,
+    fontSize: 14,
     fontWeight: 'bold',
     color: 'black',
-    marginBottom: 20,
+    marginBottom: 10,
+    marginTop: 10
   },
   buttonContainer: {
     position: 'absolute',
@@ -310,7 +322,6 @@ const styles = StyleSheet.create({
   addOfferTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginTop: -40,
   },
   scanningMessage: {
     marginTop: 20,
