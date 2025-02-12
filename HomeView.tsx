@@ -16,7 +16,6 @@ export interface Book {
   price?: string;
 }
 
-
 type NavigationProp = {
   navigate: (screen: string) => void;
 };

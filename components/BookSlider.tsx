@@ -12,20 +12,26 @@ const BookSlider = ({ books, navigation, username }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={books}
+        data={books.filter(book => book.smallfrontImage || book.frontImage)}
         keyExtractor={(item) => item.offer_id.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleBookPress(item)}>
-            <View style={styles.bookContainer}>
-              <Image 
-                source={{ uri: item.frontImage.replace('http', 'https') }} 
-                style={styles.bookImage} 
-              />
-            </View>
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => {
+          const imageUri = item.smallfrontImage 
+            ? item.smallfrontImage.replace('http', 'https') 
+            : item.frontImage.replace('http', 'https');
+
+          return (
+            <TouchableOpacity onPress={() => handleBookPress(item)}>
+              <View style={styles.bookContainer}>
+                <Image 
+                  source={{ uri: imageUri }} 
+                  style={styles.bookImage} 
+                />
+              </View>
+            </TouchableOpacity>
+          );
+        }}
       />
     </View>
   );

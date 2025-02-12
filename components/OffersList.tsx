@@ -6,9 +6,8 @@ type Book = {
   author?: string;
   username: string;
   price: number;
-  cover_book: string;
-  frontImage: string;
-  backImage: string;
+  frontImage?: string;
+  smallfrontImage?: string;
 };
 
 type OffersListProps = {
@@ -19,30 +18,33 @@ type OffersListProps = {
 const OffersList = ({ books, onBookPress }: OffersListProps) => {
   return (
     <View>
-      {books.map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          style={styles.resultContainer}
-          onPress={() => onBookPress(item)}
-        >
-          {item.frontImage && (
-            <Image
-            source={{
-              uri: item.frontImage.replace('http', 'https'),
-            }}
-            style={styles.bookImage}
-          />
-          )}
-          <View style={styles.textContainer}>
-            <Text style={styles.bookTitle}>{item.title}</Text>
-            <Text style={styles.bookDescription}>
-              Autor: {item.author ? item.author : 'Brak'}
-            </Text>
-            <Text style={styles.bookDescription}>Użytkownik: {item.username}</Text>
-            <Text style={styles.bookDescription}>Cena: {item.price + ",00 zł"}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
+      {books.map((item, index) => {
+        const imageUri = item.smallfrontImage 
+          ? item.smallfrontImage.replace('http', 'https')
+          : item.frontImage
+          ? item.frontImage.replace('http', 'https')
+          : null;
+
+        return (
+          <TouchableOpacity
+            key={index}
+            style={styles.resultContainer}
+            onPress={() => onBookPress(item)}
+          >
+            {imageUri && (
+              <Image source={{ uri: imageUri }} style={styles.bookImage} />
+            )}
+            <View style={styles.textContainer}>
+              <Text style={styles.bookTitle}>{item.title}</Text>
+              <Text style={styles.bookDescription}>
+                Autor: {item.author ? item.author : 'Brak'}
+              </Text>
+              <Text style={styles.bookDescription}>Użytkownik: {item.username}</Text>
+              <Text style={styles.bookDescription}>Cena: {item.price},00 zł</Text>
+            </View>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 };

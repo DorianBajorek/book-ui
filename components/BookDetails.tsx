@@ -11,15 +11,28 @@ const BookDetails = ({ route, navigation }) => {
   const { userName, token, setIsDeleteOfferInProgress, isDeleteOfferInProgress } = useUserData();
 
   const images = [
-    ...(book.frontImage ? [{ id: '1', image: { uri: book.frontImage.replace("http", "https") } }] : []),
-    ...(book.backImage ? [{ id: '2', image: { uri: book.backImage.replace("http", "https") } }] : []),
+    ...(book.smallfrontImage || book.frontImage
+      ? [{
+          id: '2',
+          small: book.smallfrontImage ? book.smallfrontImage.replace("http", "https") : book.frontImage.replace("http", "https"),
+          large: book.frontImage ? book.frontImage.replace("http", "https") : null,
+        }]
+      : []),
+    ...(book.smallbackImage || book.backImage
+      ? [{
+          id: '3',
+          small: book.smallbackImage ? book.smallbackImage.replace("http", "https") : book.backImage.replace("http", "https"),
+          large: book.backImage ? book.backImage.replace("http", "https") : null,
+        }]
+      : []),
   ];
+  
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImagePress = (image) => {
-    setSelectedImage(image);
+    setSelectedImage({ uri: image.large });
     setModalVisible(true);
   };
 
@@ -60,16 +73,14 @@ const BookDetails = ({ route, navigation }) => {
         </View>
         <View style={styles.container}>
           <View style={styles.card}>
-            <View style={styles.imagesContainer}>
-              {images.map((img) => (
-                <TouchableOpacity key={img.id} onPress={() => handleImagePress(img.image)}>
-                  <Image
-                    source={img.image}
-                    style={styles.image}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
+          <View style={styles.imagesContainer}>
+            {images.map((img) => img.small && img.large && (
+              <TouchableOpacity key={img.id} onPress={() => handleImagePress(img)}>
+                <Image source={{ uri: img.small }} style={styles.image} />
+              </TouchableOpacity>
+            ))}
+          </View>
+
             <Text style={styles.bookTitle}>{book.title}</Text>
 
             <View style={styles.detailsContainer}>

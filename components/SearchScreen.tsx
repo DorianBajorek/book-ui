@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { StyleSheet, View, TextInput, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useUserData } from '../authentication/UserData';
 import { getLastAddedOffers, getOffersByQuery } from '../BooksService';
 import OffersList from './OffersList';
+import { useFocusEffect } from '@react-navigation/native';
 
 type NavigationProp = {
   navigate: (screen: string) => void;
@@ -18,20 +19,17 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   const [lastAddedBooks, setLastAddedBooks] = useState([]);
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMoreData, setHasMoreData] = useState(true);
   const [hasNoResults, setHasNoResults] = useState(false);
+  const flatListRef = useRef<FlatList>(null);
 
-  const loadLastAddedOffers = async (pageNumber: number) => {
+  const loadLastAddedOffers = async (pageNumber: number, isFirstLoading: boolean) => {
     setIsLoading(true);
     try {
       const data = await getLastAddedOffers(token, PAGE_SIZE.toString(), pageNumber.toString());
-      if (data && data.length > 0) {
-        setLastAddedBooks((prevBooks) => [...prevBooks, ...data]);
-        if (data.length < PAGE_SIZE) {
-          setHasMoreData(false);
-        }
+      if(isFirstLoading){
+        setLastAddedBooks(data)
       } else {
-        setHasMoreData(false);
+        setLastAddedBooks((prevBooks) => [...prevBooks, ...data]);
       }
     } catch (error) {
       console.error('Error fetching last added offers:', error);
@@ -40,9 +38,17 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
     }
   };
 
-  useEffect(() => {
-    loadLastAddedOffers(0);
-  }, [token]);
+  const initialize = () => {
+    setPage(0);
+    loadLastAddedOffers(0, true);
+    flatListRef.current?.scrollToOffset({ animated: false, offset: 0 });
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      initialize()
+    }, [])
+  );
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
@@ -80,10 +86,10 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   }, [searchQuery, token]);
 
   const handleLoadMore = () => {
-    if (hasMoreData && !isLoading) {
+    if (!isLoading) {
       setPage((prevPage) => {
         const nextPage = prevPage + 1;
-        loadLastAddedOffers(nextPage);
+        loadLastAddedOffers(nextPage, false);
         return nextPage;
       });
     }
@@ -122,11 +128,17 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
           )}
         </View>
         {searchQuery.length > 0 && searchedBooks.length > 0 ? (
-          <OffersList books={searchedBooks} onBookPress={handleBookPress} />
+          <FlatList
+          data={searchedBooks}
+          keyExtractor={(item, index) => `${item.id}-${index}`}
+          renderItem={({ item }) => <OffersList books={[item]} onBookPress={handleBookPress} />}
+          ListFooterComponent={hasNoResults ? <Text style={styles.noResultsText}>Brak wyników</Text> : null}
+        />
         ) : hasNoResults ? (
           <Text style={styles.noResultsText}>Brak wyników</Text>
         ) : (
           <FlatList
+            ref={flatListRef}
             data={lastAddedBooks}
             keyExtractor={(item, index) => `${item.id}-${index}`}
             renderItem={({ item }) => (
