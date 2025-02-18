@@ -162,6 +162,22 @@ export const getLastAddedOffers = async (token: string, pageSize: string, pageNu
   }
 }
 
+export const getOffersByQueryLazy = async (token: string, searchQuery: string, pageSize: Number, pageNumber: Number) => {
+  try {
+    const url = `https://drugaksiazka.pl/api/books/v2/search_users_with_title/?searchQuery=${encodeURIComponent(searchQuery)}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    const response = await axios.get(url, {
+      headers: {
+        'Authorization': `Token ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Search failed', error);
+    return null;
+  }
+}
+
 export const sendMessage = async (token: string, recipient: string, message: string) => {
   try {
     const payload = {

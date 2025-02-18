@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { StyleSheet, View, TextInput, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useUserData } from '../authentication/UserData';
-import { getLastAddedOffers, getOffersByQuery } from '../BooksService';
+import { getLastAddedOffers, getOffersByQuery, getOffersByQueryLazy } from '../BooksService';
 import OffersList from './OffersList';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -18,16 +18,31 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
   const [lastAddedBooks, setLastAddedBooks] = useState([]);
   const [page, setPage] = useState(0);
+  const [pageSearchNumber, setPageSearchNumber] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [hasNoResults, setHasNoResults] = useState(false);
   const flatListRef = useRef<FlatList>(null);
+
+  const initialize = () => {
+    setPage(0);
+    setPageSearchNumber(0);
+    setSearchQuery('');
+    loadLastAddedOffers(0, true);
+    flatListRef.current?.scrollToOffset({ animated: false, offset: 0 });
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      initialize();
+    }, [])
+  );
 
   const loadLastAddedOffers = async (pageNumber: number, isFirstLoading: boolean) => {
     setIsLoading(true);
     try {
       const data = await getLastAddedOffers(token, PAGE_SIZE.toString(), pageNumber.toString());
-      if(isFirstLoading){
-        setLastAddedBooks(data)
+      if (isFirstLoading) {
+        setLastAddedBooks(data);
       } else {
         setLastAddedBooks((prevBooks) => [...prevBooks, ...data]);
       }
@@ -38,17 +53,6 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
     }
   };
 
-  const initialize = () => {
-    setPage(0);
-    loadLastAddedOffers(0, true);
-    flatListRef.current?.scrollToOffset({ animated: false, offset: 0 });
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      initialize()
-    }, [])
-  );
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
@@ -63,7 +67,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
 
     const newTimeout = setTimeout(async () => {
       try {
-        const data = await getOffersByQuery(token, searchQuery);
+        const data = await getOffersByQueryLazy(token, searchQuery, PAGE_SIZE, pageSearchNumber);
         if (data && data.length > 0) {
           setSearchedBooks(data);
           setHasNoResults(false);
@@ -85,13 +89,34 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
     };
   }, [searchQuery, token]);
 
+  useEffect(() => {
+    if (searchQuery.trim() !== '') {
+      const fetchData = async () => {
+        try {
+          const data = await getOffersByQueryLazy(token, searchQuery, PAGE_SIZE, pageSearchNumber);
+          if (data && data.length > 0) {
+            setSearchedBooks((prevBooks) => [...prevBooks, ...data]);
+          }
+        } catch (error) {
+          setSearchedBooks([]);
+          setHasNoResults(true);
+        }
+      };
+      fetchData();
+    }
+  }, [pageSearchNumber, searchQuery, token]);
+
   const handleLoadMore = () => {
-    if (!isLoading) {
-      setPage((prevPage) => {
-        const nextPage = prevPage + 1;
-        loadLastAddedOffers(nextPage, false);
-        return nextPage;
-      });
+    if (!isLoading && !hasNoResults) {
+      if (searchQuery === '') {
+        setPage((prevPage) => {
+          const nextPage = prevPage + 1;
+          loadLastAddedOffers(nextPage, false);
+          return nextPage;
+        });
+      } else {
+        setPageSearchNumber(pageSearchNumber + 1);
+      }
     }
   };
 
@@ -100,8 +125,17 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
     navigation.navigate('BookDetails', { book, owner });
   };
 
+  useEffect(() => {
+    setPage(0);
+    setPageSearchNumber(0);
+    if (searchQuery.trim() !== '') {
+      flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    }
+  }, [searchQuery]);
+
   const clearSearch = () => {
     setSearchQuery('');
+    setPageSearchNumber(0);
     setSearchedBooks([]);
     setHasNoResults(false);
   };
@@ -129,11 +163,14 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
         </View>
         {searchQuery.length > 0 && searchedBooks.length > 0 ? (
           <FlatList
-          data={searchedBooks}
-          keyExtractor={(item, index) => `${item.id}-${index}`}
-          renderItem={({ item }) => <OffersList books={[item]} onBookPress={handleBookPress} />}
-          ListFooterComponent={hasNoResults ? <Text style={styles.noResultsText}>Brak wyników</Text> : null}
-        />
+            data={searchedBooks}
+            keyExtractor={(item, index) => `${item.id}-${index}`}
+            renderItem={({ item }) => <OffersList books={[item]} onBookPress={handleBookPress} />}
+            ListFooterComponent={hasNoResults ? <Text style={styles.noResultsText}>Brak wyników</Text> : null}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            ref={flatListRef}
+          />
         ) : hasNoResults ? (
           <Text style={styles.noResultsText}>Brak wyników</Text>
         ) : (
@@ -141,13 +178,9 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
             ref={flatListRef}
             data={lastAddedBooks}
             keyExtractor={(item, index) => `${item.id}-${index}`}
-            renderItem={({ item }) => (
-              <OffersList books={[item]} onBookPress={handleBookPress} />
-            )}
+            renderItem={({ item }) => <OffersList books={[item]} onBookPress={handleBookPress} />}
             ListFooterComponent={
-              isLoading ? (
-                <ActivityIndicator size="large" color="#333" />
-              ) : null
+              isLoading ? <ActivityIndicator size="large" color="#333" /> : null
             }
             onEndReached={handleLoadMore}
             onEndReachedThreshold={0.5}
