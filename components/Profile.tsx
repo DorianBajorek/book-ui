@@ -23,6 +23,7 @@ const Profile = ({ route }) => {
   const [offerError, setOfferError] = useState<string | null>(null);
   const [scannerError, setScannerError] = useState<string | null>(null);
   const { owner } = route.params;
+  const { logout} = useUserData();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -133,7 +134,9 @@ const Profile = ({ route }) => {
             <Text style={styles.label}>Nazwa użytkownika:</Text>
             <Text style={styles.infoValue}>{profileName}</Text>
           </View>
-
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+                <Ionicons name="log-out-outline" size={24} color="#333" />
+              </TouchableOpacity>
           <View style={styles.infoRow}>
             <Text style={styles.label}>Email:</Text>
             <Text style={styles.infoValue}>{email}</Text>
@@ -226,6 +229,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     top: 10,
+  },
+  logoutButton: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
   },
   scrollContainer: {
     flexGrow: 1,

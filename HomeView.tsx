@@ -55,11 +55,7 @@ const HomeView = ({ navigation }: { navigation: NavigationProp }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        {token ? (
-          <TouchableOpacity style={styles.button} onPress={() => logout()}>
-            <Text style={styles.buttonText}>Wyloguj się</Text>
-          </TouchableOpacity>
-        ) : (
+        { !token &&  (
           <>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
               <Text style={styles.buttonText}>Zarejestruj się</Text>
