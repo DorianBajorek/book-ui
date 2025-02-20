@@ -22,6 +22,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasNoResults, setHasNoResults] = useState(false);
   const flatListRef = useRef<FlatList>(null);
+  const clickedOnBookRef = useRef(false);
 
   const initialize = () => {
     setPage(0);
@@ -32,8 +33,11 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   };
 
   useFocusEffect(
-    React.useCallback(() => {
-      initialize();
+    useCallback(() => {
+      if (!clickedOnBookRef.current) {
+        initialize();
+      }
+      clickedOnBookRef.current = false;
     }, [])
   );
 
@@ -121,6 +125,7 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
   };
 
   const handleBookPress = (book) => {
+    clickedOnBookRef.current = true; 
     const owner = book.username;
     navigation.navigate('BookDetails', { book, owner });
   };

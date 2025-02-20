@@ -154,6 +154,7 @@ export const getOffersByQuery = async (token: string, searchQuery: string) => {
 
 export const getLastAddedOffers = async (token: string, pageSize: string, pageNumber: string) => {
   try {
+    console.log("LAST ADDED")
     const url = `https://drugaksiazka.pl/api/books/v2/get_last_added_offers?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     const response = await axios.get(url)
     return response.data;
