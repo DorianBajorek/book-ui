@@ -57,7 +57,6 @@ const SearchScreen = ({ navigation }: { navigation: NavigationProp }) => {
     }
   };
 
-
   useEffect(() => {
     if (searchQuery.trim() === '') {
       setSearchedBooks([]);
